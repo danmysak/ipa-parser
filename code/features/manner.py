@@ -10,6 +10,7 @@ __all__ = [
 
 
 class Manner(StrEnum):
+    AFFRICATE = 'affricate'
     APPROXIMANT = 'approximant'
     FRICATIVE = 'fricative'
     LATERAL = 'lateral'
