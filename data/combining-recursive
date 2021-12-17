@@ -1,9 +1,8 @@
 ◌ʼ (consonant)	ejective
 
 ◌̩, ◌̍ (consonant)	syllabic
-◌̯, ◌̑ (vowel)	non-syllabic
-◌ʰ (consonant)	aspirated
-◌˭ (consonant)	unaspirated
+◌̯, ◌̑ (vowel)	nonsyllabic
+
 ◌̚ (stop)	no audible release
 ◌ⁿ (stop)	nasal release
 ◌ˡ (stop)	lateral release
@@ -11,18 +10,21 @@
 ◌ˢ (stop)	voiceless alveolar sibilant fricative release
 ◌ˣ (stop)	voiceless velar fricative release
 
+◌ʰ (consonant)	aspirated
+◌˭ (consonant)	unaspirated
 ʰ◌ (consonant)	preaspirated
+
 ᵐ◌, ᶬ◌, ⁿ◌, ᶯ◌, ᶮ◌, ᵑ◌, ᶰ◌ (consonant)	prenasalized
 ᵇ◌, ᵈ◌, ᶢ◌ (consonant)	prestopped
 
 ◌̥, ◌̊ (voiced)	-voiced
 ◌̬ (consonant)	voiced
-◌̤, ◌ʱ	breathy voiced
-◌̰	creaky voiced
+◌̤, ◌ʱ	breathy
+◌̰	creaky
+◌̣	whispery
 
-◌͈	strong articulation
-◌͉	weak articulation
-◌̣	whispery phonation
+◌͈	strong
+◌͉	weak
 
 ◌̺ (consonant)	apical
 ◌̻ (consonant)	laminal

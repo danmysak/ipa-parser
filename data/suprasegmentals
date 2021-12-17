@@ -1,16 +1,14 @@
-ˈ	primary stress
-ˈˈ	primary stress, extra-strong
-ˌ	secondary stress
-ˌˌ	secondary stress, extra-weak
-↗	global rise
-↘	global fall
-ꜛ	upstep
-ꜜ	downstep
+ˈ	regular primary stress
+ˈˈ	extra-strong primary stress
+ˌ	regular secondary stress
+ˌˌ	extra-weak secondary stress
+
 ˥, ꜒	high tone
 ˦, ꜓	half-high tone
 ˧, ꜔	mid tone
 ˨, ꜕	half-low tone
 ˩, ꜖	low tone
+
 ⁰	tone 0
 ¹	tone 1
 ²	tone 2
@@ -19,6 +17,13 @@
 ⁵	tone 5
 ⁶	tone 6
 ⁷	tone 7
-⁻	tone separator
+⁻	tone number separator
+
+ꜛ	upstep
+ꜜ	downstep
+
+↗	global rise
+↘	global fall
+
 ↑	egressive airflow
 ↓	ingressive airflow
