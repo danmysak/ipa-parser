@@ -8,3 +8,4 @@ __all__ = [
 class Syllabicity(StrEnum):
     SYLLABIC = 'syllabic'
     NONSYLLABIC = 'nonsyllabic'
+    ANAPTYCTIC = 'anaptyctic'

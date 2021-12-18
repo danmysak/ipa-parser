@@ -6,7 +6,6 @@ __all__ = [
 
 
 class Length(StrEnum):
-    ANAPTYCTIC = 'anaptyctic'
     EXTRA_SHORT = 'extra-short'
     HALF_LONG = 'half-long'
     LONG = 'long'
