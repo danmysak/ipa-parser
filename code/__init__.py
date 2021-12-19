@@ -9,7 +9,7 @@ from .features.grapheme import GraphemeType
 from .features.height import Height, HeightCategory
 from .features.intonation import Intonation
 from .features.length import Length
-from .features.manner import Manner, Mechanism
+from .features.manner import Manner
 from .features.place import Place, PlaceCategory
 from .features.release import Release
 from .features.roundedness import Roundedness, RoundednessModifier
@@ -36,7 +36,6 @@ __all__ = [
     'Intonation',
     'Length',
     'Manner',
-    'Mechanism',
     'Phonation',
     'Place',
     'PlaceCategory',
