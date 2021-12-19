@@ -1,4 +1,4 @@
-from ..helpers.enums import assert_enum_mapping, StrEnum
+from ...helpers.enums import assert_enum_mapping, StrEnum
 
 __all__ = [
     'Backness',

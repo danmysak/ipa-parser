@@ -1,4 +1,4 @@
-from ..helpers.enums import StrEnum
+from ...helpers.enums import StrEnum
 
 __all__ = [
     'Length',
