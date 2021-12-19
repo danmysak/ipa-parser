@@ -3,7 +3,6 @@ from ._code.definitions.features.articulation import Articulation
 from ._code.definitions.features.aspiration import Aspiration
 from ._code.definitions.features.backness import Backness, BacknessCategory
 from ._code.definitions.features.breaks import BreakType
-from ._code.definitions.features.grapheme import GraphemeType
 from ._code.definitions.features.height import Height, HeightCategory
 from ._code.definitions.features.intonation import Intonation
 from ._code.definitions.features.length import Length
@@ -18,6 +17,7 @@ from ._code.definitions.features.stress import StressSubtype, StressType
 from ._code.definitions.features.suprasegmental import SuprasegmentalType
 from ._code.definitions.features.syllabicity import Syllabicity
 from ._code.definitions.features.tone import Tone, ToneNumber, ToneStep, ToneType
+from ._code.definitions.features.unit import UnitType
 from ._code.definitions.features.voice import Phonation, Voicing
 
 __all__ = [
@@ -27,7 +27,6 @@ __all__ = [
     'Backness',
     'BacknessCategory',
     'BreakType',
-    'GraphemeType',
     'Height',
     'HeightCategory',
     'Intonation',
@@ -52,5 +51,6 @@ __all__ = [
     'ToneNumber',
     'ToneStep',
     'ToneType',
+    'UnitType',
     'Voicing',
 ]

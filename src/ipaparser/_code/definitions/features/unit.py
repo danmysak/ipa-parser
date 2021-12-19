@@ -1,11 +1,11 @@
 from ...helpers.enums import StrEnum
 
 __all__ = [
-    'GraphemeType',
+    'UnitType',
 ]
 
 
-class GraphemeType(StrEnum):
+class UnitType(StrEnum):
     SOUND = 'sound'
     SUPRASEGMENTAL = 'suprasegmental'
     BREAK = 'break'
