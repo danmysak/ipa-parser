@@ -17,7 +17,7 @@ class SecondaryPlace(StrEnum):
 class SecondaryModifier(StrEnum):
     ADVANCED_TONGUE_ROOT = 'advanced tongue root'
     RETRACTED_TONGUE_ROOT = 'retracted tongue root'
-    RHOTIC = 'rhotic'
+    R_COLORED = 'r-colored'
     NASALIZED = 'nasalized'
     PRENASALIZED = 'prenasalized'
     PRESTOPPED = 'prestopped'
