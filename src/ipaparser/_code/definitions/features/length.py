@@ -1,11 +1,11 @@
-from ...helpers.enums import StrEnum
+from .feature import Feature
 
 __all__ = [
     'Length',
 ]
 
 
-class Length(StrEnum):
+class Length(Feature):
     EXTRA_SHORT = 'extra-short'
     HALF_LONG = 'half-long'
     LONG = 'long'

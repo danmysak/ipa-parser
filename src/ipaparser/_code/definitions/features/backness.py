@@ -1,4 +1,4 @@
-from ...helpers.enums import assert_enum_mapping, StrEnum
+from .feature import assert_feature_mapping, Feature
 
 __all__ = [
     'Backness',
@@ -6,13 +6,13 @@ __all__ = [
 ]
 
 
-class BacknessCategory(StrEnum):
+class BacknessCategory(Feature):
     ABOUT_FRONT = 'about front'
     ABOUT_CENTRAL = 'about central'
     ABOUT_BACK = 'about back'
 
 
-class Backness(StrEnum):
+class Backness(Feature):
     FRONT = 'front'
     NEAR_FRONT = 'near-front'
     CENTRAL = 'central'
@@ -23,7 +23,7 @@ class Backness(StrEnum):
         return BACKNESS_TO_CATEGORY[self]
 
 
-BACKNESS_TO_CATEGORY = assert_enum_mapping({
+BACKNESS_TO_CATEGORY = assert_feature_mapping({
     Backness.FRONT: BacknessCategory.ABOUT_FRONT,
     Backness.NEAR_FRONT: BacknessCategory.ABOUT_FRONT,
     Backness.CENTRAL: BacknessCategory.ABOUT_CENTRAL,

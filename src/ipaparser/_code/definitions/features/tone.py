@@ -1,4 +1,4 @@
-from ...helpers.enums import StrEnum
+from .feature import Feature
 
 __all__ = [
     'Tone',
@@ -8,13 +8,13 @@ __all__ = [
 ]
 
 
-class ToneType(StrEnum):
+class ToneType(Feature):
     TONE_DESCRIPTION = 'tone description'
     TONE_NUMBER = 'tone number'
     TONE_STEP = 'tone step'
 
 
-class Tone(StrEnum):
+class Tone(Feature):
     EXTRA_HIGH_TONE = 'extra-high tone'
     HIGH_TONE = 'high tone'
     HALF_HIGH_TONE = 'half-high tone'
@@ -33,7 +33,7 @@ class Tone(StrEnum):
     DIPPING_TONE = 'dipping tone'
 
 
-class ToneNumber(StrEnum):
+class ToneNumber(Feature):
     TONE_0 = 'tone 0'
     TONE_1 = 'tone 1'
     TONE_2 = 'tone 2'
@@ -45,6 +45,6 @@ class ToneNumber(StrEnum):
     TONE_NUMBER_SEPARATOR = 'tone number separator'
 
 
-class ToneStep(StrEnum):
+class ToneStep(Feature):
     UPSTEP = 'upstep'
     DOWNSTEP = 'downstep'

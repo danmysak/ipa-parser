@@ -1,4 +1,4 @@
-from ...helpers.enums import assert_enum_mapping, StrEnum
+from .feature import assert_feature_mapping, Feature
 
 __all__ = [
     'Place',
@@ -6,14 +6,14 @@ __all__ = [
 ]
 
 
-class PlaceCategory(StrEnum):
+class PlaceCategory(Feature):
     LABIAL = 'labial'
     CORONAL = 'coronal'
     DORSAL = 'dorsal'
     LARYNGEAL = 'laryngeal'
 
 
-class Place(StrEnum):
+class Place(Feature):
     BILABIAL = 'bilabial'
     LABIODENTAL = 'labiodental'
     LINGUOLABIAL = 'linguolabial'
@@ -31,7 +31,7 @@ class Place(StrEnum):
         return PLACE_TO_CATEGORY[self]
 
 
-PLACE_TO_CATEGORY = assert_enum_mapping({
+PLACE_TO_CATEGORY = assert_feature_mapping({
     Place.BILABIAL: PlaceCategory.LABIAL,
     Place.LABIODENTAL: PlaceCategory.LABIAL,
     Place.LINGUOLABIAL: PlaceCategory.CORONAL,

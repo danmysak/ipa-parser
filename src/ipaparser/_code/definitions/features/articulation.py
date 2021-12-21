@@ -1,11 +1,11 @@
-from ...helpers.enums import StrEnum
+from .feature import Feature
 
 __all__ = [
     'Articulation',
 ]
 
 
-class Articulation(StrEnum):
+class Articulation(Feature):
     APICAL = 'apical'
     LAMINAL = 'laminal'
     ADVANCED = 'advanced'

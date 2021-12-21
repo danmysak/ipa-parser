@@ -1,10 +1,10 @@
-from ..helpers.enums import StrEnum
+from enum import Enum
 
 __all__ = [
     'TranscriptionType',
 ]
 
 
-class TranscriptionType(StrEnum):
+class TranscriptionType(str, Enum):
     PHONETIC = 'phonetic'
     PHONEMIC = 'phonemic'

@@ -1,11 +1,11 @@
-from ...helpers.enums import StrEnum
+from .feature import Feature
 
 __all__ = [
     'BreakType',
 ]
 
 
-class BreakType(StrEnum):
+class BreakType(Feature):
     SPACE = 'space'
     HYPHEN = 'hyphen'
     LINKING = 'linking'

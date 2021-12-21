@@ -1,10 +1,10 @@
-from ...helpers.enums import StrEnum
+from .feature import Feature
 
 __all__ = [
     'Strength',
 ]
 
 
-class Strength(StrEnum):
+class Strength(Feature):
     STRONG = 'strong'
     WEAK = 'weak'

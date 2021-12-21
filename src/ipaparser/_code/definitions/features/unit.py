@@ -1,11 +1,11 @@
-from ...helpers.enums import StrEnum
+from .feature import Feature
 
 __all__ = [
     'UnitType',
 ]
 
 
-class UnitType(StrEnum):
+class UnitType(Feature):
     SOUND = 'sound'
     SUPRASEGMENTAL = 'suprasegmental'
     BREAK = 'break'

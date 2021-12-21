@@ -1,10 +1,10 @@
-from ...helpers.enums import StrEnum
+from .feature import Feature
 
 __all__ = [
     'Intonation',
 ]
 
 
-class Intonation(StrEnum):
+class Intonation(Feature):
     GLOBAL_RISE = 'global rise'
     GLOBAL_FALL = 'global fall'

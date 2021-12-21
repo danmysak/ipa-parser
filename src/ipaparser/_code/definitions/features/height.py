@@ -1,4 +1,4 @@
-from ...helpers.enums import assert_enum_mapping, StrEnum
+from .feature import assert_feature_mapping, Feature
 
 __all__ = [
     'Height',
@@ -6,13 +6,13 @@ __all__ = [
 ]
 
 
-class HeightCategory(StrEnum):
+class HeightCategory(Feature):
     ABOUT_CLOSE = 'about close'
     ABOUT_MID = 'about mid'
     ABOUT_OPEN = 'about open'
 
 
-class Height(StrEnum):
+class Height(Feature):
     CLOSE = 'close'
     NEAR_CLOSE = 'near-close'
     CLOSE_MID = 'close-mid'
@@ -25,7 +25,7 @@ class Height(StrEnum):
         return HEIGHT_TO_CATEGORY[self]
 
 
-HEIGHT_TO_CATEGORY = assert_enum_mapping({
+HEIGHT_TO_CATEGORY = assert_feature_mapping({
     Height.CLOSE: HeightCategory.ABOUT_CLOSE,
     Height.NEAR_CLOSE: HeightCategory.ABOUT_CLOSE,
     Height.CLOSE_MID: HeightCategory.ABOUT_MID,

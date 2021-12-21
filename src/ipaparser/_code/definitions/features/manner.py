@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from ...helpers.enums import StrEnum
+from .feature import Feature
 
 __all__ = [
     'Manner',
 ]
 
 
-class Manner(StrEnum):
+class Manner(Feature):
     AFFRICATE = 'affricate'
     APPROXIMANT = 'approximant'
     FRICATIVE = 'fricative'

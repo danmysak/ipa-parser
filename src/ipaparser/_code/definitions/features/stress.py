@@ -1,4 +1,4 @@
-from ...helpers.enums import assert_enum_mapping, StrEnum
+from .feature import assert_feature_mapping, Feature
 
 __all__ = [
     'StressSubtype',
@@ -6,12 +6,12 @@ __all__ = [
 ]
 
 
-class StressType(StrEnum):
+class StressType(Feature):
     PRIMARY_STRESS = 'primary stress'
     SECONDARY_STRESS = 'secondary stress'
 
 
-class StressSubtype(StrEnum):
+class StressSubtype(Feature):
     REGULAR_PRIMARY_STRESS = 'regular primary stress'
     EXTRA_STRONG_PRIMARY_STRESS = 'extra-strong primary stress'
     REGULAR_SECONDARY_STRESS = 'regular secondary stress'
@@ -21,7 +21,7 @@ class StressSubtype(StrEnum):
         return STRESS_SUBTYPE_TO_TYPE[self]
 
 
-STRESS_SUBTYPE_TO_TYPE = assert_enum_mapping({
+STRESS_SUBTYPE_TO_TYPE = assert_feature_mapping({
     StressSubtype.REGULAR_PRIMARY_STRESS: StressType.PRIMARY_STRESS,
     StressSubtype.EXTRA_STRONG_PRIMARY_STRESS: StressType.PRIMARY_STRESS,
     StressSubtype.REGULAR_SECONDARY_STRESS: StressType.SECONDARY_STRESS,

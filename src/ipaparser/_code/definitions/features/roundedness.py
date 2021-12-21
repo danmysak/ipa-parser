@@ -1,4 +1,4 @@
-from ...helpers.enums import StrEnum
+from .feature import Feature
 
 __all__ = [
     'Roundedness',
@@ -6,11 +6,11 @@ __all__ = [
 ]
 
 
-class Roundedness(StrEnum):
+class Roundedness(Feature):
     ROUNDED = 'rounded'
 
 
-class RoundednessModifier(StrEnum):
+class RoundednessModifier(Feature):
     MORE_ROUNDED = 'more rounded'
     LESS_ROUNDED = 'less rounded'
     COMPRESSED = 'compressed'

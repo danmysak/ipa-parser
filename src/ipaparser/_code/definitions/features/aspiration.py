@@ -1,11 +1,11 @@
-from ...helpers.enums import StrEnum
+from .feature import Feature
 
 __all__ = [
     'Aspiration',
 ]
 
 
-class Aspiration(StrEnum):
+class Aspiration(Feature):
     ASPIRATED = 'aspirated'
     UNASPIRATED = 'unaspirated'
     PREASPIRATED = 'preaspirated'

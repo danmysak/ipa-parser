@@ -1,11 +1,11 @@
-from ...helpers.enums import StrEnum
+from .feature import Feature
 
 __all__ = [
     'Release',
 ]
 
 
-class Release(StrEnum):
+class Release(Feature):
     NO_AUDIBLE_RELEASE = 'no audible release'
     NASAL_RELEASE = 'nasal release'
     LATERAL_RELEASE = 'lateral release'

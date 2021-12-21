@@ -1,4 +1,4 @@
-from ...helpers.enums import StrEnum
+from .feature import Feature
 
 __all__ = [
     'SecondaryModifier',
@@ -6,7 +6,7 @@ __all__ = [
 ]
 
 
-class SecondaryPlace(StrEnum):
+class SecondaryPlace(Feature):
     LABIALIZED = 'labialized'
     PALATALIZED = 'palatalized'
     VELARIZED = 'velarized'
@@ -14,7 +14,7 @@ class SecondaryPlace(StrEnum):
     GLOTTALIZED = 'glottalized'
 
 
-class SecondaryModifier(StrEnum):
+class SecondaryModifier(Feature):
     ADVANCED_TONGUE_ROOT = 'advanced tongue root'
     RETRACTED_TONGUE_ROOT = 'retracted tongue root'
     R_COLORED = 'r-colored'

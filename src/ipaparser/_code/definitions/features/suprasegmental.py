@@ -1,11 +1,11 @@
-from ...helpers.enums import StrEnum
+from .feature import Feature
 
 __all__ = [
     'SuprasegmentalType',
 ]
 
 
-class SuprasegmentalType(StrEnum):
+class SuprasegmentalType(Feature):
     STRESS = 'stress'
     TONE = 'tone'
     INTONATION = 'intonation'

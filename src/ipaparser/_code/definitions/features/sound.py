@@ -1,4 +1,4 @@
-from ...helpers.enums import assert_enum_mapping, StrEnum
+from .feature import assert_feature_mapping, Feature
 
 __all__ = [
     'SoundSubtype',
@@ -6,12 +6,12 @@ __all__ = [
 ]
 
 
-class SoundType(StrEnum):
+class SoundType(Feature):
     CONSONANT = 'consonant'
     VOWEL = 'vowel'
 
 
-class SoundSubtype(StrEnum):
+class SoundSubtype(Feature):
     SIMPLE_CONSONANT = 'simple consonant'
     AFFRICATE = 'affricate'
     COARTICULATED_CONSONANT = 'coarticulated consonant'
@@ -22,7 +22,7 @@ class SoundSubtype(StrEnum):
         return SOUND_SUBTYPE_TO_TYPE[self]
 
 
-SOUND_SUBTYPE_TO_TYPE = assert_enum_mapping({
+SOUND_SUBTYPE_TO_TYPE = assert_feature_mapping({
     SoundSubtype.SIMPLE_CONSONANT: SoundType.CONSONANT,
     SoundSubtype.AFFRICATE: SoundType.CONSONANT,
     SoundSubtype.COARTICULATED_CONSONANT: SoundType.CONSONANT,

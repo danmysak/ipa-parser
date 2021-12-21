@@ -1,10 +1,10 @@
-from ..helpers.enums import StrEnum
+from enum import Enum
 
 __all__ = [
     'BracketStrategy',
 ]
 
 
-class BracketStrategy(StrEnum):
+class BracketStrategy(str, Enum):
     EXPAND = 'expand'
     STRIP = 'strip'

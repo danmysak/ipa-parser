@@ -1,4 +1,4 @@
-from ...helpers.enums import StrEnum
+from .feature import Feature
 
 __all__ = [
     'Phonation',
@@ -6,11 +6,11 @@ __all__ = [
 ]
 
 
-class Voicing(StrEnum):
+class Voicing(Feature):
     VOICED = 'voiced'
 
 
-class Phonation(StrEnum):
+class Phonation(Feature):
     BREATHY = 'breathy'
     CREAKY = 'creaky'
     WHISPERY = 'whispery'
