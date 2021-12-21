@@ -128,7 +128,7 @@ def parse_symbol_data(data: TabularData) -> SymbolData:
         symbols, features = row
         if len(features) != 1:
             raise ValueError(f'Expected exactly one feature, got "{VALUE_DELIMITER.join(features)}"')
-        feature = features[0]
+        feature = parse_feature(features[0])
         for symbol in symbols:
             if symbol in mapping:
                 raise ValueError(f'The symbol "{symbol}" is encountered in data multiple times')
@@ -203,7 +203,7 @@ def parse_bracket_data(data: TabularData) -> BracketData:
         key = opening, closing
         if key in mapping:
             raise ValueError(f'The bracket pair "{opening}"/"{closing}" is encountered in data multiple times')
-        mapping[key] = TranscriptionType(rest[0]) if rest else None
+        mapping[key] = TranscriptionType(rest[0][0]) if rest else None
     return mapping
 
 

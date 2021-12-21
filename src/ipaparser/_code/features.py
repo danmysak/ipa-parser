@@ -11,8 +11,8 @@ def build_feature_map() -> dict[str, Feature]:
     mapping: dict[str, Feature] = {}
 
     def append(key: str, value: Feature) -> None:
-        assert key not in FEATURE_MAP
-        FEATURE_MAP[key] = value
+        assert key not in mapping
+        mapping[key] = value
 
     for name in features.__all__:
         if (feature := getattr(features, name)) != Feature:
