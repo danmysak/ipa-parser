@@ -4,8 +4,8 @@ from pathlib import Path
 from typing import Optional
 import unicodedata
 
-from .features import Feature, parse_feature
 from .definitions.transcription import TranscriptionType
+from .features import Feature, parse_feature
 
 __all__ = [
     'BracketData',
