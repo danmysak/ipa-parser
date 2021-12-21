@@ -14,7 +14,7 @@ class SoundType(Feature):
 class SoundSubtype(Feature):
     SIMPLE_CONSONANT = 'simple consonant'
     AFFRICATE = 'affricate'
-    COARTICULATED_CONSONANT = 'coarticulated consonant'
+    DOUBLE_CONSONANT = 'double consonant'
     SIMPLE_VOWEL = 'simple vowel'
     DIPHTHONG = 'diphthong'
 
@@ -25,7 +25,7 @@ class SoundSubtype(Feature):
 SOUND_SUBTYPE_TO_TYPE = assert_feature_mapping({
     SoundSubtype.SIMPLE_CONSONANT: SoundType.CONSONANT,
     SoundSubtype.AFFRICATE: SoundType.CONSONANT,
-    SoundSubtype.COARTICULATED_CONSONANT: SoundType.CONSONANT,
+    SoundSubtype.DOUBLE_CONSONANT: SoundType.CONSONANT,
     SoundSubtype.SIMPLE_VOWEL: SoundType.VOWEL,
     SoundSubtype.DIPHTHONG: SoundType.VOWEL,
 })

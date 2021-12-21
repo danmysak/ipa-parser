@@ -37,13 +37,13 @@ def parse_ipa(
     :param combine: Two-sound sequences to be treated like they are always connected by a tie, e.g., ['aɪ', 'oʊ̯', 'ts']
                     (note that passing 'aɪ' will also match 'aɪ̯', passing 'ts' will also match 't̪s̪', etc., but
                     _not_ the other way around). Each item must be a valid sound combination: either a diphthong,
-                    an affricate, or a co-articulated consonant.
+                    an affricate, or a doubly articulated consonant.
     :return: An IPA object corresponding to the (normalized) input string.
     :raises:
         TranscriptionEnclosingError: The input string is not properly enclosed in brackets (like [so] or /so/);
                                      or the first character after the opening bracket is combining (as in /̃here/);
                                      or a tie extends to the closing bracket (as in /here͜/).
         InvalidCombinationError: One of the sequences provided in the `combine` parameter cannot be interpreted as
-                                 either a diphthong, an affricate, or a co-articulated consonant.
+                                 either a diphthong, an affricate, or a doubly articulated consonant.
     """
     pass
