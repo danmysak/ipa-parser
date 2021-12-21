@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Optional
 import unicodedata
 
+from .decomposer import is_decomposed
 from .definitions.transcription import TranscriptionType
 from .features import Feature, parse_feature
 
@@ -88,11 +89,17 @@ def read(filename: str) -> TabularData:
     file = DIRECTORY / filename
     if not file.exists():
         raise ValueError(f'Data file does not exist: {file}')
-    with open(file, 'r') as data:
-        return [[column.split(VALUE_DELIMITER) if column else []
-                 for column in line.split(COLUMN_DELIMITER)]
-                for unstripped in data
-                if (line := unstripped.rstrip('\n'))]
+    data: TabularData = []
+    with open(file, 'r') as contents:
+        for unstripped in contents:
+            line = unstripped.rstrip('\n')
+            if not line:
+                continue
+            if not is_decomposed(line):
+                raise ValueError(f'Line is not normalized: "{line}"')
+            data.append([column.split(VALUE_DELIMITER) if column else []
+                         for column in line.split(COLUMN_DELIMITER)])
+    return data
 
 
 def parse_letter_data(data: TabularData) -> LetterData:
