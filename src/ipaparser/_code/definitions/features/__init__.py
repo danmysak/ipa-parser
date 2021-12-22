@@ -17,8 +17,8 @@ from .strength import Strength
 from .stress import StressSubtype, StressType
 from .suprasegmental import SuprasegmentalType
 from .syllabicity import Syllabicity
+from .symbol import SymbolType
 from .tone import Tone, ToneNumber, ToneStep, ToneType
-from .unit import UnitType
 from .voice import Phonation, Voicing
 
 __all__ = [
@@ -49,10 +49,10 @@ __all__ = [
     'StressType',
     'SuprasegmentalType',
     'Syllabicity',
+    'SymbolType',
     'Tone',
     'ToneNumber',
     'ToneStep',
     'ToneType',
-    'UnitType',
     'Voicing',
 ]

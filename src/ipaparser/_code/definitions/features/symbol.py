@@ -1,11 +1,11 @@
 from .feature import Feature
 
 __all__ = [
-    'UnitType',
+    'SymbolType',
 ]
 
 
-class UnitType(Feature):
+class SymbolType(Feature):
     SOUND = 'sound'
     SUPRASEGMENTAL = 'suprasegmental'
     BREAK = 'break'
