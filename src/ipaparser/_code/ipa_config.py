@@ -47,7 +47,7 @@ class IPAConfig:
             substitutions: bool = False,
             brackets: BracketStrategy = BracketStrategy.KEEP,
             combined: Optional[Iterable[tuple[str, ...]]] = None,
-    ):
+    ) -> None:
         """Set parameters for how IPA transcriptions and symbols are parsed.
 
         :param substitutions: Whether to perform normalizing substitutions such as ':' > 'ː' and 'g' > 'ɡ'.

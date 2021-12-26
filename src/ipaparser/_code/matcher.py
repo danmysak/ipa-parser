@@ -36,7 +36,7 @@ class Trie:
     _tree: Tree
     _LEAF = ''
 
-    def __init__(self, strings: Optional[Iterable[str]] = None):
+    def __init__(self, strings: Optional[Iterable[str]] = None) -> None:
         self._tree = {}
         for string in (strings or []):
             self.add(string)
@@ -97,7 +97,7 @@ class Trie:
 class Matcher:
     _trie: Trie
 
-    def __init__(self, strings: Iterable[str]):
+    def __init__(self, strings: Iterable[str]) -> None:
         self._trie = Trie(strings)
 
     def match(self, string: str, starting_at: int) -> Optional[Match]:

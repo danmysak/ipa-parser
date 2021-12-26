@@ -48,7 +48,7 @@ class IPA:
 
     _symbols: list[IPASymbol]
 
-    def __init__(self, transcription: str, config: IPAConfig = IPAConfig()):
+    def __init__(self, transcription: str, config: IPAConfig = IPAConfig()) -> None:
         """Parse a (properly enclosed) transcription string.
 
         :param transcription: The string to parse (like '[aɪ pʰiː eɪ]').
