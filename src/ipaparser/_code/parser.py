@@ -212,6 +212,16 @@ def tied_matches_to_features(matches: list[Match]) -> Optional[tuple[set[Feature
 
 def parse_normalized(text: str) -> Iterator[ParsedSymbol]:
     hanging: list[str] = []
+
+    def dump_hanging(*, is_last: bool) -> Iterator[ParsedSymbol]:
+        if hanging:
+            yield ParsedSymbol(
+                data=IPAData(string=''.join(hanging), features=unknown()),
+                components=None,
+                is_last=is_last,
+            )
+            hanging.clear()
+
     position = 0
     while position < len(text):
         chunks = list(get_tied_chunks(text, position))
@@ -225,13 +235,7 @@ def parse_normalized(text: str) -> Iterator[ParsedSymbol]:
                 features = new_features
                 hanging.pop()
                 position -= 1
-            if hanging:
-                yield ParsedSymbol(
-                    data=IPAData(string=''.join(hanging), features=unknown()),
-                    components=None,
-                    is_last=False,
-                )
-                hanging.clear()
+            yield from dump_hanging(is_last=False)
             while (following_position < len(text)
                    and get_unmatched_tied_chunk_end(text, following_position) == following_position + 1
                    and (new_features := apply_combining(Combining(
@@ -249,6 +253,7 @@ def parse_normalized(text: str) -> Iterator[ParsedSymbol]:
         else:
             hanging.append(text[position:following_position])
         position = following_position
+    yield from dump_hanging(is_last=True)
 
 
 def parse(text: str, config: IPAConfig) -> ParsedData:

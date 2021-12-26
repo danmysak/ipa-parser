@@ -38,6 +38,12 @@ class IPASymbol:
         """Get the last component of the symbol, if there are any (None otherwise)."""
         return self._components[-1] if self._components else None
 
+    def __str__(self) -> str:
+        return self._string
+
+    def __repr__(self) -> str:
+        return f'{self.__class__.__name__}({repr(str(self))})'
+
     def __init__(self, string: str, config: IPAConfig = IPAConfig()) -> None:
         """Parse a single sound or auxiliary IPA symbol.
 
