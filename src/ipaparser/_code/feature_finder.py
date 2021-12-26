@@ -1,9 +1,8 @@
-from .definitions import features
-from .definitions.features import Feature
+from . import features
+from .features import Feature
 
 __all__ = [
-    'Feature',
-    'parse_feature',
+    'find_feature',
 ]
 
 
@@ -25,7 +24,7 @@ def build_feature_map() -> dict[str, Feature]:
 FEATURE_MAP = build_feature_map()
 
 
-def parse_feature(value: str) -> Feature:
+def find_feature(value: str) -> Feature:
     if value not in FEATURE_MAP:
         raise ValueError(f'Unknown feature: "{value}"')
     return FEATURE_MAP[value]

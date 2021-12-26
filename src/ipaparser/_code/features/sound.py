@@ -14,9 +14,10 @@ class SoundType(Feature):
 class SoundSubtype(Feature):
     SIMPLE_CONSONANT = 'simple consonant'
     AFFRICATE_CONSONANT = 'affricate consonant'
-    DOUBLE_CONSONANT = 'double consonant'
+    DOUBLY_ARTICULATED_CONSONANT = 'doubly articulated consonant'
     SIMPLE_VOWEL = 'simple vowel'
     DIPHTHONG_VOWEL = 'diphthong vowel'
+    TRIPHTHONG_VOWEL = 'triphthong vowel'
 
     def to_sound_type(self) -> SoundType:
         return SOUND_SUBTYPE_TO_TYPE[self]
@@ -25,7 +26,8 @@ class SoundSubtype(Feature):
 SOUND_SUBTYPE_TO_TYPE = assert_feature_mapping({
     SoundSubtype.SIMPLE_CONSONANT: SoundType.CONSONANT,
     SoundSubtype.AFFRICATE_CONSONANT: SoundType.CONSONANT,
-    SoundSubtype.DOUBLE_CONSONANT: SoundType.CONSONANT,
+    SoundSubtype.DOUBLY_ARTICULATED_CONSONANT: SoundType.CONSONANT,
     SoundSubtype.SIMPLE_VOWEL: SoundType.VOWEL,
     SoundSubtype.DIPHTHONG_VOWEL: SoundType.VOWEL,
+    SoundSubtype.TRIPHTHONG_VOWEL: SoundType.VOWEL,
 })

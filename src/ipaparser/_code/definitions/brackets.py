@@ -6,5 +6,6 @@ __all__ = [
 
 
 class BracketStrategy(str, Enum):
+    KEEP = 'keep'
     EXPAND = 'expand'
     STRIP = 'strip'

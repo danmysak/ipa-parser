@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from .feature import Feature
 
 __all__ = [

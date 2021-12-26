@@ -1,36 +1,66 @@
-from __future__ import annotations
-from typing import Iterable, Optional
+from dataclasses import dataclass
+from operator import attrgetter
+from typing import Optional
 
-from .definitions.brackets import BracketStrategy
+from .data import get_data
+from .definitions import TranscriptionType
+from .exceptions import EnclosingError
+from .ipa_config import IPAConfig
+from .ipa_symbol import IPASymbol
+from .parser import parse
 
 __all__ = [
     'IPA',
-    'TranscriptionEnclosingError',
 ]
 
 
-class TranscriptionEnclosingError(ValueError):
-    pass
+@dataclass(frozen=True)
+class EnclosingData:
+    type: TranscriptionType
+    left: str
+    right: str
+    text: str
+
+
+def parse_enclosing(string: str) -> Optional[EnclosingData]:
+    for (left, right), transcription_type in get_data().outer_brackets.items():
+        if (len(string) >= len(left + right)
+                and string.startswith(left)
+                and string.endswith(right)):
+            return EnclosingData(
+                type=transcription_type,
+                left=left,
+                right=right,
+                text=string.removeprefix(left).removesuffix(right),
+            )
+    return None
 
 
 class IPA:
-    def __init__(
-            self, transcription: str, *,
-            substitutions: bool = True,
-            brackets: BracketStrategy = BracketStrategy.EXPAND,
-            combine: Optional[Iterable[tuple[str, str]]] = None,
-    ):
-        """Parse a (properly enclosed) transcription string into an IPA object.
+    _type: TranscriptionType
+    type: TranscriptionType = property(attrgetter('_type'))
+
+    _left_bracket: str
+    left_bracket: str = property(attrgetter('_left_bracket'))
+
+    _right_bracket: str
+    right_bracket: str = property(attrgetter('_right_bracket'))
+
+    _symbols: list[IPASymbol]
+
+    def __init__(self, transcription: str, config: IPAConfig = IPAConfig()):
+        """Parse a (properly enclosed) transcription string.
 
         :param transcription: The string to parse (like '[aɪ pʰiː eɪ]').
-        :param substitutions: Whether to perform normalizing substitutions such as ':' > 'ː' and 'g' > 'ɡ'.
-        :param brackets: What to do with brackets in transcriptions denoting optional pronunciation, such as in
-                         '[bə(j)ɪz⁽ʲ⁾ˈlʲivɨj]': expand ('[bəjɪzʲˈlʲivɨj]') or strip ('[bəɪzˈlʲivɨj]').
-        :param combine: Two-sound sequences to be treated like they are always connected by a tie, e.g.,
-                        [('a', 'ɪ'), ('o', 'ʊ̯'), ('t', 's'), ('d̠', 'ɹ̠˔')]; note that, e.g., ('a', 'ɪ') will not match
-                        'aɪ̯', and likewise ('a', 'ɪ̯') will not match 'aɪ'.
-        :return: An IPA object corresponding to the (normalized) input string.
+        :param config: Parsing parameters.
         :raises:
-            TranscriptionEnclosingError: The input string is not properly enclosed in brackets (like [so] or /so/).
+            EnclosingError: The input string is not properly enclosed in brackets (like [so] or /so/).
         """
-        pass
+        enclosing = parse_enclosing(transcription)
+        if not enclosing:
+            raise EnclosingError(transcription)
+        self._type = enclosing.type
+        self._left_bracket = enclosing.left
+        self._right_bracket = enclosing.right
+        self._symbols = [IPASymbol.from_data(symbol.data, symbol.components)
+                         for symbol in parse(enclosing.text, config).symbols]
