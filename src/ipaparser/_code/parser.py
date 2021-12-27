@@ -3,12 +3,12 @@ from typing import Iterator, Optional
 import unicodedata
 
 from .data import Combining, get_data, Position
-from .decomposer import decompose
 from .definitions import BracketStrategy
 from .features import Feature
 from .ipa_config import IPAConfig
 from .matcher import Match
 from .phonetics import apply_combining, basic_symbol_to_features, combine_features, get_basic_matcher, unknown
+from .strings import decompose
 from .symbol_data import SymbolData
 
 __all__ = [

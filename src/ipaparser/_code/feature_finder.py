@@ -1,30 +1,45 @@
+from typing import Optional, Type, TypeVar
+
 from . import features
 from .features import Feature
+from .strings import upper_camel_to_spaces
 
 __all__ = [
     'find_feature',
+    'find_feature_kind',
 ]
 
+T = TypeVar('T')
 
-def build_feature_map() -> dict[str, Feature]:
-    mapping: dict[str, Feature] = {}
+FeatureMap = dict[str, Feature]
+KindMap = dict[str, Type[Feature]]
 
-    def append(key: str, value: Feature) -> None:
-        assert key not in mapping
-        mapping[key] = value
+
+def append_unique(mapping: dict[str, T], key: str, value: T) -> None:
+    assert key not in mapping
+    mapping[key] = value
+
+
+def build_maps() -> tuple[FeatureMap, KindMap]:
+    feature_map: FeatureMap = {}
+    kind_map: KindMap = {}
 
     for name in features.__all__:
-        if (feature := getattr(features, name)) != Feature:
-            for option in feature:
-                append(option.value, option)
+        if (kind := getattr(features, name)) != Feature:
+            for option in kind:
+                append_unique(feature_map, option.value, option)
+            append_unique(kind_map, name, kind)
+            append_unique(kind_map, upper_camel_to_spaces(name), kind)
 
-    return mapping
+    return feature_map, kind_map
 
 
-FEATURE_MAP = build_feature_map()
+FEATURE_MAP, KIND_MAP = build_maps()
 
 
-def find_feature(value: str) -> Feature:
-    if value not in FEATURE_MAP:
-        raise ValueError(f'Unknown feature: "{value}"')
-    return FEATURE_MAP[value]
+def find_feature(value: str) -> Optional[Feature]:
+    return FEATURE_MAP.get(value, None)
+
+
+def find_feature_kind(value: str) -> Optional[Type[Feature]]:
+    return KIND_MAP.get(value, None)

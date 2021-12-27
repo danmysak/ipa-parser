@@ -38,9 +38,9 @@ SymbolWithFeatures = tuple[str, set[Feature]]
 F = TypeVar('F', bound=Feature)
 
 
-def get_extender(feature_class: Type[F], extender: Callable[[F], set[Feature]]) -> FeatureExtender:
+def get_extender(feature_kind: Type[F], extender: Callable[[F], set[Feature]]) -> FeatureExtender:
     return lambda features: features.union(*(extender(feature) for feature in features
-                                             if isinstance(feature, feature_class)))
+                                             if isinstance(feature, feature_kind)))
 
 
 extend_sound_subtype = get_extender(SoundSubtype, lambda feature: {feature.to_sound_type()})
@@ -159,8 +159,8 @@ def unknown() -> set[Feature]:
     return {SymbolType.UNKNOWN}
 
 
-def extract(features: set[Feature], *classes: Type[F]) -> set[F]:
-    return {feature for feature in features if any(isinstance(feature, feature_class) for feature_class in classes)}
+def extract(features: set[Feature], *kinds: Type[F]) -> set[F]:
+    return {feature for feature in features if any(isinstance(feature, feature_kind) for feature_kind in kinds)}
 
 
 def combine_affricate(left: set[Feature], right: set[Feature]) -> Optional[set[Feature]]:

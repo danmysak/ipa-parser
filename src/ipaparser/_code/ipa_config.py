@@ -2,9 +2,9 @@ from dataclasses import dataclass
 from typing import Any, Iterable, Optional, Union
 import unicodedata
 
-from .decomposer import decompose
 from .definitions import BracketStrategy
 from .exceptions import BracketStrategyError, CombinedLengthError, CombinedSoundError
+from .strings import decompose
 
 __all__ = [
     'IPAConfig',

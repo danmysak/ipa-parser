@@ -2,6 +2,8 @@ from __future__ import annotations
 from operator import attrgetter
 from typing import Optional, overload, Type, TypeVar, Union
 
+from .exceptions import FeatureKindError
+from .feature_finder import find_feature_kind
 from .features import Feature
 from .ipa_config import IPAConfig
 from .parser import parse
@@ -14,6 +16,8 @@ __all__ = [
 ]
 
 F = TypeVar('F', bound=Feature)
+
+RelaxedFeatureKind = Union[Type[Feature], str]
 
 
 class IPASymbol:
@@ -73,22 +77,31 @@ class IPASymbol:
     def features(self, kinds: Union[set[Type[Feature]], frozenset[Type[Feature]]]) -> frozenset[Feature]:
         ...
 
-    def features(self, kinds: Optional[Union[Type[Feature],
-                                             set[Type[Feature]],
-                                             frozenset[Type[Feature]]]] = None) -> frozenset[Feature]:
+    def features(self, kinds: Optional[Union[RelaxedFeatureKind,
+                                             set[RelaxedFeatureKind],
+                                             frozenset[RelaxedFeatureKind]]] = None) -> frozenset[Feature]:
         """Retrieves features of the symbol.
 
         :param kinds: If provided, only the given kind(s) of features are retrieved. For example,
                       s.features(Manner) or s.features({Manner}) will return a set of manners of articulation;
                       s.features({Manner, Place}) will return a combined set of manner(s) and place(s), etc.
+                      Strings may be used ('PlaceCategory' or 'place category') instead of the classes with no typing
+                      support.
         :return: A (frozen)set of the features.
+        :raises:
+            FeatureKindError: The value(s) provided are not valid feature kinds.
         """
         if kinds is None:
             return self._features
-        kind_index = kinds if isinstance(kinds, (set, frozenset)) else {kinds}
-        for kind in kind_index:
-            if not isinstance(kind, type) or not issubclass(kind, Feature):
-                raise ValueError(f'Invalid feature kind: {repr(kind)}')
+
+        def normalize_kind(kind: RelaxedFeatureKind) -> Type[Feature]:
+            if isinstance(kind, type) and issubclass(kind, Feature):
+                return kind
+            if isinstance(kind, str) and (found_kind := find_feature_kind(kind)):
+                return found_kind
+            raise FeatureKindError(kind)
+
+        kind_index = set(map(normalize_kind, kinds if isinstance(kinds, (set, frozenset)) else {kinds}))
         return frozenset(feature for feature in self._features if any(isinstance(feature, kind) for kind in kind_index))
 
     def _set_data(self, data: SymbolData, components: Optional[list[SymbolData]]) -> None:

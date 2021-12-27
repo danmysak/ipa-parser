@@ -8,6 +8,7 @@ __all__ = [
 
 
 class Feature(str, Enum):
+    """The base class for all features; compatible with strings."""
     pass
 
 

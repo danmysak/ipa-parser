@@ -4,10 +4,10 @@ from pathlib import Path
 import unicodedata
 
 from .cacher import with_cache
-from .decomposer import is_decomposed
 from .definitions import TranscriptionType
 from .feature_finder import find_feature
 from .features import Feature
+from .strings import is_decomposed
 
 __all__ = [
     'Bracket',
@@ -123,6 +123,13 @@ def read(filename: str) -> TabularData:
     return data
 
 
+def get_feature(value: str) -> Feature:
+    feature = find_feature(value)
+    if feature is None:
+        raise DataError(f'Unknown feature: "{value}"')
+    return feature
+
+
 def parse_letter_data(data: TabularData) -> LetterData:
     row_count = len(data)
     if row_count == 0:
@@ -134,7 +141,7 @@ def parse_letter_data(data: TabularData) -> LetterData:
         raise DataError(f'Letter data must be a rectangular grid')
 
     def to_features(values: list[str]) -> set[Feature]:
-        return set(map(find_feature, values))
+        return set(map(get_feature, values))
 
     column_sets = [to_features(column) for column in data[0]]
     row_sets = [to_features(row[0]) for row in data]
@@ -158,7 +165,7 @@ def parse_symbol_data(data: TabularData) -> SymbolData:
         symbols, features = row
         if len(features) != 1:
             raise DataError(f'Expected exactly one feature, got "{VALUE_DELIMITER.join(features)}"')
-        feature = find_feature(features[0])
+        feature = get_feature(features[0])
         for symbol in symbols:
             if not symbol:
                 raise DataError(f'No empty symbols allowed')
@@ -189,7 +196,7 @@ def parse_combining(definition: str) -> Combining:
 
 def parse_transformation(definition: str) -> Transformation:
     return Transformation(
-        feature=find_feature(definition.removeprefix(NEGATIVE_PREFIX)),
+        feature=get_feature(definition.removeprefix(NEGATIVE_PREFIX)),
         positive=not definition.startswith(NEGATIVE_PREFIX),
     )
 
@@ -202,7 +209,7 @@ def parse_combining_data(data: TabularData) -> CombiningData:
         characters, requirements, transformations = row
         if len(requirements) != 1:
             raise DataError(f'Expected exactly one required feature, got "{VALUE_DELIMITER.join(requirements)}"')
-        required_feature = find_feature(requirements[0])
+        required_feature = get_feature(requirements[0])
         to_append = [(required_feature, parse_transformation(transformation)) for transformation in transformations]
         for definition in characters:
             combining = parse_combining(definition)
