@@ -7,9 +7,9 @@ from .decomposer import decompose
 from .definitions import BracketStrategy
 from .features import Feature
 from .ipa_config import IPAConfig
-from .ipa_data import IPAData
 from .matcher import Match
 from .phonetics import apply_combining, basic_symbol_to_features, combine_features, get_basic_matcher, unknown
+from .symbol_data import SymbolData
 
 __all__ = [
     'parse',
@@ -20,8 +20,8 @@ __all__ = [
 
 @dataclass(frozen=True)
 class ParsedSymbol:
-    data: IPAData
-    components: Optional[list[IPAData]]
+    data: SymbolData
+    components: Optional[list[SymbolData]]
     is_last: bool
 
 
@@ -216,7 +216,7 @@ def parse_normalized(text: str) -> Iterator[ParsedSymbol]:
     def dump_hanging(*, is_last: bool) -> Iterator[ParsedSymbol]:
         if hanging:
             yield ParsedSymbol(
-                data=IPAData(string=''.join(hanging), features=unknown()),
+                data=SymbolData(string=''.join(hanging), features=unknown()),
                 components=None,
                 is_last=is_last,
             )
@@ -245,8 +245,8 @@ def parse_normalized(text: str) -> Iterator[ParsedSymbol]:
                 features = new_features
                 following_position += 1
             yield ParsedSymbol(
-                data=IPAData(string=text[position:following_position], features=features),
-                components=[IPAData(string=text[chunk.start:chunk.end], features=component)
+                data=SymbolData(string=text[position:following_position], features=features),
+                components=[SymbolData(string=text[chunk.start:chunk.end], features=component)
                             for chunk, component in zip(chunks, components)] if components is not None else None,
                 is_last=following_position == len(text),
             )

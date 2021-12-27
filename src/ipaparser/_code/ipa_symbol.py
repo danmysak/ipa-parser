@@ -4,12 +4,13 @@ from typing import Optional
 
 from .features import Feature
 from .ipa_config import IPAConfig
-from .ipa_data import IPAData
 from .parser import parse
 from .phonetics import unknown
+from .symbol_data import SymbolData
 
 __all__ = [
     'IPASymbol',
+    'symbol_from_data',
 ]
 
 
@@ -55,25 +56,25 @@ class IPASymbol:
         if symbol and symbol.is_last:
             self._set_data(symbol.data, symbol.components)
         else:
-            self._set_data(IPAData(
+            self._set_data(SymbolData(
                 string=data.normalized,
                 features=unknown(),
             ), None)
 
-    @staticmethod
-    def from_data(data: IPAData, components: Optional[list[IPAData]] = None) -> IPASymbol:
-        """Initialize a symbol directly with the provided data.
+    def _set_data(self, data: SymbolData, components: Optional[list[SymbolData]]) -> None:
+        self._string = data.string
+        self._features = frozenset(data.features)
+        self._components = (tuple(IPASymbol._from_data(component, None) for component in components)
+                            if components is not None else None)
 
-        :param data: Spelling and features of the symbol.
-        :param components: Spellings and features of the components, or None if there are none.
-        :return: The symbol.
-        """
+    @staticmethod
+    def _from_data(data: SymbolData, components: Optional[list[SymbolData]]) -> IPASymbol:
         symbol = IPASymbol.__new__(IPASymbol)
         symbol._set_data(data, components)
         return symbol
 
-    def _set_data(self, data: IPAData, components: Optional[list[IPAData]]) -> None:
-        self._string = data.string
-        self._features = frozenset(data.features)
-        self._components = (tuple(IPASymbol.from_data(component) for component in components)
-                            if components is not None else None)
+
+symbol_from_data = (
+    # So that package-level privacy of _from_data is maintained
+    IPASymbol._from_data  # noqa
+)

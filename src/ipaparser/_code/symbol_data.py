@@ -1,13 +1,14 @@
 from dataclasses import dataclass
+from typing import Iterable
 
 from .features import Feature
 
 __all__ = [
-    'IPAData',
+    'SymbolData',
 ]
 
 
 @dataclass(frozen=True)
-class IPAData:
+class SymbolData:
     string: str
-    features: set[Feature]
+    features: Iterable[Feature]
