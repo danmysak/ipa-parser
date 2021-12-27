@@ -38,6 +38,8 @@ def process_combined(combined: Optional[Iterable[tuple[str, ...]]]) -> tuple[tup
 
 @dataclass(frozen=True, init=False)
 class IPAConfig:
+    """Parameter holder for how IPA transcriptions and symbols are parsed."""
+
     substitutions: bool
     brackets: BracketStrategy
     combined: tuple[tuple[str, ...]]

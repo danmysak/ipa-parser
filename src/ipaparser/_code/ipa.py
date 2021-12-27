@@ -37,6 +37,8 @@ def parse_enclosing(string: str) -> Optional[EnclosingData]:
 
 
 class IPA:
+    """Transcription parser."""
+
     _type: TranscriptionType
     type: TranscriptionType = property(attrgetter('_type'))
 

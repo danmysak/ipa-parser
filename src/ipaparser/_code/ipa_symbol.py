@@ -21,6 +21,8 @@ RelaxedFeatureKind = Union[Type[Feature], str]
 
 
 class IPASymbol:
+    """Parser and feature retriever for standalone symbols/sounds."""
+
     _string: str
     _features: frozenset[Feature]
 
