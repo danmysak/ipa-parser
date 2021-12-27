@@ -160,7 +160,7 @@ def unknown() -> set[Feature]:
 
 
 def extract(features: set[Feature], *kinds: Type[F]) -> set[F]:
-    return {feature for feature in features if any(isinstance(feature, feature_kind) for feature_kind in kinds)}
+    return {feature for feature in features if any(isinstance(feature, kind) for kind in kinds)}
 
 
 def combine_affricate(left: set[Feature], right: set[Feature]) -> Optional[set[Feature]]:
