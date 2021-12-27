@@ -165,7 +165,7 @@ def extract(features: set[Feature], *kinds: Type[F]) -> set[F]:
 
 def combine_affricate(left: set[Feature], right: set[Feature]) -> Optional[set[Feature]]:
     if (extract(left, SoundSubtype, Manner) == {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}
-            and extract(right, SoundSubtype, Manner) == {SoundSubtype.SIMPLE_CONSONANT, Manner.FRICATIVE}
+            and Manner.FRICATIVE in right
             and left - {Manner.STOP} == right - {Manner.FRICATIVE, Manner.SIBILANT, Manner.LATERAL}):
         return ((left | right | {SoundSubtype.AFFRICATE_CONSONANT, Manner.AFFRICATE})
                 - {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP, Manner.FRICATIVE})
