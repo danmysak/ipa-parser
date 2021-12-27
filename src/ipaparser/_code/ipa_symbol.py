@@ -76,9 +76,19 @@ class IPASymbol:
     def features(self, kinds: Optional[Union[Type[Feature],
                                              set[Type[Feature]],
                                              frozenset[Type[Feature]]]] = None) -> frozenset[Feature]:
+        """Retrieves features of the symbol.
+
+        :param kinds: If provided, only the given kind(s) of features are retrieved. For example,
+                      s.features(Manner) or s.features({Manner}) will return a set of manners of articulation;
+                      s.features({Manner, Place}) will return a combined set of manner(s) and place(s), etc.
+        :return: A (frozen)set of the features.
+        """
         if kinds is None:
             return self._features
         kind_index = kinds if isinstance(kinds, (set, frozenset)) else {kinds}
+        for kind in kind_index:
+            if not isinstance(kind, type) or not issubclass(kind, Feature):
+                raise ValueError(f'Invalid feature kind: {repr(kind)}')
         return frozenset(feature for feature in self._features if any(isinstance(feature, kind) for kind in kind_index))
 
     def _set_data(self, data: SymbolData, components: Optional[list[SymbolData]]) -> None:
