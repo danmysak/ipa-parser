@@ -1,6 +1,6 @@
 from __future__ import annotations
 from operator import attrgetter
-from typing import Optional
+from typing import Iterable, Optional, overload, Type, TypeVar, Union
 
 from .features import Feature
 from .ipa_config import IPAConfig
@@ -13,12 +13,12 @@ __all__ = [
     'symbol_from_data',
 ]
 
+F = TypeVar('F', bound=Feature)
+
 
 class IPASymbol:
     _string: str
-
     _features: frozenset[Feature]
-    features: frozenset[Feature] = property(attrgetter('_features'))
 
     _components: Optional[tuple[IPASymbol, ...]]
     components: Optional[tuple[IPASymbol, ...]] = property(attrgetter('_components'))
@@ -60,6 +60,27 @@ class IPASymbol:
                 string=data.normalized,
                 features=unknown(),
             ), None)
+
+    @overload
+    def features(self) -> frozenset[Feature]:
+        ...
+
+    @overload
+    def features(self, kind: Type[F]) -> frozenset[F]:
+        ...
+
+    @overload
+    def features(self, kinds: set[Type[Feature]]) -> frozenset[Feature]:
+        ...
+
+    def features(self, kinds: Optional[Union[Type[Feature], Iterable[Type[Feature]]]] = None) -> frozenset[Feature]:
+        if kinds is None:
+            return self._features
+        kind_list: list[Type[Feature]] = ([kinds]
+                                          if isinstance(kinds, type) and issubclass(kinds, Feature)
+                                          else list(kinds))  # noqa
+        return frozenset(feature for feature in self._features
+                         if any(isinstance(feature, kind) for kind in kind_list))
 
     def _set_data(self, data: SymbolData, components: Optional[list[SymbolData]]) -> None:
         self._string = data.string

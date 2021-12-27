@@ -35,10 +35,10 @@ __all__ = [
 FeatureExtender = Callable[[set[Feature]], set[Feature]]
 SymbolWithFeatures = tuple[str, set[Feature]]
 
-T = TypeVar('T', bound=Feature)
+F = TypeVar('F', bound=Feature)
 
 
-def get_extender(feature_class: Type[T], extender: Callable[[T], set[Feature]]) -> FeatureExtender:
+def get_extender(feature_class: Type[F], extender: Callable[[F], set[Feature]]) -> FeatureExtender:
     return lambda features: features.union(*(extender(feature) for feature in features
                                              if isinstance(feature, feature_class)))
 
@@ -159,7 +159,7 @@ def unknown() -> set[Feature]:
     return {SymbolType.UNKNOWN}
 
 
-def extract(features: set[Feature], *classes: Type[T]) -> set[T]:
+def extract(features: set[Feature], *classes: Type[F]) -> set[F]:
     return {feature for feature in features if any(isinstance(feature, feature_class) for feature_class in classes)}
 
 
