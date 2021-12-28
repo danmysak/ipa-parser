@@ -86,7 +86,7 @@ class IPASymbol:
     def features(self, kinds: Optional[Union[RelaxedFeatureKind,
                                              set[RelaxedFeatureKind],
                                              frozenset[RelaxedFeatureKind]]] = None) -> frozenset[Feature]:
-        """Retrieves features of the symbol.
+        """Retrieve features of the symbol.
 
         :param kinds: If provided, only the given kind(s) of features are retrieved. For example,
                       s.features(Manner) or s.features({Manner}) will return a set of manners of articulation;
