@@ -15,7 +15,6 @@ class Feature(str, Enum):
 
 FeatureSet = frozenset[Feature]
 
-
 M = TypeVar('M', bound=dict[Feature, Any])
 
 

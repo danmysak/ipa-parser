@@ -152,7 +152,7 @@ get_basic_matcher = with_cache(build_basic_matcher)
 
 
 def basic_symbol_to_features(symbol: str) -> Optional[FeatureSet]:
-    return features[symbol] if symbol in (features := get_basic_features()) else None
+    return get_basic_features().get(symbol, None)
 
 
 def unknown() -> FeatureSet:
