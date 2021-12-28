@@ -3,7 +3,7 @@ from .articulation import Articulation
 from .aspiration import Aspiration
 from .backness import Backness, BacknessCategory
 from .breaks import BreakType
-from .feature import Feature
+from .feature import Feature, FeatureSet
 from .height import Height, HeightCategory
 from .intonation import Intonation
 from .length import Length
@@ -29,6 +29,7 @@ __all__ = [
     'BacknessCategory',
     'BreakType',
     'Feature',
+    'FeatureSet',
     'Height',
     'HeightCategory',
     'Intonation',

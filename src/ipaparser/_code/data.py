@@ -6,7 +6,7 @@ import unicodedata
 from .cacher import with_cache
 from .definitions import TranscriptionType
 from .feature_finder import find_feature
-from .features import Feature
+from .features import Feature, FeatureSet
 from .strings import is_decomposed
 
 __all__ = [
@@ -71,13 +71,13 @@ class Transformation:
     feature: Feature
     positive: bool
 
-    def apply(self, features: set[Feature]) -> set[Feature]:
+    def apply(self, features: FeatureSet) -> FeatureSet:
         return features | {self.feature} if self.positive else features - {self.feature}
 
 
 Letter = str  # guaranteed to be non-empty
 Symbol = str  # guaranteed to be non-empty
-LetterData = dict[Letter, set[Feature]]
+LetterData = dict[Letter, FeatureSet]
 SymbolData = dict[Symbol, Feature]
 CombiningData = dict[Combining, list[tuple[Feature, Transformation]]]
 Tie = str
@@ -140,8 +140,8 @@ def parse_letter_data(data: TabularData) -> LetterData:
     if any(len(row) != column_count for row in data):
         raise DataError(f'Letter data must be a rectangular grid')
 
-    def to_features(values: list[str]) -> set[Feature]:
-        return set(map(get_feature, values))
+    def to_features(values: list[str]) -> FeatureSet:
+        return frozenset(map(get_feature, values))
 
     column_sets = [to_features(column) for column in data[0]]
     row_sets = [to_features(row[0]) for row in data]

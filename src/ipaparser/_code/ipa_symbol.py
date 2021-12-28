@@ -3,7 +3,7 @@ from typing import Optional, overload, Type, TypeVar, Union
 
 from .exceptions import FeatureKindError
 from .feature_finder import find_feature_kind
-from .features import Feature
+from .features import Feature, FeatureSet
 from .ipa_config import IPAConfig
 from .parser import parse
 from .phonetics import unknown
@@ -23,7 +23,7 @@ class IPASymbol:
     """Parser and feature retriever for standalone symbols/sounds."""
 
     _string: str
-    _features: frozenset[Feature]
+    _features: FeatureSet
 
     _components: Optional[tuple[IPASymbol, ...]]
 
@@ -72,7 +72,7 @@ class IPASymbol:
             ))
 
     @overload
-    def features(self) -> frozenset[Feature]:
+    def features(self) -> FeatureSet:
         ...
 
     @overload
@@ -80,12 +80,12 @@ class IPASymbol:
         ...
 
     @overload
-    def features(self, kinds: Union[set[Type[Feature]], frozenset[Type[Feature]]]) -> frozenset[Feature]:
+    def features(self, kinds: Union[set[Type[Feature]], frozenset[Type[Feature]]]) -> FeatureSet:
         ...
 
     def features(self, kinds: Optional[Union[RelaxedFeatureKind,
                                              set[RelaxedFeatureKind],
-                                             frozenset[RelaxedFeatureKind]]] = None) -> frozenset[Feature]:
+                                             frozenset[RelaxedFeatureKind]]] = None) -> FeatureSet:
         """Retrieve features of the symbol.
 
         :param kinds: If provided, only the given kind(s) of features are retrieved. For example,
@@ -112,7 +112,7 @@ class IPASymbol:
 
     def _set_raw(self, data: RawSymbol) -> None:
         self._string = data.string
-        self._features = frozenset(data.features)
+        self._features = data.features
         self._components = (tuple(IPASymbol._from_raw(component) for component in data.components)
                             if data.components is not None else None)
 

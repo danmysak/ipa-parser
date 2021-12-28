@@ -7,6 +7,7 @@ from .features import (
     Airflow,
     Backness,
     Feature,
+    FeatureSet,
     Height,
     Intonation,
     Manner,
@@ -32,8 +33,8 @@ __all__ = [
     'unknown',
 ]
 
-FeatureExtender = Callable[[set[Feature]], set[Feature]]
-SymbolWithFeatures = tuple[str, set[Feature]]
+FeatureExtender = Callable[[FeatureSet], FeatureSet]
+SymbolWithFeatures = tuple[str, FeatureSet]
 
 F = TypeVar('F', bound=Feature)
 
@@ -56,18 +57,17 @@ extend_tone_number = get_extender(ToneNumber, lambda _: {ToneType.TONE_NUMBER, S
 extend_tone_step = get_extender(ToneStep, lambda _: {ToneType.TONE_STEP, SuprasegmentalType.TONE})
 
 
-def extend(features: set[Feature], extenders: list[FeatureExtender]) -> set[Feature]:
-    features = features.copy()
+def extend(features: FeatureSet, extenders: list[FeatureExtender]) -> FeatureSet:
     for extender in extenders:
         features = extender(features)
     return features
 
 
-def apply_combining_data(data: CombiningData, combining: Combining, features: set[Feature]) -> Optional[set[Feature]]:
+def apply_combining_data(data: CombiningData, combining: Combining, features: FeatureSet) -> Optional[FeatureSet]:
     transformations = data.get(combining, None)
     if transformations is None:
         return None
-    result = features.copy()
+    result = features
     fit = False
     for feature, transformation in transformations:
         if feature in features:
@@ -78,7 +78,7 @@ def apply_combining_data(data: CombiningData, combining: Combining, features: se
     return result if fit else None
 
 
-def apply_combining(combining: Combining, features: set[Feature]) -> Optional[set[Feature]]:
+def apply_combining(combining: Combining, features: FeatureSet) -> Optional[FeatureSet]:
     return apply_combining_data(get_data().combining_recursive, combining, features)
 
 
@@ -101,12 +101,12 @@ def collect_vowel_features(vowels: LetterData) -> Iterator[SymbolWithFeatures]:
 
 def collect_break_features(breaks: SymbolData) -> Iterator[SymbolWithFeatures]:
     for symbol, feature in breaks.items():
-        yield symbol, {feature, SymbolType.BREAK}
+        yield symbol, frozenset({feature, SymbolType.BREAK})
 
 
 def collect_suprasegmental_features(suprasegmentals: SymbolData) -> Iterator[SymbolWithFeatures]:
     for symbol, feature in suprasegmentals.items():
-        yield symbol, extend({feature, SymbolType.SUPRASEGMENTAL}, [
+        yield symbol, extend(frozenset({feature, SymbolType.SUPRASEGMENTAL}), [
             extend_airflow,
             extend_intonation,
             extend_stress_subtype,
@@ -124,7 +124,7 @@ def collect_basic_combined_features(combining_basic: CombiningData,
                 yield combining.apply(symbol), new_features
 
 
-def collect_basic_features() -> dict[str, set[Feature]]:
+def collect_basic_features() -> dict[str, FeatureSet]:
     data = get_data()
     non_combined = list(chain(
         collect_consonant_features(data.consonants),
@@ -133,7 +133,7 @@ def collect_basic_features() -> dict[str, set[Feature]]:
         collect_suprasegmental_features(data.suprasegmentals),
     ))
     combined = list(collect_basic_combined_features(data.combining_basic, non_combined))
-    feature_index: dict[str, set[Feature]] = {}
+    feature_index: dict[str, FeatureSet] = {}
     for symbol, features in non_combined + combined:
         if symbol in feature_index:
             raise DataError(f'Symbol "{symbol}" can be interpreted in multiple ways')
@@ -151,19 +151,19 @@ def build_basic_matcher() -> Matcher:
 get_basic_matcher = with_cache(build_basic_matcher)
 
 
-def basic_symbol_to_features(symbol: str) -> Optional[set[Feature]]:
-    return features[symbol].copy() if symbol in (features := get_basic_features()) else None
+def basic_symbol_to_features(symbol: str) -> Optional[FeatureSet]:
+    return features[symbol] if symbol in (features := get_basic_features()) else None
 
 
-def unknown() -> set[Feature]:
-    return {SymbolType.UNKNOWN}
+def unknown() -> FeatureSet:
+    return frozenset({SymbolType.UNKNOWN})
 
 
-def extract(features: set[Feature], *kinds: Type[F]) -> set[F]:
-    return {feature for feature in features if any(isinstance(feature, kind) for kind in kinds)}
+def extract(features: FeatureSet, *kinds: Type[F]) -> frozenset[F]:
+    return frozenset(feature for feature in features if any(isinstance(feature, kind) for kind in kinds))
 
 
-def combine_affricate(left: set[Feature], right: set[Feature]) -> Optional[set[Feature]]:
+def combine_affricate(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
     if (extract(left, SoundSubtype, Manner) == {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}
             and Manner.FRICATIVE in right
             and left - {Manner.STOP} == right - {Manner.FRICATIVE, Manner.SIBILANT, Manner.LATERAL}):
@@ -173,38 +173,38 @@ def combine_affricate(left: set[Feature], right: set[Feature]) -> Optional[set[F
         return None
 
 
-def combine_doubly_articulated(left: set[Feature], right: set[Feature]) -> Optional[set[Feature]]:
-    def remove_place(features: set[Feature]) -> set[Feature]:
+def combine_doubly_articulated(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
+    def remove_place(features: FeatureSet) -> FeatureSet:
         return features - extend_place(extract(features, Place))
 
-    if (extract(left, SoundSubtype) == {SoundSubtype.SIMPLE_CONSONANT} == extract(right, SoundSubtype)
-            and extract(left, Place) != extract(right, Place)
-            and remove_place(left) == remove_place(right)):
+    if (extract(left, SoundSubtype) == {SoundSubtype.SIMPLE_CONSONANT}
+            and remove_place(left) == remove_place(right)
+            and extract(left, Place) != extract(right, Place)):
         return ((left | right | {SoundSubtype.DOUBLY_ARTICULATED_CONSONANT})
                 - {SoundSubtype.SIMPLE_CONSONANT})
     else:
         return None
 
 
-def combine_polyphthong(subtype: SoundSubtype, *feature_sets: set[Feature]) -> Optional[set[Feature]]:
+def combine_polyphthong(subtype: SoundSubtype, *feature_sets: FeatureSet) -> Optional[FeatureSet]:
     weak_syllabicity = {Syllabicity.NONSYLLABIC, Syllabicity.ANAPTYCTIC}
     if (all(extract(features, SoundSubtype) == {SoundSubtype.SIMPLE_VOWEL} for features in feature_sets)
             and any(extract(features, Syllabicity).isdisjoint(weak_syllabicity) for features in feature_sets)):
-        return ((set().union(*feature_sets) | {subtype})
+        return ((frozenset().union(*feature_sets) | {subtype})
                 - {SoundSubtype.SIMPLE_VOWEL} - weak_syllabicity)
     else:
         return None
 
 
-def combine_diphthong(left: set[Feature], right: set[Feature]) -> Optional[set[Feature]]:
+def combine_diphthong(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
     return combine_polyphthong(SoundSubtype.DIPHTHONG_VOWEL, left, right)
 
 
-def combine_triphthong(left: set[Feature], middle: set[Feature], right: set[Feature]) -> Optional[set[Feature]]:
+def combine_triphthong(left: FeatureSet, middle: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
     return combine_polyphthong(SoundSubtype.TRIPHTHONG_VOWEL, left, middle, right)
 
 
-def combine_features(feature_sets: list[set[Feature]]) -> Optional[set[Feature]]:
+def combine_features(feature_sets: list[FeatureSet]) -> Optional[FeatureSet]:
     if len(feature_sets) <= 1:
         raise ValueError(f'Feature sets to combine should contain at least two sets (got {len(feature_sets)})')
     return next(

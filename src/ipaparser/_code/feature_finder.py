@@ -1,4 +1,4 @@
-from typing import Optional, Type, TypeVar
+from typing import Any, Optional, Type, TypeVar
 
 from . import features
 from .features import Feature
@@ -20,12 +20,16 @@ def append_unique(mapping: dict[str, T], key: str, value: T) -> None:
     mapping[key] = value
 
 
+def is_feature_kind(value: Any) -> bool:
+    return isinstance(value, type) and issubclass(value, Feature) and value != Feature
+
+
 def build_maps() -> tuple[FeatureMap, KindMap]:
     feature_map: FeatureMap = {}
     kind_map: KindMap = {}
 
     for name in features.__all__:
-        if (kind := getattr(features, name)) != Feature:
+        if is_feature_kind(kind := getattr(features, name)):
             for option in kind:
                 append_unique(feature_map, option.value, option)
             append_unique(kind_map, name, kind)
