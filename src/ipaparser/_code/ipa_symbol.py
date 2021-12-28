@@ -1,5 +1,4 @@
 from __future__ import annotations
-from operator import attrgetter
 from typing import Optional, overload, Type, TypeVar, Union
 
 from .exceptions import FeatureKindError
@@ -27,22 +26,26 @@ class IPASymbol:
     _features: frozenset[Feature]
 
     _components: Optional[tuple[IPASymbol, ...]]
-    components: Optional[tuple[IPASymbol, ...]] = property(attrgetter('_components'))
+
+    @property
+    def components(self) -> Optional[tuple[IPASymbol, ...]]:
+        """Component symbols of the compound sounds (or None if not a compound sound)."""
+        return self._components
 
     @property
     def left(self) -> Optional[IPASymbol]:
-        """Get the first component of the symbol, if there are any (None otherwise)."""
+        """The first component of the symbol, if there are any (None otherwise)."""
         return self._components[0] if self._components else None
 
     @property
     def middle(self) -> Optional[IPASymbol]:
-        """Get the middle component of the symbol, if the number of components is odd (None otherwise)."""
+        """The middle component of the symbol, if the number of components is odd (None otherwise)."""
         length = len(self._components or [])
         return self._components[(length - 1) // 2] if length % 2 == 1 else None
 
     @property
     def right(self) -> Optional[IPASymbol]:
-        """Get the last component of the symbol, if there are any (None otherwise)."""
+        """The last component of the symbol, if there are any (None otherwise)."""
         return self._components[-1] if self._components else None
 
     def __str__(self) -> str:

@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from operator import attrgetter
 from typing import Optional
 
 from .data import get_data
@@ -40,13 +39,25 @@ class IPA:
     """Transcription parser."""
 
     _type: TranscriptionType
-    type: TranscriptionType = property(attrgetter('_type'))
+
+    @property
+    def type(self) -> TranscriptionType:
+        """Type of the transcription (determined by the enclosing brackets)."""
+        return self._type
 
     _left_bracket: str
-    left_bracket: str = property(attrgetter('_left_bracket'))
+
+    @property
+    def left_bracket(self) -> str:
+        """Opening bracket of the transcription."""
+        return self._left_bracket
 
     _right_bracket: str
-    right_bracket: str = property(attrgetter('_right_bracket'))
+
+    @property
+    def right_bracket(self) -> str:
+        """Closing bracket of the transcription."""
+        return self._right_bracket
 
     _symbols: list[IPASymbol]
 
