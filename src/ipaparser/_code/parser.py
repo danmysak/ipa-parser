@@ -4,12 +4,11 @@ import unicodedata
 
 from .data import Combining, get_data, Position
 from .definitions import BracketStrategy
-from .features import Feature
 from .ipa_config import IPAConfig
 from .matcher import Match
 from .phonetics import apply_combining, basic_symbol_to_features, combine_features, get_basic_matcher, unknown
+from .raw_symbol import RawSymbol
 from .strings import decompose
-from .symbol_data import SymbolData
 
 __all__ = [
     'parse',
@@ -20,8 +19,7 @@ __all__ = [
 
 @dataclass(frozen=True)
 class ParsedSymbol:
-    data: SymbolData
-    components: Optional[list[SymbolData]]
+    data: RawSymbol
     is_last: bool
 
 
@@ -156,8 +154,8 @@ def get_tied_chunks(text: str, start: int) -> Iterator[Chunk]:
                 end=next_position,
             )
             position = next_position
-            assert match.extra_diacritics_by_position
-            if ties.isdisjoint(match.extra_diacritics_by_position[-1]):
+            assert match.extra_diacritics.positions
+            if ties.isdisjoint(match.extra_diacritics.positions[-1]):
                 return
         else:
             yield Chunk(
@@ -168,18 +166,23 @@ def get_tied_chunks(text: str, start: int) -> Iterator[Chunk]:
             return
 
 
-def match_to_features(match: Match, *, ignore_closing_ties: bool) -> Optional[set[Feature]]:
-    features = basic_symbol_to_features(match.string)
+def match_to_symbol(match: Match, *, ignore_closing_ties: bool) -> Optional[RawSymbol]:
+    features = basic_symbol_to_features(match.matched())
     if features is None:
         return None
+    characters: list[str] = []
     applied: set[Combining] = set()
-    for index, position in enumerate(match.extra_diacritics_by_position):
+    for index, (extra_diacritics, original) in enumerate(zip(
+            match.extra_diacritics.positions,
+            match.original.positions,
+    )):
         ignored_diacritics = (
             get_data().ties
-            if ignore_closing_ties and index == len(match.extra_diacritics_by_position) - 1
+            if ignore_closing_ties and index == match.extra_diacritics.length() - 1
             else set()
         )
-        for diacritic in position:
+        characters.extend(character for character in original if character not in ignored_diacritics)
+        for diacritic in extra_diacritics:
             if diacritic in ignored_diacritics:
                 continue
             combining = Combining(
@@ -191,23 +194,31 @@ def match_to_features(match: Match, *, ignore_closing_ties: bool) -> Optional[se
                 if features is None:
                     return None
                 applied.add(combining)
-    return features
+    return RawSymbol(
+        string=''.join(characters),
+        features=features,
+        components=None,
+    )
 
 
-def tied_matches_to_features(matches: list[Match]) -> Optional[tuple[set[Feature], Optional[list[set[Feature]]]]]:
+def tied_matches_to_symbol(matches: list[Match]) -> Optional[RawSymbol]:
     if not matches:
         raise ValueError('Attempt to map empty matches to features')
-    feature_sets: list[set[Feature]] = []
+    symbols: list[RawSymbol] = []
     for index, match in enumerate(matches):
         is_last_match = index == len(matches) - 1
-        features = match_to_features(match, ignore_closing_ties=not is_last_match)
-        if features is None:
+        if symbol := match_to_symbol(match, ignore_closing_ties=not is_last_match):
+            symbols.append(symbol)
+        else:
             return None
-        feature_sets.append(features)
-    if len(feature_sets) > 1:
-        return (combined, feature_sets) if (combined := combine_features(feature_sets)) is not None else None
+    if len(symbols) > 1:
+        return (RawSymbol(
+            string=''.join(match.original.string() for match in matches),
+            features=combined,
+            components=symbols,
+        ) if (combined := combine_features([symbol.features for symbol in symbols])) is not None else None)
     else:
-        return feature_sets[0], None
+        return symbols[0]
 
 
 def parse_normalized(text: str) -> Iterator[ParsedSymbol]:
@@ -216,8 +227,7 @@ def parse_normalized(text: str) -> Iterator[ParsedSymbol]:
     def dump_hanging(*, is_last: bool) -> Iterator[ParsedSymbol]:
         if hanging:
             yield ParsedSymbol(
-                data=SymbolData(string=''.join(hanging), features=unknown()),
-                components=None,
+                data=RawSymbol(string=''.join(hanging), features=unknown(), components=None),
                 is_last=is_last,
             )
             hanging.clear()
@@ -226,8 +236,8 @@ def parse_normalized(text: str) -> Iterator[ParsedSymbol]:
     while position < len(text):
         chunks = list(get_tied_chunks(text, position))
         following_position = chunks[-1].end
-        if all(matches := [chunk.match for chunk in chunks]) and (feature_sets := tied_matches_to_features(matches)):
-            features, components = feature_sets
+        if all(matches := [chunk.match for chunk in chunks]) and (symbol := tied_matches_to_symbol(matches)):
+            features = symbol.features
             while hanging and len(hanging[-1]) == 1 and (new_features := apply_combining(Combining(
                 character=hanging[-1],
                 position=Position.PRECEDING,
@@ -245,9 +255,11 @@ def parse_normalized(text: str) -> Iterator[ParsedSymbol]:
                 features = new_features
                 following_position += 1
             yield ParsedSymbol(
-                data=SymbolData(string=text[position:following_position], features=features),
-                components=[SymbolData(string=text[chunk.start:chunk.end], features=component)
-                            for chunk, component in zip(chunks, components)] if components is not None else None,
+                data=RawSymbol(
+                    string=text[position:following_position],
+                    features=features,
+                    components=symbol.components,
+                ),
                 is_last=following_position == len(text),
             )
         else:

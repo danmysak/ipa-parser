@@ -70,5 +70,4 @@ class IPA:
         self._type = enclosing.type
         self._left_bracket = enclosing.left
         self._right_bracket = enclosing.right
-        self._symbols = [symbol_from_data(symbol.data, symbol.components)
-                         for symbol in parse(enclosing.text, config).symbols]
+        self._symbols = [symbol_from_data(symbol.data) for symbol in parse(enclosing.text, config).symbols]

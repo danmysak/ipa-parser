@@ -8,7 +8,7 @@ from .features import Feature
 from .ipa_config import IPAConfig
 from .parser import parse
 from .phonetics import unknown
-from .symbol_data import SymbolData
+from .raw_symbol import RawSymbol
 
 __all__ = [
     'IPASymbol',
@@ -60,12 +60,13 @@ class IPASymbol:
         data = parse(string, config)
         symbol = next(data.symbols, None)
         if symbol and symbol.is_last:
-            self._set_data(symbol.data, symbol.components)
+            self._set_data(symbol.data)
         else:
-            self._set_data(SymbolData(
+            self._set_data(RawSymbol(
                 string=data.normalized,
                 features=unknown(),
-            ), None)
+                components=None,
+            ))
 
     @overload
     def features(self) -> frozenset[Feature]:
@@ -106,16 +107,16 @@ class IPASymbol:
         kind_index = set(map(normalize_kind, kinds if isinstance(kinds, (set, frozenset)) else {kinds}))
         return frozenset(feature for feature in self._features if any(isinstance(feature, kind) for kind in kind_index))
 
-    def _set_data(self, data: SymbolData, components: Optional[list[SymbolData]]) -> None:
+    def _set_data(self, data: RawSymbol) -> None:
         self._string = data.string
         self._features = frozenset(data.features)
-        self._components = (tuple(IPASymbol._from_data(component, None) for component in components)
-                            if components is not None else None)
+        self._components = (tuple(IPASymbol._from_data(component) for component in data.components)
+                            if data.components is not None else None)
 
     @staticmethod
-    def _from_data(data: SymbolData, components: Optional[list[SymbolData]]) -> IPASymbol:
+    def _from_data(data: RawSymbol) -> IPASymbol:
         symbol = IPASymbol.__new__(IPASymbol)
-        symbol._set_data(data, components)
+        symbol._set_data(data)
         return symbol
 
 
