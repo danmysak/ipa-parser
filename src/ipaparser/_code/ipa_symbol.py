@@ -12,7 +12,7 @@ from .raw_symbol import RawSymbol
 
 __all__ = [
     'IPASymbol',
-    'symbol_from_data',
+    'from_raw',
 ]
 
 F = TypeVar('F', bound=Feature)
@@ -60,9 +60,9 @@ class IPASymbol:
         data = parse(string, config)
         symbol = next(data.symbols, None)
         if symbol and symbol.is_last:
-            self._set_data(symbol.data)
+            self._set_raw(symbol.data)
         else:
-            self._set_data(RawSymbol(
+            self._set_raw(RawSymbol(
                 string=data.normalized,
                 features=unknown(),
                 components=None,
@@ -107,20 +107,20 @@ class IPASymbol:
         kind_index = set(map(normalize_kind, kinds if isinstance(kinds, (set, frozenset)) else {kinds}))
         return frozenset(feature for feature in self._features if any(isinstance(feature, kind) for kind in kind_index))
 
-    def _set_data(self, data: RawSymbol) -> None:
+    def _set_raw(self, data: RawSymbol) -> None:
         self._string = data.string
         self._features = frozenset(data.features)
-        self._components = (tuple(IPASymbol._from_data(component) for component in data.components)
+        self._components = (tuple(IPASymbol._from_raw(component) for component in data.components)
                             if data.components is not None else None)
 
     @staticmethod
-    def _from_data(data: RawSymbol) -> IPASymbol:
+    def _from_raw(data: RawSymbol) -> IPASymbol:
         symbol = IPASymbol.__new__(IPASymbol)
-        symbol._set_data(data)
+        symbol._set_raw(data)
         return symbol
 
 
-symbol_from_data = (
-    # So that package-level privacy of _from_data is maintained
-    IPASymbol._from_data  # noqa
+from_raw = (
+    # So that package-level privacy of _from_raw is maintained
+    IPASymbol._from_raw  # noqa
 )

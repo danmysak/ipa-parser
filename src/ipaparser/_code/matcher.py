@@ -31,7 +31,7 @@ class Positions:
         return len(self.positions)
 
     def total(self) -> int:
-        return len(self.string())
+        return sum(map(len, self.positions))
 
 
 class Match:

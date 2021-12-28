@@ -6,7 +6,7 @@ from .data import get_data
 from .definitions import TranscriptionType
 from .exceptions import EnclosingError
 from .ipa_config import IPAConfig
-from .ipa_symbol import IPASymbol, symbol_from_data
+from .ipa_symbol import IPASymbol, from_raw
 from .parser import parse
 
 __all__ = [
@@ -70,4 +70,4 @@ class IPA:
         self._type = enclosing.type
         self._left_bracket = enclosing.left
         self._right_bracket = enclosing.right
-        self._symbols = [symbol_from_data(symbol.data) for symbol in parse(enclosing.text, config).symbols]
+        self._symbols = [from_raw(symbol.data) for symbol in parse(enclosing.text, config).symbols]
