@@ -11,8 +11,8 @@ from .phonetics import unknown
 from .raw_symbol import RawSymbol
 
 __all__ = [
-    'IPASymbol',
     'from_raw',
+    'IPASymbol',
 ]
 
 F = TypeVar('F', bound=Feature)

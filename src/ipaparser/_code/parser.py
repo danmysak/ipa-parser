@@ -167,7 +167,7 @@ def get_tied_chunks(text: str, start: int) -> Iterator[Chunk]:
 
 
 def match_to_symbol(match: Match, *, ignore_closing_ties: bool) -> Optional[RawSymbol]:
-    features = basic_symbol_to_features(match.matched())
+    features = basic_symbol_to_features(match.match.string())
     if features is None:
         return None
     characters: list[str] = []

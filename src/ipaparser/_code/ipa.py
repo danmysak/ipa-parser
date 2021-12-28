@@ -6,7 +6,7 @@ from .data import get_data
 from .definitions import TranscriptionType
 from .exceptions import EnclosingError
 from .ipa_config import IPAConfig
-from .ipa_symbol import IPASymbol, from_raw
+from .ipa_symbol import from_raw, IPASymbol
 from .parser import parse
 
 __all__ = [

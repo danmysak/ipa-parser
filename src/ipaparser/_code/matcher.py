@@ -53,17 +53,11 @@ class Match:
             self.extra_diacritics = base.extra_diacritics.append(append) if not matched else base.extra_diacritics
             self.original = base.original.append(append)
 
-    def matched(self) -> str:
-        return self.match.string()
-
     def position_count(self) -> int:
         return self.original.length()
 
     def total_length(self) -> int:
         return self.original.total()
-
-    def total_extra_diacritics(self) -> int:
-        return self.extra_diacritics.total()
 
 
 Tree = dict[str, 'Tree']
@@ -127,6 +121,6 @@ class Matcher:
         self._trie = Trie(strings)
 
     def match(self, string: str, starting_at: int) -> Optional[Match]:
-        return (max(matches, key=lambda match: (match.position_count(), -match.total_extra_diacritics()))
+        return (max(matches, key=lambda match: (match.position_count(), -match.extra_diacritics.total()))
                 if (matches := self._trie.match(string, starting_at))
                 else None)
