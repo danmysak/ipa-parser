@@ -6,7 +6,7 @@ from .data import Combining, get_data, Position
 from .definitions import BracketStrategy
 from .ipa_config import IPAConfig
 from .matcher import Match
-from .phonetics import apply_combining, basic_symbol_to_features, combine_features, get_basic_matcher, unknown
+from .phonetics import apply_combining, basic_symbol_to_features, combine_features, get_basic_matcher
 from .raw_symbol import RawSymbol
 from .strings import decompose
 
@@ -227,7 +227,7 @@ def parse_normalized(text: str) -> Iterator[ParsedSymbol]:
     def dump_hanging(*, is_last: bool) -> Iterator[ParsedSymbol]:
         if hanging:
             yield ParsedSymbol(
-                data=RawSymbol(string=''.join(hanging), features=unknown(), components=None),
+                data=RawSymbol(string=''.join(hanging), features=None, components=None),
                 is_last=is_last,
             )
             hanging.clear()

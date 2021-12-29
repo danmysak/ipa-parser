@@ -30,7 +30,6 @@ __all__ = [
     'combine_features',
     'get_basic_features',
     'get_basic_matcher',
-    'unknown',
 ]
 
 FeatureExtender = Callable[[FeatureSet], FeatureSet]
@@ -153,10 +152,6 @@ get_basic_matcher = with_cache(build_basic_matcher)
 
 def basic_symbol_to_features(symbol: str) -> Optional[FeatureSet]:
     return get_basic_features().get(symbol, None)
-
-
-def unknown() -> FeatureSet:
-    return frozenset({SymbolType.UNKNOWN})
 
 
 def extract(features: FeatureSet, *kinds: Type[F]) -> frozenset[F]:

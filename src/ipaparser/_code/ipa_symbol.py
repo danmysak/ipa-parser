@@ -6,7 +6,6 @@ from .feature_finder import find_feature_kind
 from .features import Feature, FeatureSet
 from .ipa_config import IPAConfig
 from .parser import parse
-from .phonetics import unknown
 from .raw_symbol import RawSymbol
 
 __all__ = [
@@ -23,7 +22,7 @@ class IPASymbol:
     """Parser and feature retriever for standalone symbols/sounds."""
 
     _string: str
-    _features: FeatureSet
+    _features: Optional[FeatureSet]
 
     _components: Optional[tuple[IPASymbol, ...]]
 
@@ -67,12 +66,12 @@ class IPASymbol:
         else:
             self._set_raw(RawSymbol(
                 string=data.normalized,
-                features=unknown(),
+                features=None,
                 components=None,
             ))
 
     @overload
-    def features(self) -> FeatureSet:
+    def features(self) -> Optional[FeatureSet]:
         ...
 
     @overload
@@ -80,12 +79,12 @@ class IPASymbol:
         ...
 
     @overload
-    def features(self, kinds: Union[set[Type[Feature]], frozenset[Type[Feature]]]) -> FeatureSet:
+    def features(self, kinds: Union[set[Type[Feature]], frozenset[Type[Feature]]]) -> Optional[FeatureSet]:
         ...
 
     def features(self, kinds: Optional[Union[RelaxedFeatureKind,
                                              set[RelaxedFeatureKind],
-                                             frozenset[RelaxedFeatureKind]]] = None) -> FeatureSet:
+                                             frozenset[RelaxedFeatureKind]]] = None) -> Optional[FeatureSet]:
         """Retrieve features of the symbol.
 
         :param kinds: If provided, only the given kind(s) of features are retrieved. For example,
@@ -108,6 +107,8 @@ class IPASymbol:
             raise FeatureKindError(kind)
 
         kind_index = set(map(normalize_kind, kinds if isinstance(kinds, (set, frozenset)) else {kinds}))
+        if self._features is None:
+            return None
         return frozenset(feature for feature in self._features if any(isinstance(feature, kind) for kind in kind_index))
 
     def _set_raw(self, data: RawSymbol) -> None:
