@@ -75,7 +75,7 @@ class IPASymbol:
         ...
 
     @overload
-    def features(self, kind: Type[F]) -> frozenset[F]:
+    def features(self, kind: Type[F]) -> Optional[frozenset[F]]:
         ...
 
     @overload
@@ -107,6 +107,7 @@ class IPASymbol:
             raise FeatureKindError(kind)
 
         kind_index = set(map(normalize_kind, kinds if isinstance(kinds, (set, frozenset)) else {kinds}))
+        # After we have verified that the arguments are valid, we can finally check if the symbol is known:
         if self._features is None:
             return None
         return frozenset(feature for feature in self._features if any(isinstance(feature, kind) for kind in kind_index))
