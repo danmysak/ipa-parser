@@ -60,6 +60,7 @@ APPROXIMANTS_VS_NONSYLLABIC_VOWELS: list[list[tuple[set[Feature], set[Feature]]]
     )],
 ]
 
+
 def combine_affricate(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
     if (filter_features(left, {SoundSubtype, Manner}) == {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}
             and Manner.FRICATIVE in right
@@ -86,8 +87,7 @@ def combine_doubly_articulated(left: FeatureSet, right: FeatureSet) -> Optional[
 def combine_polyphthong(subtype: SoundSubtype, *feature_sets: FeatureSet) -> Optional[FeatureSet]:
     weak_syllabicity = {Syllabicity.NONSYLLABIC, Syllabicity.ANAPTYCTIC}
     if (all(filter_features(features, {SoundSubtype}) == {SoundSubtype.SIMPLE_VOWEL} for features in feature_sets)
-            and any(filter_features(features, {Syllabicity}).isdisjoint(weak_syllabicity)
-                    for features in feature_sets)):
+            and any(features.isdisjoint(weak_syllabicity) for features in feature_sets)):
         return ((frozenset().union(*feature_sets) | {subtype})
                 - {SoundSubtype.SIMPLE_VOWEL} - weak_syllabicity)
     else:

@@ -108,14 +108,14 @@ class IPASymbol:
         :param kinds: If provided, only the given kind(s) of features are retrieved. For example,
                       s.features(Manner) or s.features({Manner}) will return a set of manners of articulation;
                       s.features({Manner, Place}) will return a combined set of manner(s) and place(s), etc.
-                      Strings may be used ('PlaceCategory' or 'place category') instead of Feature subclasses with
-                      no typing support.
+                      Strings may be used ('PlaceCategory' or 'place category') instead of Feature subclasses (with
+                      no typing support).
         :param role: If provided, the returned feature set is guaranteed to be consistent with this feature (that is, to
                      contain this feature before being filtered by `kinds`); if the symbol does not have this feature
                      and cannot be reinterpreted to have this feature, None will be returned.
                      Currently, the only reinterpretations supported are nonsyllabic close vowels as palatal/velar
                      approximants and vice versa.
-                     Strings may be used ('consonant') instead of Feature subclass values with no typing support.
+                     Strings may be used ('consonant') instead of Feature subclass values (with no typing support).
         :return: A (frozen)set of the features or None for unknown symbols and symbols with an incompatible `role`.
         :raises:
             FeatureKindError: The value(s) of the `kinds` parameter are not valid feature kinds.
