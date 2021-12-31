@@ -27,7 +27,7 @@ class Place(Feature):
     PHARYNGEAL_EPIGLOTTAL = 'pharyngeal/epiglottal'
     GLOTTAL = 'glottal'
 
-    def to_place_category(self) -> PlaceCategory:
+    def derived(self) -> PlaceCategory:
         return PLACE_TO_CATEGORY[self]
 
 

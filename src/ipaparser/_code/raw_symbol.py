@@ -12,5 +12,5 @@ __all__ = [
 @dataclass(frozen=True)
 class RawSymbol:
     string: str
-    features: Optional[FeatureSet]
-    components: Optional[list[RawSymbol]]
+    features: Optional[FeatureSet] = None
+    components: Optional[list[RawSymbol]] = None

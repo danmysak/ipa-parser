@@ -1,25 +1,19 @@
 from .feature import Feature
+from .suprasegmental import SuprasegmentalType
 
 __all__ = [
     'Tone',
+    'ToneLetter',
     'ToneNumber',
     'ToneStep',
     'ToneType',
 ]
 
 
-class ToneType(Feature):
-    TONE_DESCRIPTION = 'tone description'
-    TONE_NUMBER = 'tone number'
-    TONE_STEP = 'tone step'
-
-
 class Tone(Feature):
     EXTRA_HIGH_TONE = 'extra-high tone'
     HIGH_TONE = 'high tone'
-    HALF_HIGH_TONE = 'half-high tone'
     MID_TONE = 'mid tone'
-    HALF_LOW_TONE = 'half-low tone'
     LOW_TONE = 'low tone'
     EXTRA_LOW_TONE = 'extra-low tone'
 
@@ -33,6 +27,26 @@ class Tone(Feature):
     DIPPING_TONE = 'dipping tone'
 
 
+class ToneType(Feature):
+    TONE_LETTER = 'tone letter'
+    TONE_NUMBER = 'tone number'
+    TONE_STEP = 'tone step'
+
+    def derived(self) -> SuprasegmentalType:
+        return SuprasegmentalType.TONE
+
+
+class ToneLetter(Feature):
+    HIGH_TONE_LETTER = 'high tone letter'
+    HALF_HIGH_TONE_LETTER = 'half-high tone letter'
+    MID_TONE_LETTER = 'mid tone letter'
+    HALF_LOW_TONE_LETTER = 'half-low tone letter'
+    LOW_TONE_LETTER = 'low tone letter'
+
+    def derived(self) -> ToneType:
+        return ToneType.TONE_LETTER
+
+
 class ToneNumber(Feature):
     TONE_0 = 'tone 0'
     TONE_1 = 'tone 1'
@@ -44,7 +58,13 @@ class ToneNumber(Feature):
     TONE_7 = 'tone 7'
     TONE_NUMBER_SEPARATOR = 'tone number separator'
 
+    def derived(self) -> ToneType:
+        return ToneType.TONE_NUMBER
+
 
 class ToneStep(Feature):
     UPSTEP = 'upstep'
     DOWNSTEP = 'downstep'
+
+    def derived(self) -> ToneType:
+        return ToneType.TONE_STEP

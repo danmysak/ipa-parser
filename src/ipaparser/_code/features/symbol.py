@@ -7,5 +7,5 @@ __all__ = [
 
 class SymbolType(Feature):
     SOUND = 'sound'
-    SUPRASEGMENTAL = 'suprasegmental'
     BREAK = 'break'
+    SUPRASEGMENTAL = 'suprasegmental'

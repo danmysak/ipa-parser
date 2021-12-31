@@ -1,4 +1,5 @@
 from .feature import Feature
+from .symbol import SymbolType
 
 __all__ = [
     'SuprasegmentalType',
@@ -10,3 +11,6 @@ class SuprasegmentalType(Feature):
     TONE = 'tone'
     INTONATION = 'intonation'
     AIRFLOW = 'airflow'
+
+    def derived(self) -> SymbolType:
+        return SymbolType.SUPRASEGMENTAL

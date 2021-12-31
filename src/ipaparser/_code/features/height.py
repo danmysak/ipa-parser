@@ -21,7 +21,7 @@ class Height(Feature):
     NEAR_OPEN = 'near-open'
     OPEN = 'open'
 
-    def to_height_category(self) -> HeightCategory:
+    def derived(self) -> HeightCategory:
         return HEIGHT_TO_CATEGORY[self]
 
 

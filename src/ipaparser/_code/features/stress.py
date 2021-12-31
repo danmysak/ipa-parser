@@ -1,4 +1,5 @@
 from .feature import assert_feature_mapping, Feature
+from .suprasegmental import SuprasegmentalType
 
 __all__ = [
     'StressSubtype',
@@ -10,6 +11,9 @@ class StressType(Feature):
     PRIMARY_STRESS = 'primary stress'
     SECONDARY_STRESS = 'secondary stress'
 
+    def derived(self) -> SuprasegmentalType:
+        return SuprasegmentalType.STRESS
+
 
 class StressSubtype(Feature):
     REGULAR_PRIMARY_STRESS = 'regular primary stress'
@@ -17,7 +21,7 @@ class StressSubtype(Feature):
     REGULAR_SECONDARY_STRESS = 'regular secondary stress'
     EXTRA_WEAK_SECONDARY_STRESS = 'extra-weak secondary stress'
 
-    def to_stress_type(self) -> StressType:
+    def derived(self) -> StressType:
         return STRESS_SUBTYPE_TO_TYPE[self]
 
 

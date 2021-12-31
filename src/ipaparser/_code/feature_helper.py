@@ -1,10 +1,12 @@
 from typing import Any, Optional, Type, TypeVar
 
 from . import features
-from .features import Feature
+from .features import Feature, FeatureSet
 from .strings import upper_camel_to_spaces
 
 __all__ = [
+    'extend_features',
+    'filter_features',
     'find_feature',
     'find_feature_kind',
 ]
@@ -47,3 +49,11 @@ def find_feature(value: str) -> Optional[Feature]:
 
 def find_feature_kind(value: str) -> Optional[Type[Feature]]:
     return KIND_MAP.get(value, None)
+
+
+def extend_features(feature_set: FeatureSet) -> FeatureSet:
+    return feature_set.union(*(feature.extend() for feature in feature_set))
+
+
+def filter_features(feature_set: FeatureSet, kinds: set[Type[Feature]]) -> FeatureSet:
+    return frozenset(feature for feature in feature_set if any(isinstance(feature, kind) for kind in kinds))

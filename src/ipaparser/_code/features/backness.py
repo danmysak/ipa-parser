@@ -19,7 +19,7 @@ class Backness(Feature):
     NEAR_BACK = 'near-back'
     BACK = 'back'
 
-    def to_backness_category(self) -> BacknessCategory:
+    def derived(self) -> BacknessCategory:
         return BACKNESS_TO_CATEGORY[self]
 
 

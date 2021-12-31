@@ -6,9 +6,10 @@ from .data import Combining, get_data, Position
 from .definitions import BracketStrategy
 from .ipa_config import IPAConfig
 from .matcher import Match
-from .phonetics import apply_combining, basic_symbol_to_features, combine_features, get_basic_matcher
+from .phonetics import combine_features
 from .raw_symbol import RawSymbol
 from .strings import decompose
+from .transformer import apply_combining, basic_symbol_to_features, get_basic_matcher
 
 __all__ = [
     'parse',
@@ -194,11 +195,7 @@ def match_to_symbol(match: Match, *, ignore_closing_ties: bool) -> Optional[RawS
                 if features is None:
                     return None
                 applied.add(combining)
-    return RawSymbol(
-        string=''.join(characters),
-        features=features,
-        components=None,
-    )
+    return RawSymbol(''.join(characters), features)
 
 
 def tied_matches_to_symbol(matches: list[Match]) -> Optional[RawSymbol]:
@@ -227,7 +224,7 @@ def parse_normalized(text: str) -> Iterator[ParsedSymbol]:
     def dump_hanging(*, is_last: bool) -> Iterator[ParsedSymbol]:
         if hanging:
             yield ParsedSymbol(
-                data=RawSymbol(string=''.join(hanging), features=None, components=None),
+                data=RawSymbol(''.join(hanging)),
                 is_last=is_last,
             )
             hanging.clear()

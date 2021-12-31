@@ -18,7 +18,7 @@ from .stress import StressSubtype, StressType
 from .suprasegmental import SuprasegmentalType
 from .syllabicity import Syllabicity
 from .symbol import SymbolType
-from .tone import Tone, ToneNumber, ToneStep, ToneType
+from .tone import Tone, ToneLetter, ToneNumber, ToneStep, ToneType
 from .voice import Phonation, Voicing
 
 __all__ = [
@@ -52,6 +52,7 @@ __all__ = [
     'Syllabicity',
     'SymbolType',
     'Tone',
+    'ToneLetter',
     'ToneNumber',
     'ToneStep',
     'ToneType',

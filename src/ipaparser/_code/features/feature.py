@@ -1,5 +1,6 @@
+from __future__ import annotations
 from enum import Enum
-from typing import Any, TypeVar
+from typing import Any, final, Optional, TypeVar
 
 __all__ = [
     'assert_feature_mapping',
@@ -10,7 +11,20 @@ __all__ = [
 
 class Feature(str, Enum):
     """The base class for all features; compatible with strings."""
-    pass
+
+    def derived(self) -> Optional[Feature]:
+        """Return the most specific derived feature of the caller, if any."""
+        assert self  # Avoiding "should be a static method" warning
+        return None
+
+    @final
+    def extend(self) -> FeatureSet:
+        """Return the (frozen)set of derived features of the caller."""
+        features: set[Feature] = set()
+        feature = self
+        while feature := feature.derived():
+            features.add(feature)
+        return frozenset(features)
 
 
 FeatureSet = frozenset[Feature]

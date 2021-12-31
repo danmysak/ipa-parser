@@ -5,7 +5,7 @@ import unicodedata
 
 from .cacher import with_cache
 from .definitions import TranscriptionType
-from .feature_finder import find_feature
+from .feature_helper import find_feature
 from .features import Feature, FeatureSet
 from .strings import is_decomposed
 
@@ -143,6 +143,7 @@ def parse_letter_data(data: TabularData) -> LetterData:
     def to_features(values: list[str]) -> FeatureSet:
         return frozenset(map(get_feature, values))
 
+    common_set = to_features(data[0][0])
     column_sets = [to_features(column) for column in data[0]]
     row_sets = [to_features(row[0]) for row in data]
     mapping: LetterData = {}
@@ -153,7 +154,7 @@ def parse_letter_data(data: TabularData) -> LetterData:
                     raise DataError(f'No empty letters allowed')
                 if letter in mapping:
                     raise DataError(f'The letter "{letter}" is encountered in data multiple times')
-                mapping[letter] = row_sets[row_index] | column_sets[column_index]
+                mapping[letter] = common_set | row_sets[row_index] | column_sets[column_index]
     return mapping
 
 

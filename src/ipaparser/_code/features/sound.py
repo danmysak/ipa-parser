@@ -1,4 +1,5 @@
 from .feature import assert_feature_mapping, Feature
+from .symbol import SymbolType
 
 __all__ = [
     'SoundSubtype',
@@ -10,6 +11,9 @@ class SoundType(Feature):
     CONSONANT = 'consonant'
     VOWEL = 'vowel'
 
+    def derived(self) -> SymbolType:
+        return SymbolType.SOUND
+
 
 class SoundSubtype(Feature):
     SIMPLE_CONSONANT = 'simple consonant'
@@ -19,7 +23,7 @@ class SoundSubtype(Feature):
     DIPHTHONG_VOWEL = 'diphthong vowel'
     TRIPHTHONG_VOWEL = 'triphthong vowel'
 
-    def to_sound_type(self) -> SoundType:
+    def derived(self) -> SoundType:
         return SOUND_SUBTYPE_TO_TYPE[self]
 
 
