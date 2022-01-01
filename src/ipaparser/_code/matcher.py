@@ -37,7 +37,7 @@ class Match:
     extra_diacritics: Positions
     original: Positions
 
-    def __init__(self, string: str, builder: Optional[MatchBuilder]) -> None:
+    def __init__(self, string: str, starting_at: int, builder: Optional[MatchBuilder]) -> None:
         match: list[list[str]] = []
         extra_diacritics: list[list[str]] = []
         original: list[list[str]] = []
@@ -47,15 +47,16 @@ class Match:
                 return 0
             is_matched, nested = current
             prefix_length = build(nested)
+            index = starting_at + prefix_length
             if is_matched is None:
                 for updated_list in match, extra_diacritics, original:
                     updated_list.append([])
                 return prefix_length
             else:
                 updated = [original, match if is_matched else extra_diacritics]
-                assert all(updated) and len(string) > prefix_length
+                assert all(updated) and len(string) > index
                 for updated_list in updated:
-                    updated_list[-1].append(string[prefix_length])
+                    updated_list[-1].append(string[index])
                 return prefix_length + 1
 
         build(builder)
@@ -107,7 +108,7 @@ class Trie:
             character = string[position] if not is_last else None
             combining_class = unicodedata.combining(character) if character else None
             if is_last or combining_class == 0:
-                matches.extend(Match(string, match) for branch, match in branches if self._is_leaf(branch))
+                matches.extend(Match(string, starting_at, match) for branch, match in branches if self._is_leaf(branch))
             if is_last:
                 break
             if combining_class == 0 or position == starting_at:
