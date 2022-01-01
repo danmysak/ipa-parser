@@ -61,6 +61,27 @@ APPROXIMANTS_VS_NONSYLLABIC_VOWELS: list[list[tuple[set[Feature], set[Feature]]]
 ]
 
 
+def alternative_type(features: FeatureSet) -> Iterator[FeatureSet]:
+    for pairs in product(*APPROXIMANTS_VS_NONSYLLABIC_VOWELS):
+        approximant, nonsyllabic_vowel = map(extend_features, map(lambda sets: frozenset().union(*sets), zip(*pairs)))
+        if features == approximant:
+            yield nonsyllabic_vowel
+        elif features == nonsyllabic_vowel:
+            yield approximant
+
+
+def alternative_coronal_place(features: FeatureSet) -> Iterator[FeatureSet]:
+    if filter_features(features, {Place}) == {Place.ALVEOLAR}:
+        for place in [Place.DENTAL, Place.POSTALVEOLAR]:
+            yield (features | {place}) - {Place.ALVEOLAR}
+
+
+def interpret(features: FeatureSet) -> Iterator[FeatureSet]:
+    yield features
+    yield from alternative_type(features)
+    yield from alternative_coronal_place(features)
+
+
 def combine_affricate(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
     if (filter_features(left, {SoundSubtype, Manner}) == {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}
             and Manner.FRICATIVE in right
@@ -107,6 +128,7 @@ def combine_features(feature_sets: list[FeatureSet]) -> Optional[FeatureSet]:
         raise ValueError(f'Feature sets to combine should contain at least two sets (got {len(feature_sets)})')
     return next(
         (combined
+         for interpretation in product(*map(interpret, feature_sets))
          for combiner in {
              2: [
                  combine_affricate,
@@ -116,17 +138,7 @@ def combine_features(feature_sets: list[FeatureSet]) -> Optional[FeatureSet]:
              3: [
                  combine_triphthong,
              ],
-         }.get(len(feature_sets), [])
-         if (combined := combiner(*feature_sets)) is not None),
+         }.get(len(interpretation), [])
+         if (combined := combiner(*interpretation)) is not None),
         None,
     )
-
-
-def interpret(features: FeatureSet) -> Iterator[FeatureSet]:
-    yield features
-    for pairs in product(*APPROXIMANTS_VS_NONSYLLABIC_VOWELS):
-        approximant, nonsyllabic_vowel = map(extend_features, map(lambda sets: frozenset().union(*sets), zip(*pairs)))
-        if features == approximant:
-            yield nonsyllabic_vowel
-        elif features == nonsyllabic_vowel:
-            yield approximant
