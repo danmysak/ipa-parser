@@ -42,7 +42,7 @@ def collect_letter_features(letters: LetterData) -> Iterator[RawSymbol]:
 
 def collect_symbol_features(symbols: SymbolData) -> Iterator[RawSymbol]:
     for symbol, feature in symbols.items():
-        yield RawSymbol(symbol, extend_features(frozenset({feature})))
+        yield RawSymbol(symbol, feature.extend())
 
 
 def collect_basic_combined_features(combining_basic: CombiningData,

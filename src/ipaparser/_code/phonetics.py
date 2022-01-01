@@ -70,10 +70,14 @@ def alternative_type(features: FeatureSet) -> Iterator[FeatureSet]:
             yield approximant
 
 
+def remove_place(features: FeatureSet) -> FeatureSet:
+    return features - extend_features(filter_features(features, {Place}))
+
+
 def alternative_coronal_place(features: FeatureSet) -> Iterator[FeatureSet]:
     if filter_features(features, {Place}) == {Place.ALVEOLAR}:
         for place in [Place.DENTAL, Place.POSTALVEOLAR]:
-            yield (features | {place}) - {Place.ALVEOLAR}
+            yield remove_place(features) | place.extend()
 
 
 def interpret(features: FeatureSet) -> Iterator[FeatureSet]:
@@ -93,9 +97,6 @@ def combine_affricate(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSe
 
 
 def combine_doubly_articulated(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
-    def remove_place(features: FeatureSet) -> FeatureSet:
-        return features - extend_features(filter_features(features, {Place}))
-
     if (filter_features(left, {SoundSubtype}) == {SoundSubtype.SIMPLE_CONSONANT}
             and remove_place(left) == remove_place(right)
             and filter_features(left, {Place}) != filter_features(right, {Place})):

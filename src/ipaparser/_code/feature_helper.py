@@ -52,7 +52,7 @@ def find_feature_kind(value: str) -> Optional[Type[Feature]]:
 
 
 def extend_features(feature_set: FeatureSet) -> FeatureSet:
-    return feature_set.union(*(feature.extend() for feature in feature_set))
+    return frozenset().union(*(feature.extend() for feature in feature_set))
 
 
 def filter_features(feature_set: FeatureSet, kinds: set[Type[Feature]]) -> FeatureSet:
