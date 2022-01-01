@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Any, Iterator, Optional, overload, Union
+from typing import Any, Iterator, Optional, overload, SupportsIndex, Union
 
 from .data import get_data
 from .definitions import TranscriptionType
@@ -107,14 +107,14 @@ class IPA:
         return len(self._symbols)
 
     @overload
-    def __getitem__(self, item: int) -> IPASymbol:
+    def __getitem__(self, item: SupportsIndex) -> IPASymbol:
         ...
 
     @overload
     def __getitem__(self, items: slice) -> IPA:
         ...
 
-    def __getitem__(self, items: Union[int, slice]) -> Union[IPASymbol, IPA]:
+    def __getitem__(self, items: Union[SupportsIndex, slice]) -> Union[IPASymbol, IPA]:
         try:
             symbols = self._symbols[items]
         except IndexError:
