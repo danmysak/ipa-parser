@@ -48,9 +48,8 @@ class Match:
             is_matched, nested = current
             prefix_length = build(nested)
             if is_matched is None:
-                match.append([])
-                extra_diacritics.append([])
-                original.append([])
+                for updated_list in match, extra_diacritics, original:
+                    updated_list.append([])
                 return prefix_length
             else:
                 updated = [original, match if is_matched else extra_diacritics]
