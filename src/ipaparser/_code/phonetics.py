@@ -87,12 +87,16 @@ def interpret(features: FeatureSet) -> Iterator[FeatureSet]:
 
 
 def combine_affricate(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
+    def matching_places(left_places: FeatureSet, right_places: FeatureSet) -> bool:
+        return left_places == right_places or (left_places == {Place.ALVEOLAR}
+                                               and frozenset() < right_places <= {Place.RETROFLEX, Place.PALATAL})
+
     if (filter_features(left, {SoundSubtype, Manner}) == {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}
             and Manner.FRICATIVE in right
             and remove_place(left) - {Manner.STOP} == remove_place(right) - {Manner.FRICATIVE,
                                                                              Manner.SIBILANT,
                                                                              Manner.LATERAL}
-            and filter_features(left, {Place}) in [filter_features(right, {Place}), {Place.ALVEOLAR}]):
+            and matching_places(*(filter_features(side, {Place}) for side in (left, right)))):
         return ((left | right | {SoundSubtype.AFFRICATE_CONSONANT, Manner.AFFRICATE})
                 - {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP, Manner.FRICATIVE})
     else:
