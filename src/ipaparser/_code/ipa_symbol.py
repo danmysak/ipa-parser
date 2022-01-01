@@ -3,7 +3,7 @@ from typing import Optional, overload, Type, TypeVar, Union
 
 from .exceptions import FeatureError, FeatureKindError
 from .feature_helper import filter_features, find_feature, find_feature_kind
-from .features import Feature, FeatureSet
+from .features import Feature, FeatureSet, SymbolType
 from .ipa_config import IPAConfig
 from .parser import parse
 from .phonetics import interpret
@@ -134,6 +134,26 @@ class IPASymbol:
             ),
             None
         ) if self._features is not None else None
+
+    def is_known(self) -> bool:
+        """Whether the symbol has a set of associated features."""
+        return self._features is not None
+
+    def has_feature(self, feature: Feature) -> bool:
+        """Whether the symbol is known and has a given feature."""
+        return feature is (self._features or {})
+
+    def is_sound(self) -> bool:
+        """Whether the symbol is a known sound."""
+        return self.has_feature(SymbolType.SOUND)
+
+    def is_break(self) -> bool:
+        """Whether the symbol is a known break."""
+        return self.has_feature(SymbolType.BREAK)
+
+    def is_suprasegmental(self) -> bool:
+        """Whether the symbol is known and suprasegmental."""
+        return self.has_feature(SymbolType.SUPRASEGMENTAL)
 
     def _set_raw(self, data: RawSymbol) -> None:
         self._string = data.string
