@@ -19,7 +19,7 @@ class Feature(str, Enum):
 
     @final
     def extend(self) -> FeatureSet:
-        """Return the (frozen)set of derived features of the caller as well as the caller itself."""
+        """Return a (frozen)set containing the derived features of the caller and the caller itself."""
         feature = self
         features: set[Feature] = {feature}
         while feature := feature.derived():
