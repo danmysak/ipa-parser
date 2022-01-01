@@ -152,7 +152,7 @@ class IPASymbol:
         return self.has_feature(SymbolType.BREAK)
 
     def is_suprasegmental(self) -> bool:
-        """Whether the symbol is known and suprasegmental."""
+        """Whether the symbol is a known suprasegmental."""
         return self.has_feature(SymbolType.SUPRASEGMENTAL)
 
     def _set_raw(self, data: RawSymbol) -> None:
