@@ -268,12 +268,14 @@ def parse_normalized(text: str) -> Iterator[ParsedSymbol]:
 def parse(text: str, config: IPAConfig) -> ParsedData:
     text = decompose(text)
     if config.substitutions:
-        text = perform_substitutions(text)
+        text = perform_substitutions(text)  # first pass
     if config.brackets == BracketStrategy.EXPAND:
         text = expand_brackets(text)
     elif config.brackets == BracketStrategy.STRIP:
         text = strip_brackets(text)
     text = combine(text, config.combined)
+    if config.substitutions:
+        text = perform_substitutions(text)  # second pass
     return ParsedData(
         normalized=text,
         symbols=parse_normalized(text),
