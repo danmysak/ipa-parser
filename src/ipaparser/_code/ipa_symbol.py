@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional, overload, Type, TypeVar, Union
+from typing import Any, Optional, overload, Type, TypeVar, Union
 
 from .exceptions import FeatureError, FeatureKindError
 from .feature_helper import filter_features, find_feature, find_feature_kind
@@ -54,6 +54,15 @@ class IPASymbol:
 
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}({repr(str(self))})'
+
+    def __eq__(self, other: Any) -> bool:
+        return str(self) == str(other) if isinstance(other, (IPASymbol, str)) else NotImplemented
+
+    def __hash__(self) -> int:
+        return hash(str(self))  # str instead of repr is required to be compatible with __eq__
+
+    def __bool__(self) -> bool:
+        return bool(str(self))
 
     def __init__(self, string: str, config: IPAConfig = IPAConfig()) -> None:
         """Parse a single sound or auxiliary IPA symbol.
