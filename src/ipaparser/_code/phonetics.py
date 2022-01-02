@@ -101,7 +101,7 @@ def combine_affricate(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSe
     if (include({SoundSubtype, Manner}, left) == {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}
             and Manner.FRICATIVE in right
             and equivalent(left - {Manner.STOP}, right - {Manner.FRICATIVE, Manner.SIBILANT, Manner.LATERAL},
-                           excluded={Place, Strength})  # t͡ɕ͈ in Korean
+                           excluded={Place, Articulation, Strength})  # t͡s̻ in Basque, t͡ɕ͈ in Korean
             and matching_places(*(include({Place}, side) for side in (left, right)))):
         return ((left | right | {SoundSubtype.AFFRICATE_CONSONANT, Manner.AFFRICATE})
                 - {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP, Manner.FRICATIVE})
