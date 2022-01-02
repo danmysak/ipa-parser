@@ -10,11 +10,9 @@ from .features import (
     Height,
     Manner,
     Place,
-    Release,
     Roundedness,
     SecondaryPlace,
     SoundSubtype,
-    Strength,
     Syllabicity,
     Voicing,
 )
@@ -102,7 +100,7 @@ def combine_affricate(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSe
     if (include({SoundSubtype, Manner}, left) == {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}
             and Manner.FRICATIVE in right
             and equivalent(left - {Manner.STOP}, right - {Manner.FRICATIVE, Manner.SIBILANT, Manner.LATERAL},
-                           excluded={Place, Articulation, Strength})  # t͡s̻ in Basque, t͡ɕ͈ in Korean
+                           {SoundSubtype, Manner, Voicing})
             and matching_places(*(include({Place}, side) for side in (left, right)))):
         return ((left | right | {SoundSubtype.AFFRICATE_CONSONANT, Manner.AFFRICATE})
                 - {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP, Manner.FRICATIVE})
@@ -112,8 +110,8 @@ def combine_affricate(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSe
 
 def combine_doubly_articulated(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
     if (include({SoundSubtype}, left) == {SoundSubtype.SIMPLE_CONSONANT}
-            and equivalent(left, right, excluded={Place, Release})  # k͡p̚ in Vietnamese
-            and not equivalent(left, right, included={Place})):
+            and equivalent(left, right, {SoundSubtype, Manner, Voicing})
+            and not equivalent(left, right, {Place})):
         return ((left | right | {SoundSubtype.DOUBLY_ARTICULATED_CONSONANT})
                 - {SoundSubtype.SIMPLE_CONSONANT})
     else:

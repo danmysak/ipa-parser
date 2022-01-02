@@ -66,8 +66,8 @@ def exclude(kinds: set[Type[Feature]], feature_set: FeatureSet) -> FeatureSet:
     return feature_set - extend(include(kinds, feature_set))
 
 
-def equivalent(a: FeatureSet, b: FeatureSet,
-               *, included: Optional[set[Type[Feature]]] = None, excluded: Optional[set[Type[Feature]]] = None) -> bool:
+def equivalent(a: FeatureSet, b: FeatureSet, included: Optional[set[Type[Feature]]] = None,
+               *, excluded: Optional[set[Type[Feature]]] = None) -> bool:
     for processor, kinds in ((include, included),
                              (exclude, excluded)):
         if kinds is not None:
