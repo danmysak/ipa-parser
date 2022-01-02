@@ -96,7 +96,8 @@ def interpret(features: FeatureSet) -> Iterator[FeatureSet]:
 
 def combine_affricate(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
     def matching_places(left_places: FeatureSet, right_places: FeatureSet) -> bool:
-        return left_places == right_places or (left_places == {Place.ALVEOLAR} and right_places == {Place.PALATAL})
+        return left_places == right_places or (left_places, right_places) in [({Place.ALVEOLAR}, {Place.PALATAL}),
+                                                                              ({Place.BILABIAL}, {Place.LABIODENTAL})]
 
     if (include({SoundSubtype, Manner}, left) == {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}
             and Manner.FRICATIVE in right
