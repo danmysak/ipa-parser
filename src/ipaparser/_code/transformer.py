@@ -3,7 +3,7 @@ from typing import Iterator, Optional
 
 from .cacher import with_cache
 from .data import Combining, CombiningData, DataError, get_data, LetterData, SymbolData
-from .feature_helper import extend_features
+from .feature_helper import extend
 from .features import FeatureSet
 from .matcher import Matcher
 from .raw_symbol import RawSymbol
@@ -37,7 +37,7 @@ def apply_combining(combining: Combining, features: FeatureSet) -> Optional[Feat
 
 def collect_letter_features(letters: LetterData) -> Iterator[RawSymbol]:
     for letter, features in letters.items():
-        yield RawSymbol(letter, extend_features(features))
+        yield RawSymbol(letter, extend(features))
 
 
 def collect_symbol_features(symbols: SymbolData) -> Iterator[RawSymbol]:

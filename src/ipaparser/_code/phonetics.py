@@ -1,7 +1,7 @@
 from itertools import product
 from typing import Iterator, Optional
 
-from .feature_helper import extend_features, filter_features
+from .feature_helper import equivalent, exclude, extend, include
 from .features import (
     Articulation,
     Backness,
@@ -10,6 +10,7 @@ from .features import (
     Height,
     Manner,
     Place,
+    Release,
     Roundedness,
     SecondaryPlace,
     SoundSubtype,
@@ -63,21 +64,17 @@ APPROXIMANTS_VS_NONSYLLABIC_VOWELS: list[list[tuple[set[Feature], set[Feature]]]
 
 def alternative_type(features: FeatureSet) -> Iterator[FeatureSet]:
     for pairs in product(*APPROXIMANTS_VS_NONSYLLABIC_VOWELS):
-        approximant, nonsyllabic_vowel = map(extend_features, map(lambda sets: frozenset().union(*sets), zip(*pairs)))
+        approximant, nonsyllabic_vowel = map(extend, map(lambda sets: frozenset().union(*sets), zip(*pairs)))
         if features == approximant:
             yield nonsyllabic_vowel
         elif features == nonsyllabic_vowel:
             yield approximant
 
 
-def remove_place(features: FeatureSet) -> FeatureSet:
-    return features - extend_features(filter_features(features, {Place}))
-
-
 def alternative_coronal_place(features: FeatureSet) -> Iterator[FeatureSet]:
-    if filter_features(features, {Place}) == {Place.ALVEOLAR}:
+    if include({Place}, features) == {Place.ALVEOLAR}:
         for place in [Place.DENTAL, Place.POSTALVEOLAR]:
-            yield remove_place(features) | place.extend()
+            yield exclude({Place}, features) | place.extend()
 
 
 def interpret(features: FeatureSet) -> Iterator[FeatureSet]:
@@ -90,12 +87,12 @@ def combine_affricate(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSe
     def matching_places(left_places: FeatureSet, right_places: FeatureSet) -> bool:
         return left_places == right_places or (left_places == {Place.ALVEOLAR} and right_places == {Place.PALATAL})
 
-    if (filter_features(left, {SoundSubtype, Manner}) == {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}
+    if (include({SoundSubtype, Manner}, left) == {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}
             and Manner.FRICATIVE in right
-            and remove_place(left) - {Manner.STOP} == remove_place(right) - {Manner.FRICATIVE,
-                                                                             Manner.SIBILANT,
-                                                                             Manner.LATERAL}
-            and matching_places(*(filter_features(side, {Place}) for side in (left, right)))):
+            and exclude({Place}, left) - {Manner.STOP} == exclude({Place}, right) - {Manner.FRICATIVE,
+                                                                                     Manner.SIBILANT,
+                                                                                     Manner.LATERAL}
+            and matching_places(*(include({Place}, side) for side in (left, right)))):
         return ((left | right | {SoundSubtype.AFFRICATE_CONSONANT, Manner.AFFRICATE})
                 - {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP, Manner.FRICATIVE})
     else:
@@ -103,9 +100,9 @@ def combine_affricate(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSe
 
 
 def combine_doubly_articulated(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
-    if (filter_features(left, {SoundSubtype}) == {SoundSubtype.SIMPLE_CONSONANT}
-            and remove_place(left) == remove_place(right)
-            and filter_features(left, {Place}) != filter_features(right, {Place})):
+    if (include({SoundSubtype}, left) == {SoundSubtype.SIMPLE_CONSONANT}
+            and equivalent(left, right, excluded={Place, Release})  # k͡p̚ in Vietnamese
+            and not equivalent(left, right, included={Place})):
         return ((left | right | {SoundSubtype.DOUBLY_ARTICULATED_CONSONANT})
                 - {SoundSubtype.SIMPLE_CONSONANT})
     else:
@@ -114,7 +111,7 @@ def combine_doubly_articulated(left: FeatureSet, right: FeatureSet) -> Optional[
 
 def combine_polyphthong(subtype: SoundSubtype, *feature_sets: FeatureSet) -> Optional[FeatureSet]:
     weak_syllabicity = {Syllabicity.NONSYLLABIC, Syllabicity.ANAPTYCTIC}
-    if (all(filter_features(features, {SoundSubtype}) == {SoundSubtype.SIMPLE_VOWEL} for features in feature_sets)
+    if (all(include({SoundSubtype}, features) == {SoundSubtype.SIMPLE_VOWEL} for features in feature_sets)
             and any(features.isdisjoint(weak_syllabicity) for features in feature_sets)):
         return ((frozenset().union(*feature_sets) | {subtype})
                 - {SoundSubtype.SIMPLE_VOWEL} - weak_syllabicity)

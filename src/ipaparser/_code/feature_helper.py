@@ -1,3 +1,4 @@
+from functools import partial
 from typing import Any, Optional, Type, TypeVar
 
 from . import features
@@ -5,8 +6,10 @@ from .features import Feature, FeatureSet
 from .strings import upper_camel_to_spaces
 
 __all__ = [
-    'extend_features',
-    'filter_features',
+    'equivalent',
+    'exclude',
+    'extend',
+    'include',
     'find_feature',
     'find_feature_kind',
 ]
@@ -51,9 +54,22 @@ def find_feature_kind(value: str) -> Optional[Type[Feature]]:
     return KIND_MAP.get(value, None)
 
 
-def extend_features(feature_set: FeatureSet) -> FeatureSet:
+def extend(feature_set: FeatureSet) -> FeatureSet:
     return frozenset().union(*(feature.extend() for feature in feature_set))
 
 
-def filter_features(feature_set: FeatureSet, kinds: set[Type[Feature]]) -> FeatureSet:
+def include(kinds: set[Type[Feature]], feature_set: FeatureSet) -> FeatureSet:
     return frozenset(feature for feature in feature_set if any(isinstance(feature, kind) for kind in kinds))
+
+
+def exclude(kinds: set[Type[Feature]], feature_set: FeatureSet) -> FeatureSet:
+    return feature_set - extend(include(kinds, feature_set))
+
+
+def equivalent(a: FeatureSet, b: FeatureSet,
+               *, included: Optional[set[Type[Feature]]] = None, excluded: Optional[set[Type[Feature]]] = None) -> bool:
+    if included is not None:
+        a, b = map(partial(include, included), (a, b))
+    if excluded is not None:
+        a, b = map(partial(exclude, excluded), (a, b))
+    return a == b

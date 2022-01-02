@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Any, Optional, overload, Type, TypeVar, Union
 
 from .exceptions import FeatureError, FeatureKindError
-from .feature_helper import filter_features, find_feature, find_feature_kind
+from .feature_helper import find_feature, find_feature_kind, include
 from .features import Feature, FeatureSet, SymbolType
 from .ipa_config import IPAConfig
 from .parser import parse
@@ -138,7 +138,7 @@ class IPASymbol:
         required_features: set[Feature] = {self._check_normalize_feature(role)} if role is not None else set()
         return next(
             (
-                filter_features(features, kind_index) if kind_index is not None else features
+                include(kind_index, features) if kind_index is not None else features
                 for features in interpret(self._features)
                 if features >= required_features
             ),
