@@ -68,8 +68,8 @@ def exclude(kinds: set[Type[Feature]], feature_set: FeatureSet) -> FeatureSet:
 
 def equivalent(a: FeatureSet, b: FeatureSet,
                *, included: Optional[set[Type[Feature]]] = None, excluded: Optional[set[Type[Feature]]] = None) -> bool:
-    if included is not None:
-        a, b = map(partial(include, included), (a, b))
-    if excluded is not None:
-        a, b = map(partial(exclude, excluded), (a, b))
+    for processor, kinds in ((include, included),
+                             (exclude, excluded)):
+        if kinds is not None:
+            a, b = map(partial(processor, kinds), (a, b))
     return a == b
