@@ -29,12 +29,21 @@ APPROXIMANTS_VS_NONSYLLABIC_VOWELS: list[list[tuple[set[Feature], set[Feature]]]
     # General:
     [({
         SoundSubtype.SIMPLE_CONSONANT,
-        Voicing.VOICED,
         Manner.APPROXIMANT,
     }, {
         SoundSubtype.SIMPLE_VOWEL,
         Syllabicity.NONSYLLABIC,
         Height.CLOSE,
+    })],
+    # Voicing:
+    [({
+        Voicing.VOICED,
+    }, {
+        # -
+    }), ({
+        # -
+    }, {
+        Voicing.DEVOICED,
     })],
     # Place/backness:
     [({
@@ -56,10 +65,11 @@ APPROXIMANTS_VS_NONSYLLABIC_VOWELS: list[list[tuple[set[Feature], set[Feature]]]
         SecondaryPlace.LABIALIZED,
     }, {
         Roundedness.ROUNDED,
-    }), (
-        {},
-        {},
-    )],
+    }), ({
+        # -
+    }, {
+        # -
+    })],
 ]
 
 

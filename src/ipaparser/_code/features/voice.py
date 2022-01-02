@@ -8,6 +8,7 @@ __all__ = [
 
 class Voicing(Feature):
     VOICED = 'voiced'
+    DEVOICED = 'devoiced'
 
 
 class Phonation(Feature):
