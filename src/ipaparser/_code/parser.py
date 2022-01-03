@@ -151,11 +151,11 @@ class Parser:
                 result.append(group[0])
         return result
 
-    def _segment_to_symbol(self, segment: Segment, is_component: bool = False) -> RawSymbol:
+    def _segment_to_symbol(self, segment: Segment, *, is_component: bool = False) -> RawSymbol:
         return RawSymbol(
             string=self._extract(segment.start, segment.end, omit_final_tie=is_component),
             features=segment.features,
-            components=([self._segment_to_symbol(component, True) for component in segment.components]
+            components=([self._segment_to_symbol(component, is_component=True) for component in segment.components]
                         if segment.components is not None else None),
         )
 
@@ -170,17 +170,16 @@ class Parser:
             while end < self._total and (end == start or self._is_tied(end - 1)):
                 if next_segment < len(segments) and end == segments[next_segment].start:
                     collected.append(segments[next_segment])
-                    end = segments[next_segment].end
                     next_segment += 1
                 else:
                     collected.append(Segment(end, end + 1))
-                    end += 1
+                end = collected[-1].end
             if len(collected) == 1 and not self._is_tied(end - 1):
                 symbols.append(self._segment_to_symbol(collected[0]))
             else:
                 symbols.append(RawSymbol(
                     string=self._extract(start, end),
-                    components=[self._segment_to_symbol(segment, True) for segment in collected],
+                    components=[self._segment_to_symbol(segment, is_component=True) for segment in collected],
                 ))
             start = end
         return symbols
