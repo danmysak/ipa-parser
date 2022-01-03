@@ -97,9 +97,10 @@ def combine_affricate(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSe
         return left_places == right_places or (left_places, right_places) in [({Place.ALVEOLAR}, {Place.PALATAL}),
                                                                               ({Place.BILABIAL}, {Place.LABIODENTAL})]
 
-    if (include({SoundSubtype, Manner}, left) == {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}
+    if (include({SoundSubtype, Manner}, left) - {Manner.EJECTIVE} == {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}
             and Manner.FRICATIVE in right
-            and equivalent(left - {Manner.STOP}, right - {Manner.FRICATIVE, Manner.SIBILANT, Manner.LATERAL},
+            and equivalent(left - {Manner.STOP, Manner.EJECTIVE},
+                           right - {Manner.FRICATIVE, Manner.SIBILANT, Manner.LATERAL, Manner.EJECTIVE},
                            {SoundSubtype, Manner, Voicing})
             and matching_places(*(include({Place}, side) for side in (left, right)))):
         return ((left | right | {SoundSubtype.AFFRICATE_CONSONANT, Manner.AFFRICATE})

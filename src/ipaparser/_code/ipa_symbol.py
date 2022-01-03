@@ -5,7 +5,7 @@ from .exceptions import FeatureError, FeatureKindError
 from .feature_helper import find_feature, find_feature_kind, include
 from .features import Feature, FeatureSet, SymbolType
 from .ipa_config import IPAConfig
-from .parser import parse
+from .parser import Parser
 from .phonetics import interpret
 from .raw_symbol import RawSymbol
 
@@ -70,12 +70,9 @@ class IPASymbol:
         :param string: The string to parse (like 'a', 'pʰ', '˦', or 'ˈˈ').
         :param config: Parsing parameters.
         """
-        data = parse(string, config)
-        symbol = next(data.symbols, None)
-        if symbol and symbol.is_last:
-            self._set_raw(symbol.data)
-        else:
-            self._set_raw(RawSymbol(data.normalized))
+        parser = Parser(string, config)
+        symbols = parser.parse()
+        self._set_raw(symbols[0] if len(symbols) == 1 else RawSymbol(parser.normalized))
 
     @staticmethod
     def _check_normalize_kind(kind: RelaxedFeatureKind) -> Type[Feature]:

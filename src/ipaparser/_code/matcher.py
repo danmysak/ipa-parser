@@ -1,137 +1,66 @@
-from __future__ import annotations
-from itertools import count
-from typing import Iterable, Optional
-import unicodedata
+from dataclasses import dataclass
+from typing import Generic, Optional, TypeVar
+
+from .strings import StringPositions, to_string
 
 __all__ = [
     'Match',
     'Matcher',
-    'Positions',
 ]
 
-
-class Positions:
-    positions: list[list[str]]
-
-    def __init__(self, data: list[list[str]]) -> None:
-        self.positions = data
-
-    def string(self) -> str:
-        return ''.join(''.join(position) for position in self.positions)
-
-    def length(self) -> int:
-        return len(self.positions)
-
-    def total(self) -> int:
-        return sum(map(len, self.positions))
+T = TypeVar('T')
 
 
-MatchBuilder = tuple[
-    Optional[bool],  # True = matched character, False = unmatched character, None = a new position
-    Optional['MatchBuilder'],  # preceding character, if any
-]
+@dataclass(frozen=True)
+class Match(Generic[T]):
+    length: int
+    data: T
+    extra: list[str]
 
 
-class Match:
-    match: Positions
-    extra_diacritics: Positions
-    original: Positions
+class Matcher(Generic[T]):
+    _max_length: int
+    _mapping: dict[str, list[tuple[StringPositions, T]]]
 
-    def __init__(self, string: str, starting_at: int, builder: Optional[MatchBuilder]) -> None:
-        match: list[list[str]] = []
-        extra_diacritics: list[list[str]] = []
-        original: list[list[str]] = []
+    def __init__(self, strings: dict[StringPositions, T]) -> None:
+        self._max_length = 0
+        self._mapping = {}
+        for positions, value in strings.items():
+            self._max_length = max(self._max_length, len(positions))
+            key = to_string(positions, combining=False)
+            if key not in self._mapping:
+                self._mapping[key] = []
+            self._mapping[key].append((positions, value))
+        for values in self._mapping.values():
+            values.sort(key=lambda option: len(to_string(option[0])), reverse=True)
 
-        def build(current: Optional[MatchBuilder]) -> int:  # Returns the number of matched characters
-            if current is None:
-                return 0
-            is_matched, nested = current
-            prefix_length = build(nested)
-            index = starting_at + prefix_length
-            if is_matched is None:
-                for updated_list in match, extra_diacritics, original:
-                    updated_list.append([])
-                return prefix_length
+    @staticmethod
+    def _match_with_extra_single(given_position: str, required_position: str) -> Optional[list[str]]:
+        extra: list[str] = []
+        required_index = 0
+        for character in given_position:
+            if required_index < len(required_position) and required_position[required_index] == character:
+                required_index += 1
             else:
-                updated = [original, match if is_matched else extra_diacritics]
-                assert all(updated) and len(string) > index
-                for updated_list in updated:
-                    updated_list[-1].append(string[index])
-                return prefix_length + 1
-
-        build(builder)
-        self.match = Positions(match)
-        self.extra_diacritics = Positions(extra_diacritics)
-        self.original = Positions(original)
-
-    def position_count(self) -> int:
-        return self.original.length()
-
-    def total_length(self) -> int:
-        return self.original.total()
-
-
-Tree = dict[str, 'Tree']
-BranchesWithMatches = list[tuple[Tree, Optional[MatchBuilder]]]
-
-
-class Trie:
-    _tree: Tree
-    _LEAF = ''
-
-    def __init__(self, strings: Optional[Iterable[str]] = None) -> None:
-        self._tree = {}
-        for string in (strings or []):
-            self.add(string)
+                extra.append(character)
+        return extra if required_index == len(required_position) else None
 
     @staticmethod
-    def _is_leaf(node: Tree) -> bool:
-        return Trie._LEAF in node
+    def _match_with_extra(given: StringPositions, required: StringPositions) -> Optional[list[str]]:
+        if len(given) != len(required):
+            return None
+        extra: list[str] = []
+        for given_position, required_position in zip(given, required):
+            extra_single = Matcher._match_with_extra_single(given_position, required_position)
+            if extra_single is None:
+                return None
+            extra.extend(extra_single)
+        return extra
 
-    @staticmethod
-    def _make_leaf(node: Tree) -> None:
-        node[Trie._LEAF] = node
-
-    def add(self, string: str) -> None:
-        node = self._tree
-        for character in string:
-            if character not in node:
-                node[character] = {}
-            node = node[character]
-        self._make_leaf(node)
-
-    def match(self, string: str, starting_at: int) -> list[Match]:
-        branches: BranchesWithMatches = [(self._tree, None)]
-        matches: list[Match] = []
-        for position in count(starting_at):
-            is_last = position == len(string)
-            character = string[position] if not is_last else None
-            combining_class = unicodedata.combining(character) if character else None
-            if is_last or combining_class == 0:
-                matches.extend(Match(string, starting_at, match) for branch, match in branches if self._is_leaf(branch))
-            if is_last:
-                break
-            if combining_class == 0 or position == starting_at:
-                branches = [(branch, (None, match)) for branch, match in branches]
-            next_branches: BranchesWithMatches = []
-            for branch, match in branches:
-                if character in branch:
-                    next_branches.append((branch[character], (True, match)))
-                if combining_class != 0:
-                    next_branches.append((branch, (False, match)))
-            if not next_branches:
-                break
-            branches = next_branches
-        return matches
-
-
-class Matcher:
-    _trie: Trie
-
-    def __init__(self, strings: Iterable[str]) -> None:
-        self._trie = Trie(strings)
-
-    def match(self, string: str, starting_at: int) -> Optional[Match]:
-        return (max(matches, key=lambda match: (match.position_count(), -match.extra_diacritics.total()))
-                if (matches := self._trie.match(string, starting_at))
-                else None)
+    def match(self, positions: StringPositions, start: int) -> Optional[Match[T]]:
+        for length in range(min(self._max_length, len(positions) - start), 0, -1):
+            given = positions[start:start + length]
+            for required, data in self._mapping.get(to_string(given, combining=False), []):
+                if (extra := Matcher._match_with_extra(given, required)) is not None:
+                    return Match(length, data, extra)
+        return None

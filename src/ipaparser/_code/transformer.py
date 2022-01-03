@@ -1,19 +1,25 @@
 from itertools import chain
-from typing import Iterator, Optional
+from typing import Iterable, Iterator, Optional
 
 from .cacher import with_cache
-from .data import Combining, CombiningData, DataError, get_data, LetterData, SymbolData
+from .data import get_data
+from .data_types import Combining, CombiningData, DataError, LetterData, Position, SymbolData
 from .feature_helper import extend
 from .features import FeatureSet
-from .matcher import Matcher
+from .matcher import Match, Matcher
 from .raw_symbol import RawSymbol
+from .strings import StringPositions, to_positions
 
 __all__ = [
-    'apply_combining',
-    'basic_symbol_to_features',
-    'get_basic_features',
-    'get_basic_matcher',
+    'apply',
+    'get_matcher',
+    'match_to_features',
 ]
+
+
+def map_combining(characters: Iterable[str], position: Position) -> Iterator[Combining]:
+    for character in characters:
+        yield Combining(character, position)
 
 
 def apply_combining_data(data: CombiningData, combining: Combining, features: FeatureSet) -> Optional[FeatureSet]:
@@ -35,6 +41,17 @@ def apply_combining(combining: Combining, features: FeatureSet) -> Optional[Feat
     return apply_combining_data(get_data().combining_recursive, combining, features)
 
 
+def apply_combining_sequence(combining_sequence: Iterable[Combining], features: FeatureSet) -> Optional[FeatureSet]:
+    for combining in combining_sequence:
+        if (features := apply_combining(combining, features)) is None:
+            break
+    return features
+
+
+def apply(characters: Iterable[str], position: Position, features: FeatureSet) -> Optional[FeatureSet]:
+    return apply_combining_sequence(map_combining(characters, position), features)
+
+
 def collect_letter_features(letters: LetterData) -> Iterator[RawSymbol]:
     for letter, features in letters.items():
         yield RawSymbol(letter, extend(features))
@@ -53,7 +70,7 @@ def collect_basic_combined_features(combining_basic: CombiningData,
                 yield RawSymbol(combining.apply(symbol.string), new_features)
 
 
-def collect_basic_features() -> dict[str, FeatureSet]:
+def collect_basic_features() -> dict[StringPositions, FeatureSet]:
     data = get_data()
     non_combined = list(chain(
         collect_letter_features(data.consonants),
@@ -62,23 +79,21 @@ def collect_basic_features() -> dict[str, FeatureSet]:
         collect_symbol_features(data.suprasegmentals),
     ))
     combined = list(collect_basic_combined_features(data.combining_basic, non_combined))
-    feature_index: dict[str, FeatureSet] = {}
+    feature_index: dict[StringPositions, FeatureSet] = {}
     for symbol in non_combined + combined:
-        if symbol.string in feature_index:
+        key = to_positions(symbol.string)
+        if key in feature_index:
             raise DataError(f'Symbol "{symbol.string}" can be interpreted in multiple ways')
-        feature_index[symbol.string] = symbol.features
+        feature_index[key] = symbol.features
     return feature_index
 
 
-get_basic_features = with_cache(collect_basic_features)
+def build_matcher() -> Matcher[FeatureSet]:
+    return Matcher(collect_basic_features())
 
 
-def build_basic_matcher() -> Matcher:
-    return Matcher(get_basic_features().keys())
+get_matcher = with_cache(build_matcher)
 
 
-get_basic_matcher = with_cache(build_basic_matcher)
-
-
-def basic_symbol_to_features(symbol: str) -> Optional[FeatureSet]:
-    return get_basic_features().get(symbol, None)
+def match_to_features(match: Match[FeatureSet]) -> Optional[FeatureSet]:
+    return apply(sorted(set(match.extra)), Position.FOLLOWING, match.data)

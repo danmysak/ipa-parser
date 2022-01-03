@@ -7,7 +7,7 @@ from .definitions import TranscriptionType
 from .exceptions import EnclosingError, IncompatibleTypesError
 from .ipa_config import IPAConfig
 from .ipa_symbol import from_raw, IPASymbol
-from .parser import parse
+from .parser import Parser
 
 __all__ = [
     'IPA',
@@ -135,7 +135,7 @@ class IPA:
         if not enclosing:
             raise EnclosingError(transcription)
         self._type = enclosing.type
-        self._symbols = [from_raw(symbol.data) for symbol in parse(enclosing.text, config).symbols]
+        self._symbols = [from_raw(symbol) for symbol in Parser(enclosing.text, config).parse()]
 
     def _from_symbols(self, symbols: list[IPASymbol]) -> IPA:
         ipa = IPA.__new__(IPA)

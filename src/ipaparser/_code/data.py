@@ -1,32 +1,30 @@
-from dataclasses import dataclass
-from enum import Enum
 from pathlib import Path
 import unicodedata
 
 from .cacher import with_cache
+from .data_types import (
+    Bracket,
+    Combining,
+    CombiningData,
+    Data,
+    DataError,
+    InnerBracketData,
+    LetterData,
+    OuterBracketData,
+    Position,
+    SubstitutionData,
+    SymbolData,
+    Tie,
+    TieData,
+    Transformation,
+)
 from .definitions import TranscriptionType
 from .feature_helper import find_feature
 from .features import Feature, FeatureSet
 from .strings import is_decomposed
 
 __all__ = [
-    'Bracket',
-    'Combining',
-    'CombiningData',
-    'Data',
-    'DataError',
     'get_data',
-    'InnerBracketData',
-    'Letter',
-    'LetterData',
-    'OuterBracketData',
-    'Position',
-    'SubstitutionData',
-    'Symbol',
-    'SymbolData',
-    'Tie',
-    'TieData',
-    'Transformation',
 ]
 
 COLUMN_DELIMITER = '\t'
@@ -46,61 +44,6 @@ COMBINING_RECURSIVE = 'combining-recursive'
 TIES = 'ties'
 BRACKETS = 'brackets'
 SUBSTITUTIONS = 'substitutions'
-
-
-class DataError(Exception):
-    pass
-
-
-class Position(str, Enum):
-    PRECEDING = 'preceding'
-    FOLLOWING = 'following'
-
-
-@dataclass(frozen=True)
-class Combining:
-    character: str
-    position: Position
-
-    def apply(self, string: str) -> str:
-        return self.character + string if self.position == Position.PRECEDING else string + self.character
-
-
-@dataclass(frozen=True)
-class Transformation:
-    feature: Feature
-    positive: bool
-
-    def apply(self, features: FeatureSet) -> FeatureSet:
-        return features | {self.feature} if self.positive else features - {self.feature}
-
-
-Letter = str  # guaranteed to be non-empty
-Symbol = str  # guaranteed to be non-empty
-LetterData = dict[Letter, FeatureSet]
-SymbolData = dict[Symbol, Feature]
-CombiningData = dict[Combining, list[tuple[Feature, Transformation]]]
-Tie = str
-TieData = set[Tie]
-Bracket = str  # guaranteed to be of length 1
-OuterBracketData = dict[tuple[Bracket, Bracket], TranscriptionType]
-InnerBracketData = list[tuple[Bracket, Bracket]]
-SubstitutionData = list[tuple[str, str]]
-
-
-@dataclass(frozen=True)
-class Data:
-    consonants: LetterData
-    vowels: LetterData
-    breaks: SymbolData
-    suprasegmentals: SymbolData
-    combining_basic: CombiningData
-    combining_recursive: CombiningData
-    ties: TieData
-    main_tie: Tie
-    outer_brackets: OuterBracketData
-    inner_brackets: InnerBracketData
-    substitutions: SubstitutionData
 
 
 TabularData = list[list[list[str]]]  # rows, columns, cell values
@@ -228,8 +171,11 @@ def parse_tie_data(data: TabularData) -> tuple[TieData, Tie]:
         if len(row[0]) != 1:
             raise DataError(f'Expected exactly one value in each cell')
         value = row[0][0]
-        if len(value) != 3 or not value.startswith(PLACEHOLDER) or not value.endswith(PLACEHOLDER):
-            raise DataError(f'Expected value in the format "{PLACEHOLDER}(tie){PLACEHOLDER}", got "{value}"')
+        if (len(value) != 1 + 2 * len(PLACEHOLDER)
+                or not value.startswith(PLACEHOLDER)
+                or not value.endswith(PLACEHOLDER)):
+            raise DataError(f'Expected value in the format "{PLACEHOLDER}(single-character tie){PLACEHOLDER}",'
+                            f' got "{value}"')
         tie = value.removeprefix(PLACEHOLDER).removesuffix(PLACEHOLDER)
         if tie in ties:
             raise DataError(f'The tie "{value}" is encountered in data multiple times')

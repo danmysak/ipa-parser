@@ -1,282 +1,181 @@
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import Iterator, Optional
-import unicodedata
+from typing import Optional
 
-from .data import Combining, get_data, Position
+from .data import get_data
+from .data_types import Position
 from .definitions import BracketStrategy
+from .features import FeatureSet
 from .ipa_config import IPAConfig
-from .matcher import Match
 from .phonetics import combine_features
 from .raw_symbol import RawSymbol
-from .strings import decompose
-from .transformer import apply_combining, basic_symbol_to_features, get_basic_matcher
+from .strings import (
+    combine,
+    decompose,
+    expand_brackets,
+    perform_substitutions,
+    StringPositions,
+    strip_brackets,
+    to_positions,
+)
+from .transformer import apply, get_matcher, match_to_features
 
 __all__ = [
-    'parse',
-    'ParsedData',
-    'ParsedSymbol',
+    'Parser',
 ]
 
 
 @dataclass(frozen=True)
-class ParsedSymbol:
-    data: RawSymbol
-    is_last: bool
-
-
-@dataclass(frozen=True)
-class ParsedData:
-    normalized: str
-    symbols: Iterator[ParsedSymbol]
-
-
-@dataclass(frozen=True)
-class BracketData:
-    bracket: str
-    position: int
-
-
-@dataclass(frozen=True)
-class Chunk:
-    match: Optional[Match]
+class Segment:
     start: int
     end: int
+    features: FeatureSet
+    components: Optional[list[Segment]] = None
 
 
-def perform_substitutions(text: str) -> str:
-    for substring, substitution in get_data().substitutions:
-        text = text.replace(substring, substitution)
-    return text
+class Parser:
+    _string: str
+    _positions: StringPositions
+    _tie_free: StringPositions
+    _total: int
 
+    @property
+    def normalized(self) -> str:
+        return self._string
 
-def expand_brackets(text: str) -> str:
-    for left, right in get_data().inner_brackets:
-        text = text.replace(left, '').replace(right, '')
-    return text
+    def __init__(self, string: str, config: IPAConfig) -> None:
+        self._string = self._normalize(string, config)
+        self._positions = to_positions(self._string)
+        ties = get_data().ties
+        self._tie_free = tuple(''.join(character
+                                       for index, character in enumerate(position)
+                                       if index == 0 or character not in ties)
+                               for position in self._positions)
+        self._total = len(self._positions)
 
+    @staticmethod
+    def _normalize(string: str, config: IPAConfig) -> str:
+        data = get_data()
+        string = decompose(string)
+        if config.substitutions:
+            string = perform_substitutions(string, data.substitutions)  # first pass
+        if config.brackets == BracketStrategy.EXPAND:
+            string = expand_brackets(string, data.inner_brackets)
+        elif config.brackets == BracketStrategy.STRIP:
+            string = strip_brackets(string, data.inner_brackets)
+        string = combine(string, config.combined, data.main_tie)
+        if config.substitutions:
+            string = perform_substitutions(string, data.substitutions)  # second pass
+        return string
 
-def strip_brackets(text: str) -> str:
-    bracket_pairs = set(get_data().inner_brackets)
-    opening = {bracket for bracket, _ in bracket_pairs}
-    closing = {bracket for _, bracket in bracket_pairs}
-    open_deltas = [0 for _ in text]
-    currently_open: list[BracketData] = []
-    for position, character in enumerate(text):
-        if character in opening:
-            currently_open.append(BracketData(
-                bracket=character,
-                position=position,
-            ))
-        elif character in closing:
-            if currently_open and (currently_open[-1].bracket, character) in bracket_pairs:
-                matched = currently_open.pop()
-                open_deltas[matched.position] = 1
-                open_deltas[position] = -1
-            else:
-                currently_open.clear()  # Not stripping any content unless the brackets are well-balanced
-    taken: list[str] = []
-    open_count = 0
-    for character, delta in zip(text, open_deltas):
-        open_count += delta
-        if open_count == 0:
-            taken.append(character)
-    return ''.join(taken)
+    def _extract(self, start: int, end: int, *, omit_final_tie: bool = False) -> str:
+        return ''.join((self._tie_free if omit_final_tie and position == end - 1 else self._positions)[position]
+                       for position in range(max(start, 0), min(end, self._total)))
 
+    def _is_tied(self, position: int) -> bool:
+        return len(self._tie_free[position]) < len(self._positions[position])
 
-def combine_single(text: str, sequence: tuple[str, ...]) -> str:
-    if len(sequence) <= 1:
-        raise ValueError(f'Attempt to combine a sequence of length {len(sequence)}')
-    substring = ''.join(sequence)
-    sections: list[str] = []
-    position = 0
+    def _expand(self, segment: Segment, min_position: int, max_position: int) -> Segment:
+        features = segment.features
 
-    def advance(next_position: int) -> None:
-        nonlocal position
-        sections.append(text[position:next_position])
-        position = next_position
+        def iterate(initial: int, step: int, final: int) -> int:
+            nonlocal features
+            position = initial
+            while position != final and (next_features := apply(
+                self._tie_free[(next_position := position + step)],
+                Position.PRECEDING if step < 0 else Position.FOLLOWING,
+                features,
+            )) is not None:
+                position = next_position
+                features = next_features
+            return position
 
-    while (occurrence := text.find(substring, position)) >= 0:
-        following_position = occurrence + len(substring)
-        if following_position < len(text) and unicodedata.combining(text[following_position]):
-            advance(occurrence + 1)
-            continue
-        for index, sound in enumerate(sequence):
-            if not sound:
-                raise ValueError('Attempt to combine a sequence containing an empty sound')
-            if index > 0:
-                sections.append(get_data().main_tie)
-            advance(position + len(sound))
-    advance(len(text))
-    return ''.join(sections)
+        start = iterate(segment.start, -1, min_position)
+        end = iterate(segment.end - 1, 1, max_position) + 1
+        return Segment(start, end, features, segment.components)
 
-
-def combine(text: str, combined: tuple[tuple[str, ...]]) -> str:
-    for sequence in combined:
-        text = combine_single(text, sequence)
-    return text
-
-
-def get_unmatched_tied_chunk_end(text: str, start: int) -> int:
-    if start == len(text):
-        raise ValueError('Cannot obtain a chunk: cursor is already at the end of a string')
-    ties = get_data().ties
-    tied = False
-    position = start
-    while True:
-        if text[position] in ties:
-            tied = True
-        position += 1
-        if position == len(text):
-            break
-        if not unicodedata.combining(text[position]):
-            if tied:
-                tied = False
-            else:
-                break
-    return position
-
-
-def get_tied_chunks(text: str, start: int) -> Iterator[Chunk]:
-    ties = get_data().ties
-    position = start
-    while True:
-        if position == len(text):
-            yield Chunk(  # So that a tie at the end of the string is not left unnoticed
-                match=None,
-                start=position,
-                end=position,
-            )
-            return
-        if match := get_basic_matcher().match(text, position):
-            next_position = position + match.total_length()
-            yield Chunk(
-                match=match,
-                start=position,
-                end=next_position,
-            )
-            position = next_position
-            assert match.extra_diacritics.positions
-            if ties.isdisjoint(match.extra_diacritics.positions[-1]):
-                return
-        else:
-            yield Chunk(
-                match=None,
-                start=position,
-                end=get_unmatched_tied_chunk_end(text, position),
-            )
-            return
-
-
-def match_to_symbol(match: Match, *, ignore_closing_ties: bool) -> Optional[RawSymbol]:
-    features = basic_symbol_to_features(match.match.string())
-    if features is None:
-        return None
-    characters: list[str] = []
-    applied: set[Combining] = set()
-    for index, (extra_diacritics, original) in enumerate(zip(
-            match.extra_diacritics.positions,
-            match.original.positions,
-    )):
-        ignored_diacritics = (
-            get_data().ties
-            if ignore_closing_ties and index == match.extra_diacritics.length() - 1
-            else set()
-        )
-        characters.extend(character for character in original if character not in ignored_diacritics)
-        for diacritic in extra_diacritics:
-            if diacritic in ignored_diacritics:
-                continue
-            combining = Combining(
-                character=diacritic,
-                position=Position.FOLLOWING,
-            )
-            if combining not in applied:
-                features = apply_combining(combining, features)
-                if features is None:
-                    return None
-                applied.add(combining)
-    return RawSymbol(''.join(characters), features)
-
-
-def tied_matches_to_symbol(matches: list[Match]) -> Optional[RawSymbol]:
-    if not matches:
-        raise ValueError('Attempt to map empty matches to features')
-    symbols: list[RawSymbol] = []
-    for index, match in enumerate(matches):
-        is_last_match = index == len(matches) - 1
-        if symbol := match_to_symbol(match, ignore_closing_ties=not is_last_match):
-            symbols.append(symbol)
+    def _get_segment_at(self, start: int) -> Optional[Segment]:
+        if (match := get_matcher().match(self._tie_free, start)) and (features := match_to_features(match)) is not None:
+            return Segment(start, start + match.length, features)
         else:
             return None
-    if len(symbols) > 1:
-        return (RawSymbol(
-            string=''.join(match.original.string() for match in matches),
-            features=combined,
-            components=symbols,
-        ) if (combined := combine_features([symbol.features for symbol in symbols])) is not None else None)
-    else:
-        return symbols[0]
 
+    def _get_initial_segments(self) -> list[Segment]:
+        segments: list[Segment] = []
+        start = 0
+        while start < self._total:
+            if segment := self._get_segment_at(start):
+                segments.append(segment)
+                assert segment.end > start
+                start = segment.end
+            else:
+                start += 1
+        return segments
 
-def parse_normalized(text: str) -> Iterator[ParsedSymbol]:
-    hanging: list[str] = []
+    def _expand_all(self, segments: list[Segment]) -> list[Segment]:
+        expanded: list[Segment] = []
+        for index, segment in enumerate(segments):
+            expanded.append(self._expand(
+                segment,
+                expanded[index - 1].end if index > 0 else 0,
+                (segments[index + 1].start if index + 1 < len(segments) else self._total) - 1,
+            ))
+        return expanded
 
-    def dump_hanging(*, is_last: bool) -> Iterator[ParsedSymbol]:
-        if hanging:
-            yield ParsedSymbol(
-                data=RawSymbol(''.join(hanging)),
-                is_last=is_last,
-            )
-            hanging.clear()
+    def _group(self, segments: list[Segment]) -> list[list[Segment]]:
+        groups: list[list[Segment]] = []
+        last: Optional[Segment] = None
+        for segment in segments:
+            if last and segment.start == last.end and self._is_tied(segment.start - 1):
+                groups[-1].append(segment)
+            else:
+                groups.append([segment])
+            last = segment
+        return groups
 
-    position = 0
-    while position < len(text):
-        chunks = list(get_tied_chunks(text, position))
-        following_position = chunks[-1].end
-        if all(matches := [chunk.match for chunk in chunks]) and (symbol := tied_matches_to_symbol(matches)):
-            features = symbol.features
-            while hanging and len(hanging[-1]) == 1 and (new_features := apply_combining(Combining(
-                character=hanging[-1],
-                position=Position.PRECEDING,
-            ), features)) is not None:
-                features = new_features
-                hanging.pop()
-                position -= 1
-            yield from dump_hanging(is_last=False)
-            while (following_position < len(text)
-                   and get_unmatched_tied_chunk_end(text, following_position) == following_position + 1
-                   and (new_features := apply_combining(Combining(
-                            character=text[following_position],
-                            position=Position.FOLLOWING,
-                        ), features)) is not None):
-                features = new_features
-                following_position += 1
-            yield ParsedSymbol(
-                data=RawSymbol(
-                    string=text[position:following_position],
-                    features=features,
-                    components=symbol.components,
-                ),
-                is_last=following_position == len(text),
-            )
-        else:
-            hanging.append(text[position:following_position])
-        position = following_position
-    yield from dump_hanging(is_last=True)
+    @staticmethod
+    def _tie(groups: list[list[Segment]]) -> list[Segment]:
+        result: list[Segment] = []
+        for group in groups:
+            if len(group) > 1:
+                if (combined := combine_features([segment.features for segment in group])) is not None:
+                    result.append(Segment(
+                        start=group[0].start,
+                        end=group[-1].end,
+                        features=combined,
+                        components=group,
+                    ))
+            else:
+                result.append(group[0])
+        return result
 
+    def _segment_to_symbol(self, segment: Segment) -> RawSymbol:
+        return RawSymbol(
+            string=self._extract(segment.start, segment.end, omit_final_tie=True),
+            features=segment.features,
+            components=(list(map(self._segment_to_symbol, segment.components))
+                        if segment.components is not None else None),
+        )
 
-def parse(text: str, config: IPAConfig) -> ParsedData:
-    text = decompose(text)
-    if config.substitutions:
-        text = perform_substitutions(text)  # first pass
-    if config.brackets == BracketStrategy.EXPAND:
-        text = expand_brackets(text)
-    elif config.brackets == BracketStrategy.STRIP:
-        text = strip_brackets(text)
-    text = combine(text, config.combined)
-    if config.substitutions:
-        text = perform_substitutions(text)  # second pass
-    return ParsedData(
-        normalized=text,
-        symbols=parse_normalized(text),
-    )
+    def parse(self) -> list[RawSymbol]:
+        symbols: list[RawSymbol] = []
+        segments = self._expand_all(self._tie(self._group(self._expand_all(self._get_initial_segments()))))
+        start = 0
+        next_segment = 0
+        while start < self._total:
+            collected: list[Optional[Segment]] = []
+            end = start
+            while end < self._total and (end == start or self._is_tied(end - 1)):
+                if next_segment < len(segments) and end == segments[next_segment].start:
+                    collected.append(segments[next_segment])
+                    end = segments[next_segment].end
+                    next_segment += 1
+                else:
+                    collected.append(None)
+                    end += 1
+            if len(collected) == 1 and collected[0] and not self._is_tied(end - 1):
+                symbols.append(self._segment_to_symbol(collected[0]))
+            else:
+                symbols.append(RawSymbol(self._extract(start, end)))
+            start = end
+        return symbols
