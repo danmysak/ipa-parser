@@ -11,6 +11,7 @@ from .features import (
     Manner,
     Place,
     Roundedness,
+    SecondaryModifier,
     SecondaryPlace,
     SoundSubtype,
     Syllabicity,
@@ -103,8 +104,8 @@ def combine_affricate(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSe
                            right - {Manner.FRICATIVE, Manner.SIBILANT, Manner.LATERAL, Manner.EJECTIVE},
                            {SoundSubtype, Manner, Voicing})
             and matching_places(*(include({Place}, side) for side in (left, right)))):
-        return ((left | right | {SoundSubtype.AFFRICATE_CONSONANT, Manner.AFFRICATE})
-                - {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP, Manner.FRICATIVE})
+        return ((left | right | {Manner.AFFRICATE})
+                - {Manner.STOP, Manner.FRICATIVE})
     else:
         return None
 
@@ -115,6 +116,13 @@ def combine_doubly_articulated(left: FeatureSet, right: FeatureSet) -> Optional[
             and not equivalent(left, right, {Place})):
         return ((left | right | {SoundSubtype.DOUBLY_ARTICULATED_CONSONANT})
                 - {SoundSubtype.SIMPLE_CONSONANT})
+    else:
+        return None
+
+
+def combine_prenasalized(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
+    if left == extend(include({Place}, right) | {SoundSubtype.SIMPLE_CONSONANT, Manner.NASAL, Voicing.VOICED}):
+        return right | {SecondaryModifier.PRENASALIZED}
     else:
         return None
 
@@ -146,8 +154,9 @@ def combine_features(feature_sets: list[FeatureSet]) -> Optional[FeatureSet]:
          for combiner in {
              2: [
                  combine_affricate,
-                 combine_doubly_articulated,
                  combine_diphthong,
+                 combine_doubly_articulated,
+                 combine_prenasalized,
              ],
              3: [
                  combine_triphthong,
