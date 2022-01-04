@@ -114,7 +114,9 @@ def combine_affricate(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSe
 
 def combine_doubly_articulated(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
     if (include({SoundSubtype}, left) == {SoundSubtype.SIMPLE_CONSONANT}
-            and equivalent(left, right, {SoundSubtype, Manner, Voicing})
+            and equivalent(left - {Manner.EJECTIVE},
+                           right - {Manner.EJECTIVE},
+                           {SoundSubtype, Manner, Voicing})
             and not equivalent(left, right, {Place})):
         return ((left | right | {SoundSubtype.DOUBLY_ARTICULATED_CONSONANT})
                 - {SoundSubtype.SIMPLE_CONSONANT})
@@ -170,6 +172,20 @@ def combine_triphthong(left: FeatureSet, middle: FeatureSet, right: FeatureSet) 
     return combine_polyphthong(SoundSubtype.TRIPHTHONG_VOWEL, left, middle, right)
 
 
+def combine_triple_left_to_right(left: FeatureSet, middle: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
+    if (left_middle := combine_features([left, middle])) is not None:
+        return combine_features([left_middle, right])
+    else:
+        return None
+
+
+def combine_triple_right_to_left(left: FeatureSet, middle: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
+    if (middle_right := combine_features([middle, right])) is not None:
+        return combine_features([left, middle_right])
+    else:
+        return None
+
+
 def combine_features(feature_sets: list[FeatureSet]) -> Optional[FeatureSet]:
     if len(feature_sets) <= 1:
         raise ValueError(f'Feature sets to combine should contain at least two sets (got {len(feature_sets)})')
@@ -186,6 +202,8 @@ def combine_features(feature_sets: list[FeatureSet]) -> Optional[FeatureSet]:
              ],
              3: [
                  combine_triphthong,
+                 combine_triple_left_to_right,
+                 combine_triple_right_to_left,
              ],
          }.get(len(feature_sets), [])
          for interpretation in interpretations
