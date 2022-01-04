@@ -21,3 +21,4 @@ class SecondaryModifier(Feature):
     NASALIZED = 'nasalized'
     PRENASALIZED = 'prenasalized'
     PRESTOPPED = 'prestopped'
+    PREGLOTTALIZED = 'preglottalized'

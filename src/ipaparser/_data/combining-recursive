@@ -15,9 +15,6 @@
 ◌˭	consonant	unaspirated
 ʰ◌	consonant	preaspirated
 
-ᵐ◌, ᶬ◌, ⁿ◌, ᶯ◌, ᶮ◌, ᵑ◌, ᶰ◌	consonant	prenasalized
-ᵇ◌, ᵈ◌, ᶢ◌	consonant	prestopped
-
 ◌̥, ◌̊	voiced	-voiced
 ◌̥, ◌̊	vowel	devoiced
 ◌̬	consonant	voiced
@@ -50,6 +47,10 @@
 ◌̙	vowel	retracted tongue root
 ◌̃	sound	nasalized
 ◌˞, ◌ʴ	vowel	r-colored
+
+ᵐ◌, ᶬ◌, ⁿ◌, ᶯ◌, ᶮ◌, ᵑ◌, ᶰ◌	consonant	prenasalized
+ᵇ◌, ᵈ◌, ᶢ◌	consonant	prestopped
+ˀ◌	consonant	preglottalized
 
 ◌̆	sound	extra-short
 ◌ˑ	sound	half-long
