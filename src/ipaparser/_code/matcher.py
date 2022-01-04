@@ -14,6 +14,7 @@ T = TypeVar('T')
 @dataclass(frozen=True)
 class Match(Generic[T]):
     length: int
+    matched: StringPositions
     data: T
     extra: list[str]
 
@@ -62,5 +63,5 @@ class Matcher(Generic[T]):
             given = positions[start:start + length]
             for required, data in self._mapping.get(to_string(given, combining=False), []):
                 if (extra := Matcher._match_with_extra(given, required)) is not None:
-                    return Match(length, data, extra)
+                    return Match(length, required, data, extra)
         return None

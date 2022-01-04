@@ -1,4 +1,3 @@
-from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
@@ -17,6 +16,7 @@ from .strings import (
     StringPositions,
     strip_brackets,
     to_positions,
+    to_string,
 )
 from .transformer import apply, get_matcher, match_to_features
 
@@ -30,7 +30,7 @@ class Segment:
     start: int
     end: int
     features: Optional[FeatureSet] = None
-    components: Optional[list[Segment]] = None
+    components: Optional[list[RawSymbol]] = None
 
 
 class Parser:
@@ -97,8 +97,11 @@ class Parser:
         return Segment(start, end, features, segment.components)
 
     def _get_segment_at(self, start: int) -> Optional[Segment]:
-        if (match := get_matcher().match(self._tie_free, start)) and (features := match_to_features(match)) is not None:
-            return Segment(start, start + match.length, features)
+        if match := get_matcher().match(self._tie_free, start):
+            features = match_to_features(match)
+            end = start + match.length
+            return Segment(start, end, features,
+                           components=[RawSymbol(to_string(match.matched), match.data)] if features is None else None)
         else:
             return None
 
@@ -135,8 +138,14 @@ class Parser:
             last = segment
         return groups
 
-    @staticmethod
-    def _tie(groups: list[list[Segment]]) -> list[Segment]:
+    def _segment_to_symbol(self, segment: Segment, *, is_component: bool = False) -> RawSymbol:
+        return RawSymbol(
+            string=self._extract(segment.start, segment.end, omit_final_tie=is_component),
+            features=segment.features,
+            components=segment.components,
+        )
+
+    def _tie(self, groups: list[list[Segment]]) -> list[Segment]:
         result: list[Segment] = []
         for group in groups:
             if len(group) > 1:
@@ -145,19 +154,11 @@ class Parser:
                     start=group[0].start,
                     end=group[-1].end,
                     features=combine_features(feature_sets) if None not in feature_sets else None,
-                    components=group,
+                    components=[self._segment_to_symbol(segment, is_component=True) for segment in group],
                 ))
             else:
                 result.append(group[0])
         return result
-
-    def _segment_to_symbol(self, segment: Segment, *, is_component: bool = False) -> RawSymbol:
-        return RawSymbol(
-            string=self._extract(segment.start, segment.end, omit_final_tie=is_component),
-            features=segment.features,
-            components=([self._segment_to_symbol(component, is_component=True) for component in segment.components]
-                        if segment.components is not None else None),
-        )
 
     def parse(self) -> list[RawSymbol]:
         symbols: list[RawSymbol] = []
