@@ -74,6 +74,10 @@ class IPASymbol:
         symbols = parser.parse()
         self._set_raw(symbols[0] if len(symbols) == 1 else RawSymbol(parser.normalized))
 
+    def as_string(self) -> str:
+        """Return the symbol as a string."""
+        return str(self)
+
     @staticmethod
     def _check_normalize_kind(kind: RelaxedFeatureKind) -> Type[Feature]:
         if isinstance(kind, type) and issubclass(kind, Feature):

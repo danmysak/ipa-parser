@@ -137,6 +137,10 @@ class IPA:
         self._type = enclosing.type
         self._symbols = [from_raw(symbol) for symbol in Parser(enclosing.text, config).parse()]
 
+    def as_string(self) -> str:
+        """Return the transcription as a string."""
+        return str(self)
+
     def _from_symbols(self, symbols: list[IPASymbol]) -> IPA:
         ipa = IPA.__new__(IPA)
         ipa._type = self._type
