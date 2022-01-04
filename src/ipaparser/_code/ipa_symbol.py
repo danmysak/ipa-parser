@@ -121,7 +121,7 @@ class IPASymbol:
                      and cannot be reinterpreted to have this feature, None will be returned.
                      Currently, the only reinterpretations supported are:
                      1) nonsyllabic close vowels as palatal/velar approximants and vice versa;
-                     2) alveolar consonants as dental and as postalveolar.
+                     2) alveolar consonants (except sibilant and non-sibilant fricatives) as dental and as postalveolar.
                      Strings may be used ('consonant') instead of Feature subclass values (with no typing support).
         :return: A (frozen)set of the features or None for unknown symbols and symbols with an incompatible `role`.
         :raises:

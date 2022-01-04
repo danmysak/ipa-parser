@@ -10,6 +10,7 @@ from .features import (
     Height,
     Manner,
     Place,
+    Release,
     Roundedness,
     SecondaryModifier,
     SecondaryPlace,
@@ -82,7 +83,8 @@ def alternative_type(features: FeatureSet) -> Iterator[FeatureSet]:
 
 
 def alternative_coronal_place(features: FeatureSet) -> Iterator[FeatureSet]:
-    if include({Place}, features) == {Place.ALVEOLAR}:
+    if (include({Place}, features) == {Place.ALVEOLAR}
+            and include({Manner}, features) - {Manner.SIBILANT} != {Manner.FRICATIVE}):
         for place in [Place.DENTAL, Place.POSTALVEOLAR]:
             yield exclude({Place}, features) | place.extend()
 
@@ -127,6 +129,29 @@ def combine_prenasalized(left: FeatureSet, right: FeatureSet) -> Optional[Featur
         return None
 
 
+def combine_release(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
+    if include({SoundSubtype, Manner}, left) != {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}:
+        return None
+    if include({SoundSubtype, Manner, Voicing}, right) == {SoundSubtype.SIMPLE_CONSONANT, Manner.NASAL, Voicing.VOICED}:
+        return left | {Release.NASAL_RELEASE}
+    for features, release in [(
+        {Place.ALVEOLAR, Manner.APPROXIMANT, Manner.LATERAL, Voicing.VOICED},
+        Release.LATERAL_RELEASE,
+    ), (
+        {Place.DENTAL, Manner.FRICATIVE},
+        Release.VOICELESS_DENTAL_FRICATIVE_RELEASE,
+    ), (
+        {Place.ALVEOLAR, Manner.SIBILANT, Manner.FRICATIVE},
+        Release.VOICELESS_ALVEOLAR_SIBILANT_FRICATIVE_RELEASE,
+    ), (
+        {Place.VELAR, Manner.FRICATIVE},
+        Release.VOICELESS_VELAR_FRICATIVE_RELEASE,
+    )]:
+        if right == extend(frozenset({SoundSubtype.SIMPLE_CONSONANT}) | features):
+            return left | {release}
+    return None
+
+
 def combine_polyphthong(subtype: SoundSubtype, *feature_sets: FeatureSet) -> Optional[FeatureSet]:
     weak_syllabicity = {Syllabicity.NONSYLLABIC, Syllabicity.ANAPTYCTIC}
     if (all(include({SoundSubtype}, features) == {SoundSubtype.SIMPLE_VOWEL} for features in feature_sets)
@@ -148,20 +173,22 @@ def combine_triphthong(left: FeatureSet, middle: FeatureSet, right: FeatureSet) 
 def combine_features(feature_sets: list[FeatureSet]) -> Optional[FeatureSet]:
     if len(feature_sets) <= 1:
         raise ValueError(f'Feature sets to combine should contain at least two sets (got {len(feature_sets)})')
+    interpretations = list(product(*map(interpret, feature_sets)))
     return next(
         (combined
-         for interpretation in product(*map(interpret, feature_sets))
          for combiner in {
              2: [
                  combine_affricate,
                  combine_diphthong,
                  combine_doubly_articulated,
                  combine_prenasalized,
+                 combine_release,
              ],
              3: [
                  combine_triphthong,
              ],
-         }.get(len(interpretation), [])
+         }.get(len(feature_sets), [])
+         for interpretation in interpretations
          if (combined := combiner(*interpretation)) is not None),
         None,
     )
