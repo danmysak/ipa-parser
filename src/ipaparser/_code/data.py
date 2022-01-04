@@ -29,6 +29,7 @@ __all__ = [
 
 COLUMN_DELIMITER = '\t'
 VALUE_DELIMITER = ', '
+DISJUNCTION_DELIMITER = ' | '
 PLACEHOLDER = '◌'
 NEGATIVE_PREFIX = '-'
 
@@ -152,9 +153,12 @@ def parse_combining_data(data: TabularData) -> CombiningData:
             raise DataError(f'Expected exactly three columns in each row')
         characters, requirements, transformations = row
         if len(requirements) != 1:
-            raise DataError(f'Expected exactly one required feature, got "{VALUE_DELIMITER.join(requirements)}"')
-        required_feature = get_feature(requirements[0])
-        to_append = [(required_feature, parse_transformation(transformation)) for transformation in transformations]
+            raise DataError(f'Expected exactly one required feature or disjunction of features,'
+                            f' got "{VALUE_DELIMITER.join(requirements)}"')
+        required_features = map(get_feature, requirements[0].split(DISJUNCTION_DELIMITER))
+        to_append = [(required_feature, parse_transformation(transformation))
+                     for required_feature in required_features
+                     for transformation in transformations]
         for definition in characters:
             combining = parse_combining(definition)
             if combining not in mapping:

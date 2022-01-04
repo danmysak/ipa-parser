@@ -21,8 +21,8 @@
 ◌̥, ◌̊	voiced	-voiced
 ◌̥, ◌̊	vowel	devoiced
 ◌̬	consonant	voiced
-◌̤, ◌ʱ	sound	breathy
-◌̰	sound	creaky
+◌̤, ◌ʱ	sound | tone letter	breathy
+◌̰	sound | tone letter	creaky
 ◌̣	sound	whispery
 
 ◌͈	sound	strong
@@ -40,14 +40,12 @@
 ◌̹, ◌͗	sound	more rounded
 ◌̜, ◌͑	sound	less rounded
 ◌ʷ	consonant	labialized
-◌ᵝ	vowel	compressed
-◌ᵝ	approximant	compressed
+◌ᵝ	vowel | approximant	compressed
 ◌͍	sound	labial spreading
 ◌ʲ	consonant	palatalized
 ◌ˠ, ◌̴	consonant	velarized
 ◌ˤ	sound	pharyngealized
-◌ˀ	sound	glottalized
-◌ˀ	tone letter	glottalized
+◌ˀ	sound | tone letter	glottalized
 ◌̘	vowel	advanced tongue root
 ◌̙	vowel	retracted tongue root
 ◌̃	sound	nasalized
