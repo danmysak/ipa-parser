@@ -2,9 +2,10 @@ from dataclasses import dataclass
 from typing import Any, Iterable, Optional, Union
 import unicodedata
 
+from .data import get_data
 from .definitions import BracketStrategy
 from .exceptions import BracketStrategyError, CombinedLengthError, CombinedSoundError
-from .strings import decompose
+from .strings import decompose, perform_substitutions
 
 __all__ = [
     'IPAConfig',
@@ -22,7 +23,7 @@ def process_brackets(brackets: Union[BracketStrategy, str]) -> BracketStrategy:
         raise BracketStrategyError(brackets, list(BracketStrategy))
 
 
-def process_combined(combined: Optional[Iterable[tuple[str, ...]]]) -> tuple[tuple[str, ...]]:
+def process_combined(combined: Optional[Iterable[tuple[str, ...]]], substitutions: bool) -> tuple[tuple[str, ...]]:
     result: list[tuple[str, ...]] = []
     for sequence in combined or []:
         if len(sequence) < 2:
@@ -31,7 +32,8 @@ def process_combined(combined: Optional[Iterable[tuple[str, ...]]]) -> tuple[tup
         for sound in sequence:
             if not sound or unicodedata.combining(sound[0]):
                 raise CombinedSoundError(sound)
-            current.append(decompose(sound))
+            decomposed = decompose(sound)
+            current.append(perform_substitutions(decomposed, get_data().substitutions) if substitutions else decomposed)
         result.append(tuple(current))
     return tuple(result)
 
@@ -68,4 +70,4 @@ class IPAConfig:
         """
         object.__setattr__(self, 'substitutions', process_substitutions(substitutions))
         object.__setattr__(self, 'brackets', process_brackets(brackets))
-        object.__setattr__(self, 'combined', process_combined(combined))
+        object.__setattr__(self, 'combined', process_combined(combined, self.substitutions))
