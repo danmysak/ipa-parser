@@ -61,7 +61,7 @@ class Matcher(Generic[T]):
     def match(self, positions: StringPositions, start: int) -> Optional[Match[T]]:
         for length in range(min(self._max_length, len(positions) - start), 0, -1):
             given = positions[start:start + length]
-            for required, data in self._mapping.get(to_string(given, combining=False), []):
-                if (extra := Matcher._match_with_extra(given, required)) is not None:
-                    return Match(length, required, data, extra)
+            for matched, data in self._mapping.get(to_string(given, combining=False), []):
+                if (extra := Matcher._match_with_extra(given, matched)) is not None:
+                    return Match(length, matched, data, extra)
         return None
