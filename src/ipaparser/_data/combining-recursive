@@ -58,16 +58,16 @@
 ◌ː	sound	long
 ◌ˑ, ◌ː	long	extra-long
 
-◌̋	sound	extra-high tone
-◌́	sound	high tone
-◌̄	sound	mid tone
-◌̀	sound	low tone
-◌̏	sound	extra-low tone
-◌̌	sound	rising tone
-◌̂	sound	falling tone
-◌᷄	sound	high/mid rising tone
-◌᷅	sound	low rising tone
-◌᷇	sound	high falling tone
-◌᷆	sound	low/mid falling tone
-◌᷈	sound	peaking tone
-◌᷉	sound	dipping tone
+◌̋	vowel | syllabic	extra-high tone
+◌́	vowel | syllabic	high tone
+◌̄	vowel | syllabic	mid tone
+◌̀	vowel | syllabic	low tone
+◌̏	vowel | syllabic	extra-low tone
+◌̌	vowel | syllabic	rising tone
+◌̂	vowel | syllabic	falling tone
+◌᷄	vowel | syllabic	high/mid rising tone
+◌᷅	vowel | syllabic	low rising tone
+◌᷇	vowel | syllabic	high falling tone
+◌᷆	vowel | syllabic	low/mid falling tone
+◌᷈	vowel | syllabic	peaking tone
+◌᷉	vowel | syllabic	dipping tone
