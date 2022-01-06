@@ -10,6 +10,7 @@ from .features import (
     Height,
     Manner,
     Place,
+    PlaceCategory,
     Release,
     Roundedness,
     SecondaryModifier,
@@ -117,7 +118,7 @@ def combine_doubly_articulated(left: FeatureSet, right: FeatureSet) -> Optional[
             and equivalent(left - {Manner.EJECTIVE},
                            right - {Manner.EJECTIVE},
                            {SoundSubtype, Manner, Voicing})
-            and not equivalent(left, right, {Place})):
+            and not equivalent(left, right, {PlaceCategory})):
         return ((left | right | {SoundSubtype.DOUBLY_ARTICULATED_CONSONANT})
                 - {SoundSubtype.SIMPLE_CONSONANT})
     else:
