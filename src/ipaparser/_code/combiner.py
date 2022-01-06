@@ -27,7 +27,7 @@ def apply_combining(combining: Combining, features: FeatureSet,
     meta_transformation_sets = [data.combining_meta.get(meta_combining, []) for meta_combining in meta or []]
     meta_used_by_index = [False for _ in meta_transformation_sets]
     for transformation in transformations:
-        if transformation.required in features:
+        if transformation.is_applicable(features):
             applicable.append(transformation)
             if transformation.is_positive:
                 for index, meta_transformations in enumerate(meta_transformation_sets):

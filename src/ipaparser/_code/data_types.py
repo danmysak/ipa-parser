@@ -49,6 +49,9 @@ class Transformation:
     altered: Feature
     is_positive: bool
 
+    def is_applicable(self, features: FeatureSet) -> bool:
+        return self.required in features and (self.altered in features) != self.is_positive
+
     def apply(self, features: FeatureSet) -> FeatureSet:
         return features | {self.altered} if self.is_positive else features - {self.altered}
 
