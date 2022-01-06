@@ -125,7 +125,10 @@ def combine_doubly_articulated(left: FeatureSet, right: FeatureSet) -> Optional[
 
 
 def combine_prenasalized(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
-    if left == extend(include({Place}, right) | {SoundSubtype.SIMPLE_CONSONANT, Manner.NASAL, Voicing.VOICED}):
+    base_extended = extend(include({Place}, right) | {SoundSubtype.SIMPLE_CONSONANT, Manner.NASAL})
+    if left == base_extended:
+        return right | {SecondaryModifier.PRENASALIZED, SecondaryModifier.VOICELESSLY_PRENASALIZED}
+    elif left == base_extended | Voicing.VOICED.extend():
         return right | {SecondaryModifier.PRENASALIZED}
     else:
         return None

@@ -20,5 +20,6 @@ class SecondaryModifier(Feature):
     R_COLORED = 'r-colored'
     NASALIZED = 'nasalized'
     PRENASALIZED = 'prenasalized'
+    VOICELESSLY_PRENASALIZED = 'voicelessly prenasalized'
     PRESTOPPED = 'prestopped'
     PREGLOTTALIZED = 'preglottalized'
