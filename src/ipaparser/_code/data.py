@@ -6,12 +6,12 @@ from .data_types import (
     Bracket,
     Combining,
     CombiningData,
+    CombiningType,
     Data,
     DataError,
     InnerBracketData,
     LetterData,
     OuterBracketData,
-    Position,
     SubstitutionData,
     SymbolData,
     Tie,
@@ -42,6 +42,7 @@ BREAKS = 'breaks'
 SUPRASEGMENTALS = 'suprasegmentals'
 COMBINING_BASIC = 'combining-basic'
 COMBINING_RECURSIVE = 'combining-recursive'
+COMBINING_META = 'combining-meta'
 TIES = 'ties'
 BRACKETS = 'brackets'
 SUBSTITUTIONS = 'substitutions'
@@ -125,9 +126,10 @@ def parse_combining(definition: str) -> Combining:
             or definition.startswith(PLACEHOLDER) == definition.endswith(PLACEHOLDER)):
         raise DataError(f'Invalid combining format or a combining string is longer than one character: "{definition}"')
     if definition.startswith(PLACEHOLDER):
+        character = definition.removeprefix(PLACEHOLDER)
         return Combining(
-            character=definition.removeprefix(PLACEHOLDER),
-            position=Position.FOLLOWING,
+            character=character,
+            type=CombiningType.DIACRITIC if unicodedata.combining(character) else CombiningType.FOLLOWING,
         )
     else:
         prefix = definition.removesuffix(PLACEHOLDER)
@@ -135,14 +137,15 @@ def parse_combining(definition: str) -> Combining:
             raise DataError(f'Definition starts with a combining character: "{" " + definition}"')
         return Combining(
             character=prefix,
-            position=Position.PRECEDING,
+            type=CombiningType.PRECEDING,
         )
 
 
-def parse_transformation(definition: str) -> Transformation:
+def parse_transformation(definition: str, required: Feature) -> Transformation:
     return Transformation(
-        feature=get_feature(definition.removeprefix(NEGATIVE_PREFIX)),
-        positive=not definition.startswith(NEGATIVE_PREFIX),
+        required=required,
+        altered=get_feature(definition.removeprefix(NEGATIVE_PREFIX)),
+        is_positive=not definition.startswith(NEGATIVE_PREFIX),
     )
 
 
@@ -156,8 +159,8 @@ def parse_combining_data(data: TabularData) -> CombiningData:
             raise DataError(f'Expected exactly one required feature or disjunction of features,'
                             f' got "{VALUE_DELIMITER.join(requirements)}"')
         required_features = map(get_feature, requirements[0].split(DISJUNCTION_DELIMITER))
-        to_append = [(required_feature, parse_transformation(transformation))
-                     for required_feature in required_features
+        to_append = [parse_transformation(transformation, required)
+                     for required in required_features
                      for transformation in transformations]
         for definition in characters:
             combining = parse_combining(definition)
@@ -237,6 +240,7 @@ def load_data() -> Data:
         suprasegmentals=parse_symbol_data(read(SUPRASEGMENTALS)),
         combining_basic=parse_combining_data(read(COMBINING_BASIC)),
         combining_recursive=parse_combining_data(read(COMBINING_RECURSIVE)),
+        combining_meta=parse_combining_data(read(COMBINING_META)),
         ties=ties,
         main_tie=main_tie,
         outer_brackets=outer_brackets,

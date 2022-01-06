@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Generic, Optional, TypeVar
 
-from .strings import StringPositions, to_string
+from .strings import StringPosition, StringPositions, to_string
 
 __all__ = [
     'Match',
@@ -36,15 +36,15 @@ class Matcher(Generic[T]):
             values.sort(key=lambda option: len(to_string(option[0])), reverse=True)
 
     @staticmethod
-    def _match_with_extra_single(given_position: str, required_position: str) -> Optional[list[str]]:
+    def _match_with_extra_single(given: StringPosition, required: StringPosition) -> Optional[list[str]]:
         extra: list[str] = []
         required_index = 0
-        for character in given_position:
-            if required_index < len(required_position) and required_position[required_index] == character:
+        for character in given:
+            if required_index < len(required) and required[required_index] == character:
                 required_index += 1
             else:
                 extra.append(character)
-        return extra if required_index == len(required_position) else None
+        return extra if required_index == len(required) else None
 
     @staticmethod
     def _match_with_extra(given: StringPositions, required: StringPositions) -> Optional[list[str]]:

@@ -9,6 +9,7 @@ __all__ = [
     'expand_brackets',
     'is_decomposed',
     'perform_substitutions',
+    'StringPosition',
     'StringPositions',
     'strip_brackets',
     'to_positions',
@@ -18,7 +19,10 @@ __all__ = [
 
 DECOMPOSED_FORM = 'NFD'
 
-StringPositions = tuple[str, ...]  # nonempty substrings starting with a non-combining character each
+StringPosition = str
+StringPositions = tuple[StringPosition, ...]
+# StringPositions are non-empty substrings starting with a non-combining character each (apart possibly from the
+# initial one, which might start with a combining character if such an input is provided by the user)
 
 
 def decompose(string: str) -> str:

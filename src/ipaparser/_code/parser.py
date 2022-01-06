@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import Optional
 
+from .combiner import apply_position, get_matcher, match_to_features
 from .data import get_data
-from .data_types import Position
 from .definitions import BracketStrategy
 from .features import FeatureSet
 from .ipa_config import IPAConfig
@@ -18,7 +18,6 @@ from .strings import (
     to_positions,
     to_string,
 )
-from .transformer import apply, get_matcher, match_to_features
 
 __all__ = [
     'Parser',
@@ -83,10 +82,10 @@ class Parser:
         def iterate(initial: int, step: int, final: int) -> int:
             nonlocal features
             position = initial
-            while position != final and (next_features := apply(
-                self._tie_free[(next_position := position + step)],
-                Position.PRECEDING if step < 0 else Position.FOLLOWING,
-                features,
+            while position != final and (next_features := apply_position(
+                position=self._tie_free[(next_position := position + step)],
+                features=features,
+                is_preceding=step < 0,
             )) is not None:
                 position = next_position
                 features = next_features

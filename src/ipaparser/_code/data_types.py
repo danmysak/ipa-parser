@@ -8,13 +8,13 @@ __all__ = [
     'Bracket',
     'Combining',
     'CombiningData',
+    'CombiningType',
     'Data',
     'DataError',
     'InnerBracketData',
     'Letter',
     'LetterData',
     'OuterBracketData',
-    'Position',
     'SubstitutionData',
     'Symbol',
     'SymbolData',
@@ -28,34 +28,36 @@ class DataError(Exception):
     pass
 
 
-class Position(str, Enum):
-    PRECEDING = 'preceding'
+class CombiningType(str, Enum):
+    DIACRITIC = 'diacritic'
     FOLLOWING = 'following'
+    PRECEDING = 'preceding'
 
 
 @dataclass(frozen=True)
 class Combining:
     character: str
-    position: Position
+    type: CombiningType
 
     def apply(self, string: str) -> str:
-        return self.character + string if self.position == Position.PRECEDING else string + self.character
+        return self.character + string if self.type == CombiningType.PRECEDING else string + self.character
 
 
 @dataclass(frozen=True)
 class Transformation:
-    feature: Feature
-    positive: bool
+    required: Feature
+    altered: Feature
+    is_positive: bool
 
     def apply(self, features: FeatureSet) -> FeatureSet:
-        return features | {self.feature} if self.positive else features - {self.feature}
+        return features | {self.altered} if self.is_positive else features - {self.altered}
 
 
 Letter = str  # guaranteed to be non-empty
 Symbol = str  # guaranteed to be non-empty
 LetterData = dict[Letter, FeatureSet]
 SymbolData = dict[Symbol, Feature]
-CombiningData = dict[Combining, list[tuple[Feature, Transformation]]]
+CombiningData = dict[Combining, list[Transformation]]
 Tie = str  # guaranteed to be of length 1
 TieData = set[Tie]
 Bracket = str  # guaranteed to be of length 1
@@ -72,6 +74,7 @@ class Data:
     suprasegmentals: SymbolData
     combining_basic: CombiningData
     combining_recursive: CombiningData
+    combining_meta: CombiningData
     ties: TieData
     main_tie: Tie
     outer_brackets: OuterBracketData
