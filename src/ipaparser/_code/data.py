@@ -132,11 +132,11 @@ def parse_combining(definition: str) -> Combining:
             type=CombiningType.DIACRITIC if unicodedata.combining(character) else CombiningType.FOLLOWING,
         )
     else:
-        prefix = definition.removesuffix(PLACEHOLDER)
-        if unicodedata.combining(prefix):
+        character = definition.removesuffix(PLACEHOLDER)
+        if unicodedata.combining(character):
             raise DataError(f'Definition starts with a combining character: "{" " + definition}"')
         return Combining(
-            character=prefix,
+            character=character,
             type=CombiningType.PRECEDING,
         )
 
