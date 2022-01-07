@@ -150,7 +150,7 @@ def combine_prenasalized(left: FeatureSet, right: FeatureSet) -> Optional[Featur
 
 
 def combine_release(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
-    if include({SoundSubtype, Manner}, left) != {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}:
+    if include({SoundSubtype, Manner, Release}, left) != {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}:
         return None
     if include({SoundSubtype, Manner, Voicing}, right) == {SoundSubtype.SIMPLE_CONSONANT, Manner.NASAL, Voicing.VOICED}:
         return left | {Release.NASAL_RELEASE}

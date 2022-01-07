@@ -70,7 +70,7 @@ class IPASymbol:
         :param string: The string to parse (like 'a', 'pʰ', '˦', or 'ˈˈ').
         :param config: Parsing parameters.
         """
-        parser = Parser(string, config)
+        parser = Parser(string, config, all_tied=True)
         symbols = parser.parse()
         self._set_raw(symbols[0] if len(symbols) == 1 else RawSymbol(parser.normalized))
 

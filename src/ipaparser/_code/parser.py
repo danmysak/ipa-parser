@@ -37,12 +37,13 @@ class Parser:
     _positions: StringPositions
     _tie_free: StringPositions
     _total: int
+    _all_tied: bool
 
     @property
     def normalized(self) -> str:
         return self._string
 
-    def __init__(self, string: str, config: IPAConfig) -> None:
+    def __init__(self, string: str, config: IPAConfig, *, all_tied: bool = False) -> None:
         self._string = self._normalize(string, config)
         self._positions = to_positions(self._string)
         ties = get_data().ties
@@ -51,6 +52,7 @@ class Parser:
                                        if index == 0 or character not in ties)
                                for position in self._positions)
         self._total = len(self._positions)
+        self._all_tied = all_tied
 
     @staticmethod
     def _normalize(string: str, config: IPAConfig) -> str:
@@ -72,7 +74,8 @@ class Parser:
                        for position in range(max(start, 0), min(end, self._total)))
 
     def _is_tied(self, position: int) -> bool:
-        return len(self._tie_free[position]) < len(self._positions[position])
+        return ((self._all_tied and position < self._total - 1)
+                or len(self._tie_free[position]) < len(self._positions[position]))
 
     def _expand(self, segment: Segment, min_position: int, max_position: int) -> Segment:
         features = segment.features
