@@ -34,7 +34,7 @@
 ◌̝, ◌˔	sound	+raised	!lowered
 ◌̞, ◌˕	sound	+lowered	!raised
 
-◌̹, ◌͗	rounded | labialized	+more rounded	!(roundedness modifier)
+◌̹, ◌͗	sound	+more rounded	!(roundedness modifier)
 ◌̜, ◌͑	rounded | labialized	+less rounded	!(roundedness modifier)
 ◌ᵝ	vowel | approximant	+compressed	!(roundedness modifier)
 ◌͍	sound	+labial spreading	!(roundedness modifier)
@@ -58,16 +58,16 @@
 ◌ː	sound	+long	!extra-short
 ◌ˑ, ◌ː	long	+extra-long	!extra-short
 
-◌̋	vowel | syllabic	+extra-high tone	!(tone)
-◌́	vowel | syllabic	+high tone	!(tone)
-◌̄	vowel | syllabic	+mid tone	!(tone)
-◌̀	vowel | syllabic	+low tone	!(tone)
-◌̏	vowel | syllabic	+extra-low tone	!(tone)
-◌̌	vowel | syllabic	+rising tone	!(tone)
-◌̂	vowel | syllabic	+falling tone	!(tone)
-◌᷄	vowel | syllabic	+high/mid rising tone	!(tone)
-◌᷅	vowel | syllabic	+low rising tone	!(tone)
-◌᷇	vowel | syllabic	+high falling tone	!(tone)
-◌᷆	vowel | syllabic	+low/mid falling tone	!(tone)
-◌᷈	vowel | syllabic	+peaking tone	!(tone)
-◌᷉	vowel | syllabic	+dipping tone	!(tone)
+◌̋	sound	+extra-high tone	!(tone)
+◌́	sound	+high tone	!(tone)
+◌̄	sound	+mid tone	!(tone)
+◌̀	sound	+low tone	!(tone)
+◌̏	sound	+extra-low tone	!(tone)
+◌̌	sound	+rising tone	!(tone)
+◌̂	sound	+falling tone	!(tone)
+◌᷄	sound	+high/mid rising tone	!(tone)
+◌᷅	sound	+low rising tone	!(tone)
+◌᷇	sound	+high falling tone	!(tone)
+◌᷆	sound	+low/mid falling tone	!(tone)
+◌᷈	sound	+peaking tone	!(tone)
+◌᷉	sound	+dipping tone	!(tone)
