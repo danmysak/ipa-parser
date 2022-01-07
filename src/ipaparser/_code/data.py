@@ -175,8 +175,8 @@ def parse_change(definition: str) -> Optional[Change]:
                 feature=get_feature(definition.removeprefix(prefix)),
                 is_positive=is_positive,
             )
-    raise DataError(f'Expected either "{ADD_PREFIX}" or "{SUBTRACT_PREFIX}" in front of an altered feature,'
-                    f' got "{definition}"')
+    raise DataError(f'Expected either "{ADD_PREFIX}" or "{SUBTRACT_PREFIX}" in front of an altered feature'
+                    f' (or "{NO_CHANGE}" for no altered features), got "{definition}"')
 
 
 def parse_combining_data(data: TabularData) -> CombiningData:
