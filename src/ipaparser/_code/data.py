@@ -5,6 +5,7 @@ import unicodedata
 from .cacher import with_cache
 from .data_types import (
     Bracket,
+    Change,
     Combining,
     CombiningData,
     CombiningType,
@@ -34,6 +35,7 @@ DISJUNCTION_DELIMITER = ' | '
 PLACEHOLDER = '◌'
 ADD_PREFIX = '+'
 SUBTRACT_PREFIX = '-'
+NO_CHANGE = '='
 INCOMPATIBLE_PREFIX = '!'
 INCOMPATIBLE_KIND_BRACKETS = '(', ')'
 
@@ -164,11 +166,16 @@ def parse_incompatible(definition: str) -> FeatureSet:
             else frozenset({get_feature(value)}))
 
 
-def parse_transformation(definition: str, required: Feature, incompatible: Optional[FeatureSet]) -> Transformation:
+def parse_change(definition: str) -> Optional[Change]:
+    if definition == NO_CHANGE:
+        return None
     for prefix, is_positive in ((ADD_PREFIX, True), (SUBTRACT_PREFIX, False)):
         if definition.startswith(prefix):
-            return Transformation(required, incompatible, get_feature(definition.removeprefix(prefix)), is_positive)
-    raise DataError(f'Expected either "{ADD_PREFIX}" or "{SUBTRACT_PREFIX}" in front of a transformed feature,'
+            return Change(
+                feature=get_feature(definition.removeprefix(prefix)),
+                is_positive=is_positive,
+            )
+    raise DataError(f'Expected either "{ADD_PREFIX}" or "{SUBTRACT_PREFIX}" in front of an altered feature,'
                     f' got "{definition}"')
 
 
@@ -177,7 +184,7 @@ def parse_combining_data(data: TabularData) -> CombiningData:
     for row in data:
         if len(row) < 3:
             raise DataError(f'Expected at least three columns in each row, got {len(row)} in "{row}"')
-        characters, requirements, transformations, *incompatible_cells = row
+        characters, requirements, changes, *incompatible_cells = row
         if len(incompatible_cells) > 1:
             raise DataError(f'Row has an unexpected tail: "{incompatible_cells[1:]}"')
         incompatible_content = incompatible_cells[0] if incompatible_cells else None
@@ -192,9 +199,9 @@ def parse_combining_data(data: TabularData) -> CombiningData:
             incompatible = parse_incompatible(incompatible_content[0])
         else:
             incompatible = None
-        to_append = [parse_transformation(transformation, required, incompatible)
+        to_append = [Transformation(required, incompatible, parse_change(change))
                      for required in required_features
-                     for transformation in transformations]
+                     for change in changes]
         for definition in characters:
             combining = parse_combining(definition)
             if combining not in mapping:

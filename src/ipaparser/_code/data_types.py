@@ -7,6 +7,7 @@ from .features import Feature, FeatureSet
 
 __all__ = [
     'Bracket',
+    'Change',
     'Combining',
     'CombiningData',
     'CombiningType',
@@ -45,19 +46,29 @@ class Combining:
 
 
 @dataclass(frozen=True)
-class Transformation:
-    required: Feature
-    incompatible: Optional[FeatureSet]
-    altered: Feature
+class Change:
+    feature: Feature
     is_positive: bool
 
+
+@dataclass(frozen=True)
+class Transformation:
+    required: Optional[Feature] = None
+    incompatible: Optional[FeatureSet] = None
+    change: Optional[Change] = None
+
     def is_applicable(self, features: FeatureSet) -> bool:
-        return (self.required in features
-                and (self.altered in features) != self.is_positive
-                and (self.incompatible is None or features.isdisjoint(self.incompatible)))
+        return ((self.required is None or self.required in features)
+                and (self.incompatible is None or features.isdisjoint(self.incompatible))
+                and (self.change is None or (self.change.feature in features) != self.change.is_positive))
 
     def apply(self, features: FeatureSet) -> FeatureSet:
-        return features | {self.altered} if self.is_positive else features - {self.altered}
+        if self.change is None:
+            return features
+        elif self.change.is_positive:
+            return features | {self.change.feature}
+        else:
+            return features - {self.change.feature}
 
 
 Letter = str  # guaranteed to be non-empty

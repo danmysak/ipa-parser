@@ -29,10 +29,10 @@ def apply_combining(combining: Combining, features: FeatureSet,
     for transformation in transformations:
         if transformation.is_applicable(features):
             applicable.append(transformation)
-            if transformation.is_positive:
+            if transformation.change and transformation.change.is_positive:
                 for index, meta_transformations in enumerate(meta_transformation_sets):
                     for meta_transformation in meta_transformations:
-                        if meta_transformation.required == transformation.altered:
+                        if meta_transformation.required == transformation.change.feature:
                             applicable.append(meta_transformation)
                             meta_used_by_index[index] = True
     if applicable and all(meta_used_by_index):
