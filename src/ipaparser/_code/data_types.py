@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
+from typing import Optional
 
 from .definitions import TranscriptionType
 from .features import Feature, FeatureSet
@@ -46,11 +47,14 @@ class Combining:
 @dataclass(frozen=True)
 class Transformation:
     required: Feature
+    incompatible: Optional[FeatureSet]
     altered: Feature
     is_positive: bool
 
     def is_applicable(self, features: FeatureSet) -> bool:
-        return self.required in features and (self.altered in features) != self.is_positive
+        return (self.required in features
+                and (self.altered in features) != self.is_positive
+                and (self.incompatible is None or features.isdisjoint(self.incompatible)))
 
     def apply(self, features: FeatureSet) -> FeatureSet:
         return features | {self.altered} if self.is_positive else features - {self.altered}

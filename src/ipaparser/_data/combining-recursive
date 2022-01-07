@@ -1,18 +1,18 @@
 ◌̪, ◌͆	alveolar	-alveolar, +dental
-◌ʼ	consonant	+ejective
+◌ʼ	consonant	+ejective	!voiced
 
 ◌̩, ◌̍	consonant	+syllabic
 ◌̯, ◌̑	vowel	+nonsyllabic
 
-◌̚	stop	+no audible release
-◌ⁿ	stop	+nasal release
-◌ˡ	stop	+lateral release
-◌ᶿ	stop	+voiceless dental fricative release
-◌ˢ	stop	+voiceless alveolar sibilant fricative release
-◌ˣ	stop	+voiceless velar fricative release
+◌̚	stop	+no audible release	!(release)
+◌ⁿ	stop	+nasal release	!(release)
+◌ˡ	stop	+lateral release	!(release)
+◌ᶿ	stop	+voiceless dental fricative release	!(release)
+◌ˢ	stop	+voiceless alveolar sibilant fricative release	!(release)
+◌ˣ	stop	+voiceless velar fricative release	!(release)
 
-◌ʰ	consonant	+aspirated
-◌˭	consonant	+unaspirated
+◌ʰ	consonant	+aspirated	!unaspirated
+◌˭	consonant	+unaspirated	!aspirated
 ʰ◌	consonant	+preaspirated
 
 ◌̥, ◌̊	voiced	-voiced
@@ -25,49 +25,49 @@
 ◌͈	consonant	+strong
 ◌͉	consonant	+weak
 
-◌̺	coronal	+apical
-◌̻	coronal	+laminal
-◌̟, ◌˖	sound	+advanced
-◌̠, ◌˗	sound	+retracted
+◌̺	coronal	+apical	!laminal
+◌̻	coronal	+laminal	!apical
+◌̟, ◌˖	sound	+advanced	!retracted
+◌̠, ◌˗	sound	+retracted	!advanced
 ◌̈	vowel	+centralized
 ◌̽	vowel	+mid-centralized
-◌̝, ◌˔	sound	+raised
-◌̞, ◌˕	sound	+lowered
+◌̝, ◌˔	sound	+raised	!lowered
+◌̞, ◌˕	sound	+lowered	!raised
 
-◌̹, ◌͗	sound	+more rounded
-◌̜, ◌͑	sound	+less rounded
-◌ᵝ	vowel | approximant	+compressed
-◌͍	sound	+labial spreading
+◌̹, ◌͗	rounded | labialized	+more rounded	!(roundedness modifier)
+◌̜, ◌͑	rounded | labialized	+less rounded	!(roundedness modifier)
+◌ᵝ	vowel | approximant	+compressed	!(roundedness modifier)
+◌͍	sound	+labial spreading	!(roundedness modifier)
 ◌ʷ	consonant	+labialized
 ◌ᶣ	consonant	+labialized, +palatalized
 ◌ʲ	consonant	+palatalized
 ◌ˠ, ◌̴	consonant	+velarized
 ◌ˤ	sound	+pharyngealized
 ◌ˀ	sound | tone letter	+glottalized
-◌̘	vowel	+advanced tongue root
-◌̙	vowel	+retracted tongue root
-◌̃	sound	+nasalized
+◌̘	vowel	+advanced tongue root	!retracted tongue root
+◌̙	vowel	+retracted tongue root	!advanced tongue root
+◌̃	sound	+nasalized	!nasal
 ◌˞, ◌ʴ	vowel	+r-colored
 
-ᵐ◌, ᶬ◌, ⁿ◌, ᶯ◌, ᶮ◌, ᵑ◌, ᶰ◌	consonant	+prenasalized
+ᵐ◌, ᶬ◌, ⁿ◌, ᶯ◌, ᶮ◌, ᵑ◌, ᶰ◌	consonant	+prenasalized	!nasal
 ᵇ◌, ᵈ◌, ᶢ◌	nasal | approximant	+prestopped
 ˀ◌	stop	+preglottalized
 
-◌̆	sound	+extra-short
-◌ˑ	sound	+half-long
-◌ː	sound	+long
-◌ˑ, ◌ː	long	+extra-long
+◌̆	sound	+extra-short	!(length)
+◌ˑ	sound	+half-long	!extra-short
+◌ː	sound	+long	!extra-short
+◌ˑ, ◌ː	long	+extra-long	!extra-short
 
-◌̋	vowel | syllabic	+extra-high tone
-◌́	vowel | syllabic	+high tone
-◌̄	vowel | syllabic	+mid tone
-◌̀	vowel | syllabic	+low tone
-◌̏	vowel | syllabic	+extra-low tone
-◌̌	vowel | syllabic	+rising tone
-◌̂	vowel | syllabic	+falling tone
-◌᷄	vowel | syllabic	+high/mid rising tone
-◌᷅	vowel | syllabic	+low rising tone
-◌᷇	vowel | syllabic	+high falling tone
-◌᷆	vowel | syllabic	+low/mid falling tone
-◌᷈	vowel | syllabic	+peaking tone
-◌᷉	vowel | syllabic	+dipping tone
+◌̋	vowel | syllabic	+extra-high tone	!(tone)
+◌́	vowel | syllabic	+high tone	!(tone)
+◌̄	vowel | syllabic	+mid tone	!(tone)
+◌̀	vowel | syllabic	+low tone	!(tone)
+◌̏	vowel | syllabic	+extra-low tone	!(tone)
+◌̌	vowel | syllabic	+rising tone	!(tone)
+◌̂	vowel | syllabic	+falling tone	!(tone)
+◌᷄	vowel | syllabic	+high/mid rising tone	!(tone)
+◌᷅	vowel | syllabic	+low rising tone	!(tone)
+◌᷇	vowel | syllabic	+high falling tone	!(tone)
+◌᷆	vowel | syllabic	+low/mid falling tone	!(tone)
+◌᷈	vowel | syllabic	+peaking tone	!(tone)
+◌᷉	vowel | syllabic	+dipping tone	!(tone)

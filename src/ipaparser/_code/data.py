@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Optional, Type
 import unicodedata
 
 from .cacher import with_cache
@@ -19,7 +20,7 @@ from .data_types import (
     Transformation,
 )
 from .definitions import TranscriptionType
-from .feature_helper import find_feature
+from .feature_helper import find_feature, find_feature_kind
 from .features import Feature, FeatureSet
 from .strings import is_decomposed
 
@@ -31,8 +32,11 @@ COLUMN_DELIMITER = '\t'
 VALUE_DELIMITER = ', '
 DISJUNCTION_DELIMITER = ' | '
 PLACEHOLDER = '◌'
-POSITIVE_PREFIX = '+'
-NEGATIVE_PREFIX = '-'
+ADD_PREFIX = '+'
+SUBTRACT_PREFIX = '-'
+INCOMPATIBLE_PREFIX = '!'
+INCOMPATIBLE_KIND_BRACKETS = '(', ')'
+
 
 DIRECTORY = Path(__file__).parent.parent / '_data'
 
@@ -74,6 +78,13 @@ def get_feature(value: str) -> Feature:
     if feature is None:
         raise DataError(f'Unknown feature: "{value}"')
     return feature
+
+
+def get_feature_kind(value: str) -> Type[Feature]:
+    kind = find_feature_kind(value)
+    if kind is None:
+        raise DataError(f'Unknown feature kind: "{value}"')
+    return kind
 
 
 def parse_letter_data(data: TabularData) -> LetterData:
@@ -142,25 +153,46 @@ def parse_combining(definition: str) -> Combining:
         )
 
 
-def parse_transformation(definition: str, required: Feature) -> Transformation:
-    for prefix, is_positive in ((POSITIVE_PREFIX, True), (NEGATIVE_PREFIX, False)):
+def parse_incompatible(definition: str) -> FeatureSet:
+    if not definition.startswith(INCOMPATIBLE_PREFIX):
+        raise DataError(f'Definition of incompatible features must start with "{INCOMPATIBLE_PREFIX}",'
+                        f' got "{definition}"')
+    value = definition.removeprefix(INCOMPATIBLE_PREFIX)
+    left_bracket, right_bracket = INCOMPATIBLE_KIND_BRACKETS
+    return (frozenset(get_feature_kind(value.removeprefix(left_bracket).removesuffix(right_bracket)))
+            if value.startswith(left_bracket) and value.endswith(right_bracket)
+            else frozenset({get_feature(value)}))
+
+
+def parse_transformation(definition: str, required: Feature, incompatible: Optional[FeatureSet]) -> Transformation:
+    for prefix, is_positive in ((ADD_PREFIX, True), (SUBTRACT_PREFIX, False)):
         if definition.startswith(prefix):
-            return Transformation(required, get_feature(definition.removeprefix(prefix)), is_positive)
-    raise DataError(f'Expected either "{POSITIVE_PREFIX}" or "{NEGATIVE_PREFIX}" in front of a transformed feature,'
+            return Transformation(required, incompatible, get_feature(definition.removeprefix(prefix)), is_positive)
+    raise DataError(f'Expected either "{ADD_PREFIX}" or "{SUBTRACT_PREFIX}" in front of a transformed feature,'
                     f' got "{definition}"')
 
 
 def parse_combining_data(data: TabularData) -> CombiningData:
     mapping: CombiningData = {}
     for row in data:
-        if len(row) != 3:
-            raise DataError(f'Expected exactly three columns in each row')
-        characters, requirements, transformations = row
+        if len(row) < 3:
+            raise DataError(f'Expected at least three columns in each row, got {len(row)} in "{row}"')
+        characters, requirements, transformations, *incompatible_cells = row
+        if len(incompatible_cells) > 1:
+            raise DataError(f'Row has an unexpected tail: "{incompatible_cells[1:]}"')
+        incompatible_content = incompatible_cells[0] if incompatible_cells else None
         if len(requirements) != 1:
             raise DataError(f'Expected exactly one required feature or disjunction of features,'
                             f' got "{VALUE_DELIMITER.join(requirements)}"')
         required_features = map(get_feature, requirements[0].split(DISJUNCTION_DELIMITER))
-        to_append = [parse_transformation(transformation, required)
+        if incompatible_content is not None:
+            if len(incompatible_content) != 1:
+                raise DataError(f'Expected exactly one incompatible feature or feature kind,'
+                                f' got "{VALUE_DELIMITER.join(incompatible_content)}"')
+            incompatible = parse_incompatible(incompatible_content[0])
+        else:
+            incompatible = None
+        to_append = [parse_transformation(transformation, required, incompatible)
                      for required in required_features
                      for transformation in transformations]
         for definition in characters:
