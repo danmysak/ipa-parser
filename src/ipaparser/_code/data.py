@@ -31,6 +31,7 @@ COLUMN_DELIMITER = '\t'
 VALUE_DELIMITER = ', '
 DISJUNCTION_DELIMITER = ' | '
 PLACEHOLDER = '◌'
+POSITIVE_PREFIX = '+'
 NEGATIVE_PREFIX = '-'
 
 DIRECTORY = Path(__file__).parent.parent / '_data'
@@ -142,11 +143,11 @@ def parse_combining(definition: str) -> Combining:
 
 
 def parse_transformation(definition: str, required: Feature) -> Transformation:
-    return Transformation(
-        required=required,
-        altered=get_feature(definition.removeprefix(NEGATIVE_PREFIX)),
-        is_positive=not definition.startswith(NEGATIVE_PREFIX),
-    )
+    for prefix, is_positive in ((POSITIVE_PREFIX, True), (NEGATIVE_PREFIX, False)):
+        if definition.startswith(prefix):
+            return Transformation(required, get_feature(definition.removeprefix(prefix)), is_positive)
+    raise DataError(f'Expected either "{POSITIVE_PREFIX}" or "{NEGATIVE_PREFIX}" in front of a transformed feature,'
+                    f' got "{definition}"')
 
 
 def parse_combining_data(data: TabularData) -> CombiningData:
