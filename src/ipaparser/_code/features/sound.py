@@ -18,6 +18,7 @@ class SoundType(Feature):
 class SoundSubtype(Feature):
     SIMPLE_CONSONANT = 'simple consonant'
     DOUBLY_ARTICULATED_CONSONANT = 'doubly articulated consonant'
+    CONTOUR_CLICK = 'contour click'
     SIMPLE_VOWEL = 'simple vowel'
     DIPHTHONG = 'diphthong'
     TRIPHTHONG = 'triphthong'
@@ -29,6 +30,7 @@ class SoundSubtype(Feature):
 SOUND_SUBTYPE_TO_TYPE = assert_feature_mapping({
     SoundSubtype.SIMPLE_CONSONANT: SoundType.CONSONANT,
     SoundSubtype.DOUBLY_ARTICULATED_CONSONANT: SoundType.CONSONANT,
+    SoundSubtype.CONTOUR_CLICK: SoundType.CONSONANT,
     SoundSubtype.SIMPLE_VOWEL: SoundType.VOWEL,
     SoundSubtype.DIPHTHONG: SoundType.VOWEL,
     SoundSubtype.TRIPHTHONG: SoundType.VOWEL,

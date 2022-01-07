@@ -125,6 +125,20 @@ def combine_doubly_articulated(left: FeatureSet, right: FeatureSet) -> Optional[
         return None
 
 
+def combine_contour_click(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
+    if (include({SoundSubtype}, left) == {SoundSubtype.SIMPLE_CONSONANT}
+            and Manner.CLICK in left
+            and include({SoundSubtype, Place}, right) == {SoundSubtype.SIMPLE_CONSONANT, Place.UVULAR}):
+        manners: dict[FeatureSet, Feature] = {
+            frozenset({Manner.STOP}): Manner.STOP,
+            frozenset({Manner.FRICATIVE}): Manner.AFFRICATE,
+        }
+        if (right_manner := include({Manner}, right - {Manner.EJECTIVE})) in manners:
+            return ((left | (right - right_manner) | {SoundSubtype.CONTOUR_CLICK, manners[right_manner]})
+                    - {SoundSubtype.SIMPLE_CONSONANT})
+    return None
+
+
 def combine_prenasalized(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
     base_extended = extend(include({Place}, right) | {SoundSubtype.SIMPLE_CONSONANT, Manner.NASAL})
     if left == base_extended:
@@ -201,6 +215,7 @@ def combine_features(feature_sets: list[FeatureSet]) -> Optional[FeatureSet]:
                  combine_affricate,
                  combine_diphthong,
                  combine_doubly_articulated,
+                 combine_contour_click,
                  combine_prenasalized,
                  combine_release,
              ],
