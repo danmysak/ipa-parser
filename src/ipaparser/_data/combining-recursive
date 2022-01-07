@@ -13,7 +13,7 @@
 
 ◌ʰ	consonant	+aspirated	!unaspirated
 ◌˭	consonant	+unaspirated	!aspirated
-ʰ◌	consonant	+preaspirated
+ʰ◌	consonant	+preaspirated	!voiced
 
 ◌̥, ◌̊	voiced	-voiced
 ◌̥, ◌̊	vowel	+devoiced
