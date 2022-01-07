@@ -169,11 +169,11 @@ def combine_polyphthong(subtype: SoundSubtype, *feature_sets: FeatureSet) -> Opt
 
 
 def combine_diphthong(left: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
-    return combine_polyphthong(SoundSubtype.DIPHTHONG_VOWEL, left, right)
+    return combine_polyphthong(SoundSubtype.DIPHTHONG, left, right)
 
 
 def combine_triphthong(left: FeatureSet, middle: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
-    return combine_polyphthong(SoundSubtype.TRIPHTHONG_VOWEL, left, middle, right)
+    return combine_polyphthong(SoundSubtype.TRIPHTHONG, left, middle, right)
 
 
 def combine_triple_left_to_right(left: FeatureSet, middle: FeatureSet, right: FeatureSet) -> Optional[FeatureSet]:
