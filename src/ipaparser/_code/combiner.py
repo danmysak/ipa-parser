@@ -3,7 +3,7 @@ from typing import Iterator, Optional
 
 from .cacher import with_cache
 from .data import get_data
-from .data_types import Combining, CombiningType, DataError, LetterData, SymbolData, Transformation
+from .data_types import Combining, CombiningType, DataError, LetterData, SymbolData
 from .feature_helper import extend
 from .features import FeatureSet
 from .matcher import Match, Matcher
@@ -21,33 +21,20 @@ def apply_combining(combining: Combining, features: FeatureSet,
                     *, basic: bool = False, meta: Optional[list[Combining]] = None) -> Optional[FeatureSet]:
     data = get_data()
     transformations = (data.combining_basic if basic else data.combining_recursive).get(combining, [])
-    applicable: list[Transformation] = []
-    # Transformations should not be applied as we go: otherwise we would have {} -> {long} -> {extra-long} for
-    # a single 'ː' as well as broken transformations of the form "C  f1  -f1, f2"
-    meta_transformation_sets = [data.combining_meta.get(meta_combining, []) for meta_combining in meta or []]
-    meta_used_by_index = [False for _ in meta_transformation_sets]
     for transformation in transformations:
         if transformation.is_applicable(features):
-            applicable.append(transformation)
-            if transformation.change and transformation.change.is_positive:
-                for index, meta_transformations in enumerate(meta_transformation_sets):
-                    for meta_transformation in meta_transformations:
-                        if meta_transformation.required == transformation.change.feature:
-                            applicable.append(meta_transformation)
-                            meta_used_by_index[index] = True
-    if applicable and all(meta_used_by_index):
-        for transformation in applicable:
             features = transformation.apply(features)
-        return features
-    else:
-        return None
-
-
-def apply_combining_sequence(sequence: list[Combining], features: FeatureSet) -> Optional[FeatureSet]:
-    for combining in sequence:
-        if (features := apply_combining(combining, features)) is None:
-            break
-    return features
+            positive_changes = {change.feature for change in transformation.changes if change.is_positive}
+            for index, meta_transformations in enumerate(data.combining_meta.get(meta_combining, [])
+                                                         for meta_combining in meta or []):
+                for meta_transformation in meta_transformations:
+                    if meta_transformation.required == positive_changes and meta_transformation.is_applicable(features):
+                        features = meta_transformation.apply(features)
+                        break
+                else:
+                    return None
+            return features
+    return None
 
 
 def apply_position(position: StringPosition, features: FeatureSet, *, is_preceding: bool) -> Optional[FeatureSet]:
@@ -105,7 +92,17 @@ get_matcher = with_cache(build_matcher)
 
 
 def match_to_features(match: Match[FeatureSet]) -> Optional[FeatureSet]:
-    return apply_combining_sequence(
-        sequence=[Combining(diacritic, CombiningType.DIACRITIC) for diacritic in sorted(set(match.extra))],
-        features=match.data,
-    )
+    features = match.data
+    combinings = [Combining(diacritic, CombiningType.DIACRITIC) for diacritic in match.extra]
+    remaining = set(combinings)
+    while True:
+        updated = False
+        for combining in combinings:
+            if combining in remaining and (next_features := apply_combining(combining, features)) is not None:
+                features = next_features
+                remaining.remove(combining)
+                updated = True
+        if not remaining:
+            return features
+        if not updated:
+            return None

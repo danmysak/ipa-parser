@@ -32,6 +32,7 @@ __all__ = [
 COLUMN_DELIMITER = '\t'
 VALUE_DELIMITER = ', '
 DISJUNCTION_DELIMITER = ' | '
+CONJUNCTION_DELIMITER = ' & '
 PLACEHOLDER = '◌'
 ADD_PREFIX = '+'
 SUBTRACT_PREFIX = '-'
@@ -80,6 +81,10 @@ def get_feature(value: str) -> Feature:
     if feature is None:
         raise DataError(f'Unknown feature: "{value}"')
     return feature
+
+
+def get_feature_conjunction(value: str) -> FeatureSet:
+    return frozenset(map(get_feature, value.split(CONJUNCTION_DELIMITER)))
 
 
 def get_feature_kind(value: str) -> Type[Feature]:
@@ -189,19 +194,18 @@ def parse_combining_data(data: TabularData) -> CombiningData:
             raise DataError(f'Row has an unexpected tail: "{incompatible_cells[1:]}"')
         incompatible_content = incompatible_cells[0] if incompatible_cells else None
         if len(requirements) != 1:
-            raise DataError(f'Expected exactly one required feature or disjunction of features,'
+            raise DataError(f'Expected exactly one required feature or boolean feature formula,'
                             f' got "{VALUE_DELIMITER.join(requirements)}"')
-        required_features = map(get_feature, requirements[0].split(DISJUNCTION_DELIMITER))
+        required_feature_sets = map(get_feature_conjunction, requirements[0].split(DISJUNCTION_DELIMITER))
         if incompatible_content is not None:
             if len(incompatible_content) != 1:
                 raise DataError(f'Expected exactly one incompatible feature or feature kind,'
                                 f' got "{VALUE_DELIMITER.join(incompatible_content)}"')
             incompatible = parse_incompatible(incompatible_content[0])
         else:
-            incompatible = None
-        to_append = [Transformation(required, incompatible, parse_change(change))
-                     for required in required_features
-                     for change in changes]
+            incompatible = frozenset()
+        to_append = [Transformation(required, incompatible, list(filter(None, map(parse_change, changes))))
+                     for required in required_feature_sets]
         for definition in characters:
             combining = parse_combining(definition)
             if combining not in mapping:

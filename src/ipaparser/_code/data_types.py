@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
 
 from .definitions import TranscriptionType
 from .features import Feature, FeatureSet
@@ -53,22 +52,19 @@ class Change:
 
 @dataclass(frozen=True)
 class Transformation:
-    required: Optional[Feature] = None
-    incompatible: Optional[FeatureSet] = None
-    change: Optional[Change] = None
+    required: FeatureSet
+    incompatible: FeatureSet
+    changes: list[Change]
 
     def is_applicable(self, features: FeatureSet) -> bool:
-        return ((self.required is None or self.required in features)
-                and (self.incompatible is None or features.isdisjoint(self.incompatible))
-                and (self.change is None or (self.change.feature in features) != self.change.is_positive))
+        return (self.required <= features
+                and features.isdisjoint(self.incompatible)
+                and all((change.feature in features) != change.is_positive for change in self.changes))
 
     def apply(self, features: FeatureSet) -> FeatureSet:
-        if self.change is None:
-            return features
-        elif self.change.is_positive:
-            return features | {self.change.feature}
-        else:
-            return features - {self.change.feature}
+        for change in self.changes:
+            features = features | {change.feature} if change.is_positive else features - {change.feature}
+        return features
 
 
 Letter = str  # guaranteed to be non-empty
