@@ -8,3 +8,4 @@ __all__ = [
 class TranscriptionType(str, Enum):
     PHONETIC = 'phonetic'
     PHONEMIC = 'phonemic'
+    LITERAL = 'literal'
