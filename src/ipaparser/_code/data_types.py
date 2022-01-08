@@ -87,7 +87,7 @@ class Data:
     breaks: SymbolData
     suprasegmentals: SymbolData
     combining_basic: CombiningData
-    combining_recursive: CombiningData
+    combining_main: CombiningData
     combining_meta: CombiningData
     ties: TieData
     main_tie: Tie

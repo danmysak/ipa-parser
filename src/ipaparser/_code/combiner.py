@@ -20,7 +20,7 @@ __all__ = [
 def apply_combining(combining: Combining, features: FeatureSet,
                     *, basic: bool = False, meta: Optional[list[Combining]] = None) -> Optional[FeatureSet]:
     data = get_data()
-    transformations = (data.combining_basic if basic else data.combining_recursive).get(combining, [])
+    transformations = (data.combining_basic if basic else data.combining_main).get(combining, [])
     for transformation in transformations:
         if transformation.is_applicable(features):
             features = transformation.apply(features)

@@ -49,7 +49,7 @@ VOWELS = f'{LETTERS}/vowels.tsv'
 BREAKS = 'breaks'
 SUPRASEGMENTALS = 'suprasegmentals'
 COMBINING_BASIC = 'combining-basic'
-COMBINING_RECURSIVE = 'combining-recursive'
+COMBINING_MAIN = 'combining-main'
 COMBINING_META = 'combining-meta'
 TIES = 'ties'
 BRACKETS = 'brackets'
@@ -283,7 +283,7 @@ def load_data() -> Data:
         breaks=parse_symbol_data(read(BREAKS)),
         suprasegmentals=parse_symbol_data(read(SUPRASEGMENTALS)),
         combining_basic=parse_combining_data(read(COMBINING_BASIC)),
-        combining_recursive=parse_combining_data(read(COMBINING_RECURSIVE)),
+        combining_main=parse_combining_data(read(COMBINING_MAIN)),
         combining_meta=parse_combining_data(read(COMBINING_META)),
         ties=ties,
         main_tie=main_tie,
