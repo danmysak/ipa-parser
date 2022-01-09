@@ -212,6 +212,7 @@ d̪̚	—	consonant, coronal, dental, no audible release, simple consonant, soun
 d̪͡z̪	d̪, z̪	affricate, consonant, coronal, dental, sibilant, simple consonant, sound, voiced
 d̬	d	—
 d̺	—	alveolar, apical, consonant, coronal, simple consonant, sound, stop, voiced
+d̼	—	consonant, coronal, linguolabial, simple consonant, sound, stop, voiced
 d͜z	d, z	affricate, alveolar, consonant, coronal, sibilant, simple consonant, sound, voiced
 d͡.	d, .	—
 d͡aː	d, aː	—
@@ -627,6 +628,7 @@ n̪̩	—	consonant, coronal, dental, nasal, simple consonant, sound, syllabic, 
 n̪̩ː	—	consonant, coronal, dental, long, nasal, simple consonant, sound, syllabic, voiced
 n̺	—	alveolar, apical, consonant, coronal, nasal, simple consonant, sound, voiced
 n̻	—	alveolar, consonant, coronal, laminal, nasal, simple consonant, sound, voiced
+n̼	—	consonant, coronal, linguolabial, nasal, simple consonant, sound, voiced
 n͈	—	alveolar, consonant, coronal, nasal, simple consonant, sound, strong, voiced
 n͈ʲ	—	alveolar, consonant, coronal, nasal, palatalized, simple consonant, sound, strong, voiced
 n͡t	n, t	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop
@@ -789,6 +791,7 @@ r̊	—	alveolar, consonant, coronal, simple consonant, sound, trill
 ř	r	—
 r̝	—	alveolar, consonant, coronal, raised, simple consonant, sound, trill, voiced
 r̝̊	—	alveolar, consonant, coronal, raised, simple consonant, sound, trill
+r̠	—	consonant, coronal, postalveolar, simple consonant, sound, trill, voiced
 r̥	—	alveolar, consonant, coronal, simple consonant, sound, trill
 r̥ʰ	—	alveolar, aspirated, consonant, coronal, simple consonant, sound, trill
 r̥ː	—	alveolar, consonant, coronal, long, simple consonant, sound, trill
@@ -925,6 +928,7 @@ t̺	—	alveolar, apical, consonant, coronal, simple consonant, sound, stop
 t̺ʰ	—	alveolar, apical, aspirated, consonant, coronal, simple consonant, sound, stop
 t̺͡s̺	t̺, s̺	affricate, alveolar, apical, consonant, coronal, sibilant, simple consonant, sound
 t̻	—	alveolar, consonant, coronal, laminal, simple consonant, sound, stop
+t̼	—	consonant, coronal, linguolabial, simple consonant, sound, stop
 t͈	—	alveolar, consonant, coronal, simple consonant, sound, stop, strong
 t͜s	t, s	affricate, alveolar, consonant, coronal, sibilant, simple consonant, sound
 t͜sʰ	t, sʰ	affricate, alveolar, aspirated, consonant, coronal, sibilant, simple consonant, sound
@@ -1262,6 +1266,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ð̩˕˗ˠ	—	consonant, coronal, dental, fricative, lowered, retracted, simple consonant, sound, syllabic, velarized, voiced
 ð̩˕˗ˠˀ	—	consonant, coronal, dental, fricative, glottalized, lowered, retracted, simple consonant, sound, syllabic, velarized, voiced
 ð̩ˠ	—	consonant, coronal, dental, fricative, simple consonant, sound, syllabic, velarized, voiced
+ð̼	—	consonant, coronal, fricative, linguolabial, simple consonant, sound, voiced
 ð͜i	ð, i	—
 ø	—	about front, about mid, close-mid, front, rounded, simple vowel, sound, vowel
 øˀ	—	about front, about mid, close-mid, front, glottalized, rounded, simple vowel, sound, vowel
@@ -1736,6 +1741,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ɡ͡ʟ̝	ɡ, ʟ̝	affricate, consonant, dorsal, lateral, simple consonant, sound, velar, voiced
 ɢ	—	consonant, dorsal, simple consonant, sound, stop, uvular, voiced
 ɢː	—	consonant, dorsal, long, simple consonant, sound, stop, uvular, voiced
+ɢ̆	—	consonant, dorsal, simple consonant, sound, tap/flap, uvular, voiced
 ɢ̞	—	consonant, dorsal, lowered, simple consonant, sound, stop, uvular, voiced
 ɣ	—	consonant, dorsal, fricative, simple consonant, sound, velar, voiced
 ɣʲ	—	consonant, dorsal, fricative, palatalized, simple consonant, sound, velar, voiced
@@ -1868,6 +1874,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ɭ	—	approximant, consonant, coronal, lateral, retroflex, simple consonant, sound, voiced
 ɭʱ	—	approximant, breathy, consonant, coronal, lateral, retroflex, simple consonant, sound, voiced
 ɭː	—	approximant, consonant, coronal, lateral, long, retroflex, simple consonant, sound, voiced
+ɭ˔	—	consonant, coronal, fricative, lateral, retroflex, simple consonant, sound, voiced
 ɭ̆	—	consonant, coronal, lateral, retroflex, simple consonant, sound, tap/flap, voiced
 ɭ̆ʱ	—	breathy, consonant, coronal, lateral, retroflex, simple consonant, sound, tap/flap, voiced
 ɭ̩	—	approximant, consonant, coronal, lateral, retroflex, simple consonant, sound, syllabic, voiced
@@ -2004,6 +2011,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ɺ̢	—	consonant, coronal, lateral, retroflex, simple consonant, sound, tap/flap, voiced
 ɻ	—	approximant, consonant, coronal, retroflex, simple consonant, sound, voiced
 ɻʷ	—	approximant, consonant, coronal, labialized, retroflex, simple consonant, sound, voiced
+ɻ˔	—	consonant, coronal, fricative, retroflex, simple consonant, sound, voiced
 ɻ̊	—	approximant, consonant, coronal, retroflex, simple consonant, sound
 ɻ̥	—	approximant, consonant, coronal, retroflex, simple consonant, sound
 ɻ̩	—	approximant, consonant, coronal, retroflex, simple consonant, sound, syllabic, voiced
@@ -2039,6 +2047,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ɾ̪̊	—	consonant, coronal, dental, simple consonant, sound, tap/flap
 ɾ̪̥	—	consonant, coronal, dental, simple consonant, sound, tap/flap
 ɾ̺	—	alveolar, apical, consonant, coronal, simple consonant, sound, tap/flap, voiced
+ɾ̼	—	consonant, coronal, linguolabial, simple consonant, sound, tap/flap, voiced
 ɿ	—	—
 ʀ	—	consonant, dorsal, simple consonant, sound, trill, uvular, voiced
 ʀ̟	—	advanced, consonant, dorsal, simple consonant, sound, trill, uvular, voiced
@@ -2204,6 +2213,8 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ʎʲ	—	approximant, consonant, dorsal, lateral, palatal, palatalized, simple consonant, sound, voiced
 ʎʷ	—	approximant, consonant, dorsal, labialized, lateral, palatal, simple consonant, sound, voiced
 ʎː	—	approximant, consonant, dorsal, lateral, long, palatal, simple consonant, sound, voiced
+ʎ̆	—	consonant, dorsal, lateral, palatal, simple consonant, sound, tap/flap, voiced
+ʎ̝	—	consonant, dorsal, fricative, lateral, palatal, simple consonant, sound, voiced
 ʎ̞	—	approximant, consonant, dorsal, lateral, lowered, palatal, simple consonant, sound, voiced
 ʎ̟	—	advanced, approximant, consonant, dorsal, lateral, palatal, simple consonant, sound, voiced
 ʎ̥	—	approximant, consonant, dorsal, lateral, palatal, simple consonant, sound
@@ -2258,12 +2269,14 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ʔː	—	consonant, glottal, laryngeal, long, simple consonant, sound, stop
 ʔ˭	—	consonant, glottal, laryngeal, simple consonant, sound, stop, unaspirated
 ʔ̚	—	consonant, glottal, laryngeal, no audible release, simple consonant, sound, stop
+ʔ̞	—	approximant, consonant, glottal, laryngeal, simple consonant, sound, voiced
 ʔ̥	ʔ	—
 ʔⁿ	—	consonant, glottal, laryngeal, nasal release, simple consonant, sound, stop
 ʕ	—	consonant, fricative, laryngeal, pharyngeal/epiglottal, simple consonant, sound, voiced
 ʕʷ	—	consonant, fricative, labialized, laryngeal, pharyngeal/epiglottal, simple consonant, sound, voiced
 ʕː	—	consonant, fricative, laryngeal, long, pharyngeal/epiglottal, simple consonant, sound, voiced
 ʕ̞	—	consonant, fricative, laryngeal, lowered, pharyngeal/epiglottal, simple consonant, sound, voiced
+ʘ	—	bilabial, click, consonant, labial, simple consonant, sound
 ʙ	—	bilabial, consonant, labial, simple consonant, sound, trill, voiced
 ʙː	—	bilabial, consonant, labial, long, simple consonant, sound, trill, voiced
 ʙ̥	—	bilabial, consonant, labial, simple consonant, sound, trill
@@ -2280,11 +2293,15 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ʝː	—	consonant, dorsal, fricative, long, palatal, simple consonant, sound, voiced
 ʝ̞	—	consonant, dorsal, fricative, lowered, palatal, simple consonant, sound, voiced
 ʟ	—	approximant, consonant, dorsal, lateral, simple consonant, sound, velar, voiced
+ʟ̆	—	consonant, dorsal, lateral, simple consonant, sound, tap/flap, velar, voiced
 ʟ̝	—	consonant, dorsal, fricative, lateral, simple consonant, sound, velar, voiced
 ʟ̝̊	—	consonant, dorsal, fricative, lateral, simple consonant, sound, velar
 ʟ̝̊ː	—	consonant, dorsal, fricative, lateral, long, simple consonant, sound, velar
+ʟ̠	—	approximant, consonant, dorsal, lateral, simple consonant, sound, uvular, voiced
 ʟ̩	—	approximant, consonant, dorsal, lateral, simple consonant, sound, syllabic, velar, voiced
 ʡ	—	consonant, laryngeal, pharyngeal/epiglottal, simple consonant, sound, stop
+ʡ̆	—	consonant, laryngeal, pharyngeal/epiglottal, simple consonant, sound, tap/flap, voiced
+ʢ	—	consonant, laryngeal, pharyngeal/epiglottal, simple consonant, sound, trill, voiced
 ʰ	—	—
 ʰc	—	consonant, dorsal, palatal, preaspirated, simple consonant, sound, stop
 ʰh	—	consonant, fricative, glottal, laryngeal, preaspirated, simple consonant, sound
@@ -2372,6 +2389,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 θ̝	—	consonant, coronal, dental, fricative, raised, simple consonant, sound
 θ̠	—	alveolar, consonant, coronal, fricative, simple consonant, sound
 θ̬	—	consonant, coronal, dental, fricative, simple consonant, sound, voiced
+θ̼	—	consonant, coronal, fricative, linguolabial, simple consonant, sound
 θ͇	θ	—
 χ	—	consonant, dorsal, fricative, simple consonant, sound, uvular
 χʰ	—	aspirated, consonant, dorsal, fricative, simple consonant, sound, uvular
@@ -2459,6 +2477,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ​	—	—
 ‌	—	—
 …	—	break, ellipsis
+‼	—	click, consonant, coronal, retroflex, simple consonant, sound
 ‿	—	break, linking
 ⁓	—	break, equivalence
 ⁰	—	suprasegmental, tone, tone 0, tone number
@@ -2502,6 +2521,8 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ◌́	—	—
 ◌̃	—	—
 ◌͈	—	—
+ⱱ	—	consonant, labial, labiodental, simple consonant, sound, tap/flap, voiced
+ⱱ̟	—	bilabial, consonant, labial, simple consonant, sound, tap/flap, voiced
 ꜔	—	mid tone letter, suprasegmental, tone, tone letter
 ꜛ	—	suprasegmental, tone, tone step, upstep
 ꜜ	—	downstep, suprasegmental, tone, tone step
