@@ -1,10 +1,16 @@
  	—	break, space
  ̃	 	—
  ̈	 	—
+ ̍	 	—
  ̝	 	—
+ ̞	 	—
+ ̟	 	—
+ ̠	 	—
  ̥	 	—
  ̥̥	 	—
+ ̩	 	—
  ̻	 	—
+!	—	—
 "	—	—
 %	—	—
 '	—	—
@@ -15,6 +21,7 @@
 .	—	break, syllable break
 .̃	.	—
 1	—	—
+:	—	—
 =	—	—
 V	—	—
 a	—	about front, about open, front, open, simple vowel, sound, vowel
@@ -27,6 +34,7 @@ aːː	—	about front, about open, extra-long, front, long, open, simple vowel, 
 aːˤ	—	about front, about open, front, long, open, pharyngealized, simple vowel, sound, vowel
 aː͡t	aː, t	—
 aˑ	—	about front, about open, front, half-long, open, simple vowel, sound, vowel
+a˖	—	about front, about open, advanced, front, open, simple vowel, sound, vowel
 aˤ	—	about front, about open, front, open, pharyngealized, simple vowel, sound, vowel
 aˤː	—	about front, about open, front, long, open, pharyngealized, simple vowel, sound, vowel
 à	—	about front, about open, front, low tone, open, simple vowel, sound, vowel
@@ -180,6 +188,7 @@ dˀ	—	alveolar, consonant, coronal, glottalized, simple consonant, sound, stop
 dː	—	alveolar, consonant, coronal, long, simple consonant, sound, stop, voiced
 dːʰ	—	alveolar, aspirated, consonant, coronal, long, simple consonant, sound, stop, voiced
 dːʱ	—	alveolar, breathy, consonant, coronal, long, simple consonant, sound, stop, voiced
+dː͡ʐ	dː, ʐ	—
 dː͡ʒ	dː, ʒ	affricate, consonant, coronal, long, postalveolar, sibilant, simple consonant, sound, voiced
 dˠ	—	alveolar, consonant, coronal, simple consonant, sound, stop, velarized, voiced
 dˤ	—	alveolar, consonant, coronal, pharyngealized, simple consonant, sound, stop, voiced
@@ -648,6 +657,7 @@ oˀː	—	about back, about mid, back, close-mid, glottalized, long, rounded, si
 oː	—	about back, about mid, back, close-mid, long, rounded, simple vowel, sound, vowel
 oːˀ	—	about back, about mid, back, close-mid, glottalized, long, rounded, simple vowel, sound, vowel
 oˑ	—	about back, about mid, back, close-mid, half-long, rounded, simple vowel, sound, vowel
+o˗	—	about back, about mid, back, close-mid, retracted, rounded, simple vowel, sound, vowel
 o˞	—	about back, about mid, back, close-mid, r-colored, rounded, simple vowel, sound, vowel
 oˤ	—	about back, about mid, back, close-mid, pharyngealized, rounded, simple vowel, sound, vowel
 ò	—	about back, about mid, back, close-mid, low tone, rounded, simple vowel, sound, vowel
@@ -1581,6 +1591,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ɖʲ	—	consonant, coronal, palatalized, retroflex, simple consonant, sound, stop, voiced
 ɖː	—	consonant, coronal, long, retroflex, simple consonant, sound, stop, voiced
 ɖːʱ	—	breathy, consonant, coronal, long, retroflex, simple consonant, sound, stop, voiced
+ɖː͡ʐ˕	ɖː, ʐ˕	affricate, consonant, coronal, long, lowered, retroflex, sibilant, simple consonant, sound, voiced
 ɖˑ	—	consonant, coronal, half-long, retroflex, simple consonant, sound, stop, voiced
 ɖ̚	—	consonant, coronal, no audible release, retroflex, simple consonant, sound, stop, voiced
 ɖ̟	—	advanced, consonant, coronal, retroflex, simple consonant, sound, stop, voiced
@@ -2262,6 +2273,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ʐʰ	—	aspirated, consonant, coronal, fricative, retroflex, sibilant, simple consonant, sound, voiced
 ʐʷ	—	consonant, coronal, fricative, labialized, retroflex, sibilant, simple consonant, sound, voiced
 ʐː	—	consonant, coronal, fricative, long, retroflex, sibilant, simple consonant, sound, voiced
+ʐ˕	—	consonant, coronal, fricative, lowered, retroflex, sibilant, simple consonant, sound, voiced
 ʐ̩	—	consonant, coronal, fricative, retroflex, sibilant, simple consonant, sound, syllabic, voiced
 ʑ	—	consonant, dorsal, fricative, palatal, sibilant, simple consonant, sound, voiced
 ʑʱ	—	breathy, consonant, dorsal, fricative, palatal, sibilant, simple consonant, sound, voiced
@@ -2441,6 +2453,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ᵈn	—	alveolar, consonant, coronal, nasal, prestopped, simple consonant, sound, voiced
 ᵈnʲ	—	alveolar, consonant, coronal, nasal, palatalized, prestopped, simple consonant, sound, voiced
 ᵊ	—	about central, about mid, anaptyctic, central, mid, simple vowel, sound, vowel
+ᵍ	—	—
 ᵏǃ	—	alveolar, click, consonant, coronal, simple consonant, sound
 ᵏǃ͡χʼ	ᵏǃ, χʼ	affricate, alveolar, click, consonant, contour click, coronal, dorsal, ejective, sound, uvular
 ᵐ	—	—
@@ -2501,6 +2514,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ‌	—	—
 ‖	—	break, major break
 ’	—	—
+․	—	—
 …	—	break, ellipsis
 ‼	—	click, consonant, coronal, retroflex, simple consonant, sound
 ‿	—	break, linking
