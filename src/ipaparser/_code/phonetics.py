@@ -33,8 +33,17 @@ APPROXIMANTS_VS_NONSYLLABIC_VOWELS: list[list[tuple[set[Feature], set[Feature]]]
         Manner.APPROXIMANT,
     }, {
         SoundSubtype.SIMPLE_VOWEL,
-        Syllabicity.NONSYLLABIC,
         Height.CLOSE,
+    })],
+    # Syllabicity:
+    [({
+        # -
+    }, {
+        Syllabicity.NONSYLLABIC,
+    }), ({
+        Syllabicity.SYLLABIC,
+    }, {
+        # -
     })],
     # Voicing:
     [({
