@@ -1,11 +1,16 @@
  	—	break, space
  ̃	 	—
  ̈	 	—
+ ̝	 	—
  ̥	 	—
  ̥̥	 	—
  ̻	 	—
 "	—	—
 %	—	—
+'	—	—
+(	—	—
+)	—	—
+)̩	—	—
 -	—	break, hyphen
 .	—	break, syllable break
 .̃	.	—
@@ -331,6 +336,7 @@ f̩	—	consonant, fricative, labial, labiodental, simple consonant, sound, syll
 f̩ː	—	consonant, fricative, labial, labiodental, long, simple consonant, sound, syllabic
 f̯	f	—
 f͡t	f, t	—
+g	—	—
 h	—	consonant, fricative, glottal, laryngeal, simple consonant, sound
 hʲ	—	consonant, fricative, glottal, laryngeal, palatalized, simple consonant, sound
 hʷ	—	consonant, fricative, glottal, labialized, laryngeal, simple consonant, sound
@@ -882,6 +888,7 @@ tːʱ	—	alveolar, breathy, consonant, coronal, long, simple consonant, sound, 
 tːʼ	—	alveolar, consonant, coronal, ejective, long, simple consonant, sound, stop
 tːː	—	alveolar, consonant, coronal, extra-long, long, simple consonant, sound, stop
 tː͡s	tː, s	affricate, alveolar, consonant, coronal, long, sibilant, simple consonant, sound
+tː͡ʂ	tː, ʂ	—
 tː͡ʃ	tː, ʃ	affricate, consonant, coronal, long, postalveolar, sibilant, simple consonant, sound
 tˑ	—	alveolar, consonant, coronal, half-long, simple consonant, sound, stop
 tˠ	—	alveolar, consonant, coronal, simple consonant, sound, stop, velarized
@@ -989,6 +996,11 @@ t͡ɬ	t, ɬ	affricate, alveolar, consonant, coronal, lateral, simple consonant, 
 t͡ɬʰ	t, ɬʰ	affricate, alveolar, aspirated, consonant, coronal, lateral, simple consonant, sound
 t͡ɬʼ	t, ɬʼ	affricate, alveolar, consonant, coronal, ejective, lateral, simple consonant, sound
 t͡ɬːʼ	t, ɬːʼ	affricate, alveolar, consonant, coronal, ejective, lateral, long, simple consonant, sound
+t͡ʂ	t, ʂ	—
+t͡ʂʰ	t, ʂʰ	—
+t͡ʂʷ	t, ʂʷ	—
+t͡ʂʼ	t, ʂʼ	—
+t͡ʂː	t, ʂː	—
 t͡ʃ	t, ʃ	affricate, consonant, coronal, postalveolar, sibilant, simple consonant, sound
 t͡ʃʰ	t, ʃʰ	affricate, aspirated, consonant, coronal, postalveolar, sibilant, simple consonant, sound
 t͡ʃʰʷ	t, ʃʰʷ	affricate, aspirated, consonant, coronal, labialized, postalveolar, sibilant, simple consonant, sound
@@ -2331,6 +2343,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ʲ̃	—	—
 ʳ	—	—
 ʷ	—	—
+ʹ	—	—
 ʼ	—	—
 ˀ	—	—
 ˀd	—	alveolar, consonant, coronal, preglottalized, simple consonant, sound, stop, voiced
@@ -2447,6 +2460,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ᵑɡ̊	—	consonant, dorsal, prenasalized, simple consonant, sound, stop, velar
 ᵑɡ̊ʷ	—	consonant, dorsal, labialized, prenasalized, simple consonant, sound, stop, velar
 ᵑ̊ǁʰ	—	alveolar, aspirated, click, consonant, coronal, lateral, nasal, simple consonant, sound
+ᵝ	—	—
 ᵝ̥	—	—
 ᵻ	—	—
 ᶑ	—	consonant, coronal, implosive, retroflex, simple consonant, sound, voiced
@@ -2469,6 +2483,10 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ᶮɟ	—	consonant, dorsal, palatal, prenasalized, simple consonant, sound, stop, voiced
 ᶮɟ̥	—	consonant, dorsal, palatal, prenasalized, simple consonant, sound, stop
 ᶯc	—	consonant, dorsal, palatal, prenasalized, simple consonant, sound, stop
+ᶯd	—	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop, voiced
+ᶯd͡ʐ	ᶯd, ʐ	—
+ᶯt	—	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop
+ᶯt͡ʂʰ	ᶯt, ʂʰ	—
 ᶯɖ	—	consonant, coronal, prenasalized, retroflex, simple consonant, sound, stop, voiced
 ᶯɖ͡ʐ	ᶯɖ, ʐ	affricate, consonant, coronal, prenasalized, retroflex, sibilant, simple consonant, sound, voiced
 ᶯʈ	—	consonant, coronal, prenasalized, retroflex, simple consonant, sound, stop
@@ -2476,6 +2494,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ᶰɢ	—	consonant, dorsal, prenasalized, simple consonant, sound, stop, uvular, voiced
 ​	—	—
 ‌	—	—
+’	—	—
 …	—	break, ellipsis
 ‼	—	click, consonant, coronal, retroflex, simple consonant, sound
 ‿	—	break, linking
@@ -2486,6 +2505,8 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ⁶	—	suprasegmental, tone, tone 6, tone number
 ⁷	—	suprasegmental, tone, tone 7, tone number
 ⁻	—	suprasegmental, tone, tone number, tone number separator
+⁽	—	—
+⁾	—	—
 ⁿ	—	—
 ⁿc	—	consonant, dorsal, palatal, prenasalized, simple consonant, sound, stop
 ⁿd	—	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop, voiced

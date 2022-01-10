@@ -43,13 +43,11 @@ def process_symbol(symbol: IPASymbol) -> None:
 with open(INPUT_CORPUS, 'r') as input_corpus:
     for unstripped in input_corpus:
         transcription = unstripped.rstrip('\n')
-        ipa = IPA(transcription, IPAConfig(
-            substitutions=True,
-            brackets=BracketStrategy.EXPAND,
-        ))
-        transcriptions.add(format_line(str(ipa), VALUE_DELIMITER.join(str(symbol) for symbol in ipa)))
-        for symbol in ipa:
-            process_symbol(symbol)
+        for config in [IPAConfig(), IPAConfig(substitutions=True, brackets=BracketStrategy.EXPAND)]:
+            ipa = IPA(transcription, config)
+            transcriptions.add(format_line(str(ipa), VALUE_DELIMITER.join(str(symbol) for symbol in ipa)))
+            for symbol in ipa:
+                process_symbol(symbol)
 
 for file, data in ((OUTPUT_SYMBOLS, symbols),
                    (OUTPUT_TRANSCRIPTIONS, transcriptions)):
