@@ -94,9 +94,10 @@ def strip_brackets(string: str, brackets: InnerBracketData) -> str:
     taken: list[str] = []
     open_count = 0
     for character, delta in zip(string, open_deltas):
-        open_count += delta
+        open_count += max(delta, 0)
         if open_count == 0:
             taken.append(character)
+        open_count += min(delta, 0)
     return ''.join(taken)
 
 
