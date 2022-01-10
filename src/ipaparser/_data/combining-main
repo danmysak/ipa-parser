@@ -49,7 +49,13 @@
 ◌̃	sound	+nasalized	!nasal
 ◌˞, ◌ʴ	vowel	+r-colored
 
-ᵐ◌, ᶬ◌, ⁿ◌, ᶯ◌, ᶮ◌, ᵑ◌, ᶰ◌	consonant	+prenasalized	!nasal
+ⁿ◌	consonant	+prenasalized	!nasal
+ᵐ◌	labial	+prenasalized	!nasal
+ᶬ◌	labiodental	+prenasalized	!nasal
+ᶯ◌	retroflex	+prenasalized	!nasal
+ᶮ◌	palatal	+prenasalized	!nasal
+ᵑ◌	velar	+prenasalized	!nasal
+ᶰ◌	uvular	+prenasalized	!nasal
 ᵇ◌	nasal & labial | approximant & labial	+prestopped
 ᵈ◌	nasal & coronal | approximant & coronal	+prestopped
 ᶢ◌	nasal & dorsal | approximant & dorsal	+prestopped

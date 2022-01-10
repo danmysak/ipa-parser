@@ -232,6 +232,7 @@ d͡zʷ	d, zʷ	affricate, alveolar, consonant, coronal, labialized, sibilant, sim
 d͡zː	d, zː	affricate, alveolar, consonant, coronal, long, sibilant, simple consonant, sound, voiced
 d͡z̠	d, z̠	affricate, alveolar, consonant, coronal, retracted, sibilant, simple consonant, sound, voiced
 d͡ɮ	d, ɮ	affricate, alveolar, consonant, coronal, lateral, simple consonant, sound, voiced
+d͡ʐ	d, ʐ	—
 d͡ʑ	d, ʑ	affricate, alveolar, consonant, coronal, dorsal, palatal, sibilant, simple consonant, sound, voiced
 d͡ʑʱ	d, ʑʱ	affricate, alveolar, breathy, consonant, coronal, dorsal, palatal, sibilant, simple consonant, sound, voiced
 d͡ʑʲ	d, ʑʲ	affricate, alveolar, consonant, coronal, dorsal, palatal, palatalized, sibilant, simple consonant, sound, voiced
@@ -2474,18 +2475,12 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ᶬf	—	consonant, fricative, labial, labiodental, prenasalized, simple consonant, sound
 ᶬp̪	—	consonant, labial, labiodental, prenasalized, simple consonant, sound, stop
 ᶬv	—	consonant, fricative, labial, labiodental, prenasalized, simple consonant, sound, voiced
+ᶮ	—	—
 ᶮc	—	consonant, dorsal, palatal, prenasalized, simple consonant, sound, stop
-ᶮd	—	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop, voiced
-ᶮd̥	—	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop
-ᶮd͡ʑ	ᶮd, ʑ	affricate, alveolar, consonant, coronal, dorsal, palatal, prenasalized, sibilant, simple consonant, sound, voiced
-ᶮt	—	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop
+ᶮd͡ʑ	d, ʑ	affricate, alveolar, consonant, coronal, dorsal, palatal, prenasalized, sibilant, simple consonant, sound, voiced
 ᶮɟ	—	consonant, dorsal, palatal, prenasalized, simple consonant, sound, stop, voiced
 ᶮɟ̥	—	consonant, dorsal, palatal, prenasalized, simple consonant, sound, stop
-ᶯc	—	consonant, dorsal, palatal, prenasalized, simple consonant, sound, stop
-ᶯd	—	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop, voiced
-ᶯd͡ʐ	ᶯd, ʐ	—
-ᶯt	—	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop
-ᶯt͡ʂʰ	ᶯt, ʂʰ	—
+ᶯ	—	—
 ᶯɖ	—	consonant, coronal, prenasalized, retroflex, simple consonant, sound, stop, voiced
 ᶯɖ͡ʐ	ᶯɖ, ʐ	affricate, consonant, coronal, prenasalized, retroflex, sibilant, simple consonant, sound, voiced
 ᶯʈ	—	consonant, coronal, prenasalized, retroflex, simple consonant, sound, stop
