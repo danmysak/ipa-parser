@@ -18,6 +18,7 @@
 ◌̥, ◌̊	voiced	-voiced
 ◌̥, ◌̊	vowel	+devoiced
 ◌̬	consonant	+voiced
+
 ◌̤, ◌ʱ	sound | tone letter	+breathy
 ◌̰	sound | tone letter	+creaky
 ◌̣	sound	+whispery
@@ -56,9 +57,11 @@
 ᶮ◌	palatal	+prenasalized	!nasal
 ᵑ◌	velar	+prenasalized	!nasal
 ᶰ◌	uvular	+prenasalized	!nasal
+
 ᵇ◌	nasal & labial | approximant & labial	+prestopped
 ᵈ◌	nasal & coronal | approximant & coronal	+prestopped
 ᶢ◌	nasal & dorsal | approximant & dorsal	+prestopped
+
 ˀ◌	stop | nasal & click	+preglottalized
 
 ◌̆	sound	+extra-short	!(length)
