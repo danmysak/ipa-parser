@@ -2555,6 +2555,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ⁿɮʱ	—	alveolar, breathy, consonant, coronal, fricative, lateral, prenasalized, simple consonant, sound, voiced
 ⁿ̥t	—	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop, voicelessly prenasalized
 ⁿ̥ɺ	—	alveolar, consonant, coronal, lateral, prenasalized, simple consonant, sound, tap/flap, voiced, voicelessly prenasalized
+↑	—	airflow, egressive airflow, suprasegmental
 ↓	—	airflow, ingressive airflow, suprasegmental
 ↗	—	global rise, intonation, suprasegmental
 ↘	—	global fall, intonation, suprasegmental
@@ -2564,6 +2565,10 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ◌͈	—	—
 ⱱ	—	consonant, labial, labiodental, simple consonant, sound, tap/flap, voiced
 ⱱ̟	—	bilabial, consonant, labial, simple consonant, sound, tap/flap, voiced
+꜒	—	high tone letter, suprasegmental, tone, tone letter
+꜓	—	half-high tone letter, suprasegmental, tone, tone letter
 ꜔	—	mid tone letter, suprasegmental, tone, tone letter
+꜕	—	half-low tone letter, suprasegmental, tone, tone letter
+꜖	—	low tone letter, suprasegmental, tone, tone letter
 ꜛ	—	suprasegmental, tone, tone step, upstep
 ꜜ	—	downstep, suprasegmental, tone, tone step
