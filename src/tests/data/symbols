@@ -76,7 +76,7 @@ ȁ	—	about front, about open, extra-low tone, front, open, simple vowel, soun
 à̜	a	—
 a̝	—	about front, about open, front, open, raised, simple vowel, sound, vowel
 a̝ː	—	about front, about open, front, long, open, raised, simple vowel, sound, vowel
-a̝̝	—	about front, about open, front, open, raised, simple vowel, sound, vowel
+a̝̝	a	—
 a̟	—	about front, about open, advanced, front, open, simple vowel, sound, vowel
 a̟ː	—	about front, about open, advanced, front, long, open, simple vowel, sound, vowel
 ã̟ː	—	about front, about open, advanced, front, long, nasalized, open, simple vowel, sound, vowel
@@ -91,7 +91,7 @@ ã̠	—	about front, about open, front, nasalized, open, retracted, simple vow
 ã̠ː	—	about front, about open, front, long, nasalized, open, retracted, simple vowel, sound, vowel
 ä̠	—	about central, about open, central, open, retracted, simple vowel, sound, vowel
 ä̠ː	—	about central, about open, central, long, open, retracted, simple vowel, sound, vowel
-a̠̠	—	about front, about open, front, open, retracted, simple vowel, sound, vowel
+a̠̠	a	—
 ạ	—	about front, about open, front, open, simple vowel, sound, vowel, whispery
 ạ̀	—	about front, about open, front, low tone, open, simple vowel, sound, vowel, whispery
 a̤	—	about front, about open, breathy, front, open, simple vowel, sound, vowel
@@ -113,7 +113,7 @@ a̯	—	about front, about open, front, nonsyllabic, open, simple vowel, sound, 
 a̰	—	about front, about open, creaky, front, open, simple vowel, sound, vowel
 à̰	—	about front, about open, creaky, front, low tone, open, simple vowel, sound, vowel
 ǎ̰	—	about front, about open, creaky, front, open, rising tone, simple vowel, sound, vowel
-a̰̰	—	about front, about open, creaky, front, open, simple vowel, sound, vowel
+a̰̰	a	—
 a͜i	a, i	about close, about front, about open, close, diphthong, front, open, sound, vowel
 a͜u	a, u	about back, about close, about front, about open, back, close, diphthong, front, open, rounded, sound, vowel
 a͜ɪ	a, ɪ	about close, about front, about open, diphthong, front, near-close, near-front, open, sound, vowel
@@ -288,7 +288,7 @@ e̝	—	about front, about mid, close-mid, front, raised, simple vowel, sound, v
 e̝ˀ	—	about front, about mid, close-mid, front, glottalized, raised, simple vowel, sound, vowel
 e̝ː	—	about front, about mid, close-mid, front, long, raised, simple vowel, sound, vowel
 e̝ːˀ	—	about front, about mid, close-mid, front, glottalized, long, raised, simple vowel, sound, vowel
-e̝̝	—	about front, about mid, close-mid, front, raised, simple vowel, sound, vowel
+e̝̝	e	—
 ẽ̝̯	—	about front, about mid, close-mid, front, nasalized, nonsyllabic, raised, simple vowel, sound, vowel
 e̞	—	about front, about mid, front, mid, simple vowel, sound, vowel
 e̞ː	—	about front, about mid, front, long, mid, simple vowel, sound, vowel
@@ -400,7 +400,7 @@ i̤᷈ː	—	about close, about front, breathy, close, front, long, peaking tone
 i̥	—	about close, about front, close, devoiced, front, simple vowel, sound, vowel
 ĩ̥	—	about close, about front, close, devoiced, front, nasalized, simple vowel, sound, vowel
 ĭ̥	—	about close, about front, close, devoiced, extra-short, front, simple vowel, sound, vowel
-i̥̥	—	about close, about front, close, devoiced, front, simple vowel, sound, vowel
+i̥̥	i	—
 i̯	—	about close, about front, close, front, nonsyllabic, simple vowel, sound, vowel
 i̯ː	—	about close, about front, close, front, long, nonsyllabic, simple vowel, sound, vowel
 i̯ˑ	—	about close, about front, close, front, half-long, nonsyllabic, simple vowel, sound, vowel
@@ -551,7 +551,7 @@ l̩	—	alveolar, approximant, consonant, coronal, lateral, simple consonant, so
 l̩ː	—	alveolar, approximant, consonant, coronal, lateral, long, simple consonant, sound, syllabic, voiced
 l̩ˠ	—	alveolar, approximant, consonant, coronal, lateral, simple consonant, sound, syllabic, velarized, voiced
 ĺ̩	—	alveolar, approximant, consonant, coronal, high tone, lateral, simple consonant, sound, syllabic, voiced
-l̩̩	—	alveolar, approximant, consonant, coronal, lateral, simple consonant, sound, syllabic, voiced
+l̩̩	l	—
 l̪	—	approximant, consonant, coronal, dental, lateral, simple consonant, sound, voiced
 l̪ʲ	—	approximant, consonant, coronal, dental, lateral, palatalized, simple consonant, sound, voiced
 l̪ː	—	approximant, consonant, coronal, dental, lateral, long, simple consonant, sound, voiced
@@ -591,7 +591,7 @@ ḿ̩ː	—	bilabial, consonant, high tone, labial, long, nasal, simple consonan
 m̩̂ː	—	bilabial, consonant, falling tone, labial, long, nasal, simple consonant, sound, syllabic, voiced
 m̩̌	—	bilabial, consonant, labial, nasal, rising tone, simple consonant, sound, syllabic, voiced
 m̩̤᷈ː	—	bilabial, breathy, consonant, labial, long, nasal, peaking tone, simple consonant, sound, syllabic, voiced
-m̩̩	—	bilabial, consonant, labial, nasal, simple consonant, sound, syllabic, voiced
+m̩̩	m	—
 m͡b	m, b	bilabial, consonant, labial, prenasalized, simple consonant, sound, stop, voiced
 m͡bʷ	m, bʷ	bilabial, consonant, labial, labialized, prenasalized, simple consonant, sound, stop, voiced
 m͡p	m, p	bilabial, consonant, labial, prenasalized, simple consonant, sound, stop
@@ -625,7 +625,7 @@ n̩	—	alveolar, consonant, coronal, nasal, simple consonant, sound, syllabic, 
 n̩ː	—	alveolar, consonant, coronal, long, nasal, simple consonant, sound, syllabic, voiced
 ǹ̩	—	alveolar, consonant, coronal, low tone, nasal, simple consonant, sound, syllabic, voiced
 ń̩	—	alveolar, consonant, coronal, high tone, nasal, simple consonant, sound, syllabic, voiced
-n̩̩	—	alveolar, consonant, coronal, nasal, simple consonant, sound, syllabic, voiced
+n̩̩	n	—
 n̩̪	—	consonant, coronal, dental, nasal, simple consonant, sound, syllabic, voiced
 n̪	—	consonant, coronal, dental, nasal, simple consonant, sound, voiced
 n̪ʲ	—	consonant, coronal, dental, nasal, palatalized, simple consonant, sound, voiced
@@ -680,7 +680,7 @@ o̜ːˀ	—	about back, about mid, back, close-mid, glottalized, less rounded, l
 o̝	—	about back, about mid, back, close-mid, raised, rounded, simple vowel, sound, vowel
 o̝ˀ	—	about back, about mid, back, close-mid, glottalized, raised, rounded, simple vowel, sound, vowel
 o̝ː	—	about back, about mid, back, close-mid, long, raised, rounded, simple vowel, sound, vowel
-o̝̝	—	about back, about mid, back, close-mid, raised, rounded, simple vowel, sound, vowel
+o̝̝	o	—
 õ̝̯	—	about back, about mid, back, close-mid, nasalized, nonsyllabic, raised, rounded, simple vowel, sound, vowel
 o̞	—	about back, about mid, back, mid, rounded, simple vowel, sound, vowel
 o̞ː	—	about back, about mid, back, long, mid, rounded, simple vowel, sound, vowel
@@ -717,7 +717,7 @@ õ̥˕	—	about back, about mid, back, close-mid, devoiced, lowered, nasalized
 o̯	—	about back, about mid, back, close-mid, nonsyllabic, rounded, simple vowel, sound, vowel
 o̯ː	—	about back, about mid, back, close-mid, long, nonsyllabic, rounded, simple vowel, sound, vowel
 ò̯	—	about back, about mid, back, close-mid, low tone, nonsyllabic, rounded, simple vowel, sound, vowel
-o̯̯	—	about back, about mid, back, close-mid, nonsyllabic, rounded, simple vowel, sound, vowel
+o̯̯	o	—
 o̰	—	about back, about mid, back, close-mid, creaky, rounded, simple vowel, sound, vowel
 ò̰	—	about back, about mid, back, close-mid, creaky, low tone, rounded, simple vowel, sound, vowel
 o̽	—	about back, about mid, back, close-mid, mid-centralized, rounded, simple vowel, sound, vowel
@@ -1020,7 +1020,7 @@ t͡ʃ̙	t, ʃ̙	—
 t͡ʃ̚	t, ʃ̚	—
 t͡ʃ̝	t, ʃ̝	affricate, consonant, coronal, postalveolar, raised, sibilant, simple consonant, sound
 t͡ʃ̟	t, ʃ̟	advanced, affricate, consonant, coronal, postalveolar, sibilant, simple consonant, sound
-t͡ʃ̩̩	t, ʃ̩̩	affricate, consonant, coronal, postalveolar, sibilant, simple consonant, sound, syllabic
+t͡ʃ̩̩	t, ʃ̩̩	—
 t͡ʔ	t, ʔ	alveolar, consonant, coronal, doubly articulated consonant, glottal, laryngeal, sound, stop
 t͡ʙ	t, ʙ	—
 t͡ʙ̩	t, ʙ̩	—
@@ -1181,7 +1181,8 @@ ÿ̀ː	—	about close, about front, centralized, close, front, long, low tone,
 ÿ́ː	—	about close, about front, centralized, close, front, high tone, long, rounded, simple vowel, sound, vowel
 y̌	—	about close, about front, close, front, rising tone, rounded, simple vowel, sound, vowel
 y̌ː	—	about close, about front, close, front, long, rising tone, rounded, simple vowel, sound, vowel
-y̑̑	—	about close, about front, close, front, nonsyllabic, rounded, simple vowel, sound, vowel
+y̑	—	about close, about front, close, front, nonsyllabic, rounded, simple vowel, sound, vowel
+y̑̑	y	—
 ỵː	—	about close, about front, close, front, long, rounded, simple vowel, sound, vowel, whispery
 y̥	—	about close, about front, close, devoiced, front, rounded, simple vowel, sound, vowel
 y̫	y	—
@@ -1349,7 +1350,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ŋ̠	—	consonant, dorsal, nasal, retracted, simple consonant, sound, velar, voiced
 ŋ̥	—	consonant, dorsal, nasal, simple consonant, sound, velar
 ŋ̩	—	consonant, dorsal, nasal, simple consonant, sound, syllabic, velar, voiced
-ŋ̩̩	—	consonant, dorsal, nasal, simple consonant, sound, syllabic, velar, voiced
+ŋ̩̩	ŋ	—
 ŋ͜ǀ	—	click, consonant, coronal, dental, nasal, simple consonant, sound, voiced
 ŋ͜ǀˀ	—	click, consonant, coronal, dental, glottalized, nasal, simple consonant, sound, voiced
 ŋ͜ǀ̃	ŋǀ	—
@@ -1409,7 +1410,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ɐ̃	—	about central, about open, central, nasalized, near-open, simple vowel, sound, vowel
 ɐ̃ː	—	about central, about open, central, long, nasalized, near-open, simple vowel, sound, vowel
 ɐ̃́	—	about central, about open, central, high tone, nasalized, near-open, simple vowel, sound, vowel
-ɐ̃̃	—	about central, about open, central, nasalized, near-open, simple vowel, sound, vowel
+ɐ̃̃	ɐ	—
 ɐ̆	—	about central, about open, central, extra-short, near-open, simple vowel, sound, vowel
 ɐ̈	—	about central, about open, central, centralized, near-open, simple vowel, sound, vowel
 ɐ̟	—	about central, about open, advanced, central, near-open, simple vowel, sound, vowel
@@ -1524,7 +1525,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ɔ̙	—	about back, about mid, back, open-mid, retracted tongue root, rounded, simple vowel, sound, vowel
 ɔ̙ː	—	about back, about mid, back, long, open-mid, retracted tongue root, rounded, simple vowel, sound, vowel
 ɔ̙̃ː	—	about back, about mid, back, long, nasalized, open-mid, retracted tongue root, rounded, simple vowel, sound, vowel
-ɔ̙̙	—	about back, about mid, back, open-mid, retracted tongue root, rounded, simple vowel, sound, vowel
+ɔ̙̙	ɔ	—
 ɔ̜	—	about back, about mid, back, less rounded, open-mid, rounded, simple vowel, sound, vowel
 ɔ̜ː	—	about back, about mid, back, less rounded, long, open-mid, rounded, simple vowel, sound, vowel
 ɔ̜ˑ	—	about back, about mid, back, half-long, less rounded, open-mid, rounded, simple vowel, sound, vowel
@@ -1862,7 +1863,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ɪ̯ˑ	—	about close, about front, half-long, near-close, near-front, nonsyllabic, simple vowel, sound, vowel
 ɪ̯̃	—	about close, about front, nasalized, near-close, near-front, nonsyllabic, simple vowel, sound, vowel
 ɪ̯̌ː	—	about close, about front, long, near-close, near-front, nonsyllabic, rising tone, simple vowel, sound, vowel
-ɪ̯̯	—	about close, about front, near-close, near-front, nonsyllabic, simple vowel, sound, vowel
+ɪ̯̯	ɪ	—
 ɪ̯͡t	ɪ̯, t	—
 ɪ̯͡ɐ	ɪ̯, ɐ	about central, about close, about front, about open, central, diphthong, near-close, near-front, near-open, sound, vowel
 ɪ̯͡ʷ	ɪ̯, ʷ	—
@@ -2110,7 +2111,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ʃ̚	ʃ	—
 ʃ̝	—	consonant, coronal, fricative, postalveolar, raised, sibilant, simple consonant, sound
 ʃ̟	—	advanced, consonant, coronal, fricative, postalveolar, sibilant, simple consonant, sound
-ʃ̩̩	—	consonant, coronal, fricative, postalveolar, sibilant, simple consonant, sound, syllabic
+ʃ̩̩	ʃ	—
 ʃ̯	ʃ	—
 ʃ͈	—	consonant, coronal, fricative, postalveolar, sibilant, simple consonant, sound, strong
 ʃ͡t	ʃ, t	—

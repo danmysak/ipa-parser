@@ -16,7 +16,7 @@ class Match(Generic[T]):
     length: int
     matched: StringPositions
     data: T
-    extra: list[str]
+    extra: list[list[str]]
 
 
 class Matcher(Generic[T]):
@@ -47,15 +47,15 @@ class Matcher(Generic[T]):
         return extra if required_index == len(required) else None
 
     @staticmethod
-    def _match_with_extra(given: StringPositions, required: StringPositions) -> Optional[list[str]]:
+    def _match_with_extra(given: StringPositions, required: StringPositions) -> Optional[list[list[str]]]:
         if len(given) != len(required):
             return None
-        extra: list[str] = []
+        extra: list[list[str]] = []
         for given_position, required_position in zip(given, required):
             extra_single = Matcher._match_with_extra_single(given_position, required_position)
             if extra_single is None:
                 return None
-            extra.extend(extra_single)
+            extra.append(extra_single)
         return extra
 
     def match(self, positions: StringPositions, start: int) -> Optional[Match[T]]:

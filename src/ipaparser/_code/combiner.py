@@ -1,5 +1,7 @@
+from dataclasses import dataclass
 from itertools import chain
 from typing import Iterator, Optional
+import unicodedata
 
 from .cacher import with_cache
 from .data import get_data
@@ -91,17 +93,34 @@ def build_matcher() -> Matcher[FeatureSet]:
 get_matcher = with_cache(build_matcher)
 
 
+@dataclass
+class CombiningMatchData:
+    combining: Combining
+    must_follow_preceding: bool
+    used: bool
+
+
 def match_to_features(match: Match[FeatureSet]) -> Optional[FeatureSet]:
+    combining_sets = [[CombiningMatchData(combining=Combining(diacritic, CombiningType.DIACRITIC),
+                                          must_follow_preceding=(index > 0 and unicodedata.combining(diacritic)
+                                                                 == unicodedata.combining(diacritics[index - 1])),
+                                          used=False)
+                       for index, diacritic in enumerate(diacritics)]
+                      for diacritics in match.extra]
     features = match.data
-    combinings = [Combining(diacritic, CombiningType.DIACRITIC) for diacritic in match.extra]
-    remaining = set(combinings)
     while True:
         updated = False
-        for combining in combinings:
-            if combining in remaining and (next_features := apply_combining(combining, features)) is not None:
-                features = next_features
-                remaining.remove(combining)
-                updated = True
+        remaining = False
+        for position in combining_sets:
+            for index, combining in enumerate(position):
+                if not combining.used:
+                    if ((not combining.must_follow_preceding or position[index - 1].used)
+                            and (next_features := apply_combining(combining.combining, features)) is not None):
+                        features = next_features
+                        combining.used = True
+                        updated = True
+                    else:
+                        remaining = True
         if not remaining:
             return features
         if not updated:
