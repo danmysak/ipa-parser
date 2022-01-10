@@ -1031,6 +1031,7 @@ t͡ː	—	alveolar, consonant, coronal, long, simple consonant, sound, stop
 t͡ˑ	—	alveolar, consonant, coronal, half-long, simple consonant, sound, stop
 t͡θʰ	t, θʰ	affricate, aspirated, consonant, coronal, dental, simple consonant, sound
 t͡θʼ	t, θʼ	affricate, consonant, coronal, dental, ejective, simple consonant, sound
+tᶿ	—	alveolar, consonant, coronal, simple consonant, sound, stop, voiceless dental fricative release
 tⁿ	—	alveolar, consonant, coronal, nasal release, simple consonant, sound, stop
 u	—	about back, about close, back, close, rounded, simple vowel, sound, vowel
 uʱ	—	about back, about close, back, breathy, close, rounded, simple vowel, sound, vowel
@@ -1126,6 +1127,7 @@ v̥	—	consonant, fricative, labial, labiodental, simple consonant, sound
 v̩	—	consonant, fricative, labial, labiodental, simple consonant, sound, syllabic, voiced
 v̩ː	—	consonant, fricative, labial, labiodental, long, simple consonant, sound, syllabic, voiced
 ṽ̩	—	consonant, fricative, labial, labiodental, nasalized, simple consonant, sound, syllabic, voiced
+v͉	—	consonant, fricative, labial, labiodental, simple consonant, sound, voiced, weak
 w	—	approximant, consonant, dorsal, labialized, simple consonant, sound, velar, voiced
 wʱ	—	approximant, breathy, consonant, dorsal, labialized, simple consonant, sound, velar, voiced
 wʲ	—	approximant, consonant, dorsal, labialized, palatalized, simple consonant, sound, velar, voiced
@@ -1179,12 +1181,14 @@ ÿ̀ː	—	about close, about front, centralized, close, front, long, low tone,
 ÿ́ː	—	about close, about front, centralized, close, front, high tone, long, rounded, simple vowel, sound, vowel
 y̌	—	about close, about front, close, front, rising tone, rounded, simple vowel, sound, vowel
 y̌ː	—	about close, about front, close, front, long, rising tone, rounded, simple vowel, sound, vowel
+y̑̑	—	about close, about front, close, front, nonsyllabic, rounded, simple vowel, sound, vowel
 ỵː	—	about close, about front, close, front, long, rounded, simple vowel, sound, vowel, whispery
 y̥	—	about close, about front, close, devoiced, front, rounded, simple vowel, sound, vowel
 y̫	y	—
 y̯	—	about close, about front, close, front, nonsyllabic, rounded, simple vowel, sound, vowel
 y̯ː	—	about close, about front, close, front, long, nonsyllabic, rounded, simple vowel, sound, vowel
 y̯͡ʷ	y̯, ʷ	—
+y͑	—	about close, about front, close, front, less rounded, rounded, simple vowel, sound, vowel
 y͡ø	y, ø	about close, about front, about mid, close, close-mid, diphthong, front, rounded, sound, vowel
 y͡ø̞	y, ø̞	about close, about front, about mid, close, diphthong, front, mid, rounded, sound, vowel
 z	—	alveolar, consonant, coronal, fricative, sibilant, simple consonant, sound, voiced
@@ -1898,6 +1902,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ɮ̈	ɮ	—
 ɮ̊	—	alveolar, consonant, coronal, fricative, lateral, simple consonant, sound
 ɮ̥	—	alveolar, consonant, coronal, fricative, lateral, simple consonant, sound
+ɮ͆	—	consonant, coronal, dental, fricative, lateral, simple consonant, sound, voiced
 ɯ	—	about back, about close, back, close, simple vowel, sound, vowel
 ɯː	—	about back, about close, back, close, long, simple vowel, sound, vowel
 ɯˑ	—	about back, about close, back, close, half-long, simple vowel, sound, vowel
@@ -2339,6 +2344,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ʰt͡ʃ	ʰt, ʃ	affricate, consonant, coronal, postalveolar, preaspirated, sibilant, simple consonant, sound
 ʰt͡ʃː	ʰt, ʃː	affricate, consonant, coronal, long, postalveolar, preaspirated, sibilant, simple consonant, sound
 ʰŋ̊	—	consonant, dorsal, nasal, preaspirated, simple consonant, sound, velar
+ʰ̥	—	—
 ʱ	—	—
 ʲ	—	—
 ʲ̃	—	—
@@ -2381,6 +2387,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ˩	—	low tone letter, suprasegmental, tone, tone letter
 ˩̤	—	breathy, low tone letter, suprasegmental, tone, tone letter
 ˩̰ˀ	—	creaky, glottalized, low tone letter, suprasegmental, tone, tone letter
+˭	—	—
 ̃	—	—
 ̙	—	—
 ̩	—	—
@@ -2417,6 +2424,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 χːˤ	—	consonant, dorsal, fricative, long, pharyngealized, simple consonant, sound, uvular
 χˤ	—	consonant, dorsal, fricative, pharyngealized, simple consonant, sound, uvular
 χˤʷ	—	consonant, dorsal, fricative, labialized, pharyngealized, simple consonant, sound, uvular
+χ͗	—	consonant, dorsal, fricative, more rounded, simple consonant, sound, uvular
 က	—	—
 မ	—	—
 ာ	—	—
@@ -2444,6 +2452,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ᵐpʰ	—	aspirated, bilabial, consonant, labial, prenasalized, simple consonant, sound, stop
 ᵐpʼ	—	bilabial, consonant, ejective, labial, prenasalized, simple consonant, sound, stop
 ᵐpˡʰ	—	aspirated, bilabial, consonant, labial, lateral release, prenasalized, simple consonant, sound, stop
+ᵐ̥b	—	bilabial, consonant, labial, prenasalized, simple consonant, sound, stop, voiced, voicelessly prenasalized
 ᵑ	—	—
 ᵑk	—	consonant, dorsal, prenasalized, simple consonant, sound, stop, velar
 ᵑkʰ	—	aspirated, consonant, dorsal, prenasalized, simple consonant, sound, stop, velar
@@ -2460,6 +2469,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ᵑɡ̊	—	consonant, dorsal, prenasalized, simple consonant, sound, stop, velar
 ᵑɡ̊ʷ	—	consonant, dorsal, labialized, prenasalized, simple consonant, sound, stop, velar
 ᵑ̊ǁʰ	—	alveolar, aspirated, click, consonant, coronal, lateral, nasal, simple consonant, sound
+ᵑ̊ɡ	—	consonant, dorsal, prenasalized, simple consonant, sound, stop, velar, voiced, voicelessly prenasalized
 ᵝ	—	—
 ᵝ̥	—	—
 ᵻ	—	—
@@ -2530,6 +2540,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ⁿɡ	—	consonant, dorsal, prenasalized, simple consonant, sound, stop, velar, voiced
 ⁿɮʱ	—	alveolar, breathy, consonant, coronal, fricative, lateral, prenasalized, simple consonant, sound, voiced
 ⁿ̥t	—	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop, voicelessly prenasalized
+ⁿ̥ɺ	—	alveolar, consonant, coronal, lateral, prenasalized, simple consonant, sound, tap/flap, voiced, voicelessly prenasalized
 ↓	—	airflow, ingressive airflow, suprasegmental
 ↗	—	global rise, intonation, suprasegmental
 ↘	—	global fall, intonation, suprasegmental
