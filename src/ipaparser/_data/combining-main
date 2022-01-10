@@ -50,7 +50,9 @@
 ◌˞, ◌ʴ	vowel	+r-colored
 
 ᵐ◌, ᶬ◌, ⁿ◌, ᶯ◌, ᶮ◌, ᵑ◌, ᶰ◌	consonant	+prenasalized	!nasal
-ᵇ◌, ᵈ◌, ᶢ◌	nasal | approximant	+prestopped
+ᵇ◌	nasal & labial | approximant & labial	+prestopped
+ᵈ◌	nasal & coronal | approximant & coronal	+prestopped
+ᶢ◌	nasal & dorsal | approximant & dorsal	+prestopped
 ˀ◌	stop | nasal & click	+preglottalized
 
 ◌̆	sound	+extra-short	!(length)
