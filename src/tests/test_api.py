@@ -108,7 +108,7 @@ class TestApi(TestCase):
             IPASymbol('a').features(Height),
             IPASymbol('a').features('height', role='open'),  # type: ignore
             IPASymbol('a').features({Height}, role=SoundType.VOWEL),
-            IPASymbol('a').features({'height'}),  # type: ignore
+            IPASymbol('a').features({'Height'}),  # type: ignore
             IPASymbol('a').features(frozenset({Height})),
             IPASymbol('a').features(frozenset({'height'})),  # type: ignore
             IPASymbol('a').features({Height, Manner}, role='simple vowel'),  # type: ignore
@@ -119,6 +119,7 @@ class TestApi(TestCase):
         )
         self.assertEqual(
             IPASymbol('a').features({Height, HeightCategory}),
+            IPASymbol('a').features({Height, 'HeightCategory'}),  # type: ignore
             IPASymbol('a').features(frozenset({'height', 'height category'}), role='about open'),  # type: ignore
             {Height.OPEN, HeightCategory.ABOUT_OPEN},
         )
