@@ -82,16 +82,16 @@ class TestLinguistics(TestCase):
         for symbol in load_symbols():
             ipa_symbol = IPASymbol(symbol.symbol)
             self.assertEqual(
-                list(map(str, ipa_symbol.components))
-                if ipa_symbol.components is not None
-                else None,
-                symbol.components,
-            )
-            self.assertEqual(
                 [feature.value for feature in sorted(features)]
                 if (features := ipa_symbol.features()) is not None
                 else None,
                 symbol.features,
+            )
+            self.assertEqual(
+                list(map(str, ipa_symbol.components))
+                if ipa_symbol.components is not None
+                else None,
+                symbol.components,
             )
 
     def test_substitutions(self) -> None:
