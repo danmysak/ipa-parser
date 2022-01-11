@@ -19,9 +19,9 @@
 ◌̥, ◌̊	vowel	+devoiced
 ◌̬	consonant	+voiced
 
-◌̤, ◌ʱ	sound | tone letter	+breathy
-◌̰	sound | tone letter	+creaky
-◌̣	sound	+whispery
+◌̤, ◌ʱ	sound | tone letter	+breathy	!(phonation)
+◌̰	sound | tone letter	+creaky	!(phonation)
+◌̣	sound	+whispery	!(phonation)
 
 ◌͈	consonant	+strong	!weak
 ◌͉	consonant	+weak	!strong
