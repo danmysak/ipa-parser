@@ -7,6 +7,7 @@ from .features import Feature, FeatureSet
 __all__ = [
     'Bracket',
     'Change',
+    'ChangeSequence',
     'Combining',
     'CombiningData',
     'CombiningType',
@@ -50,11 +51,14 @@ class Change:
     is_positive: bool
 
 
+ChangeSequence = tuple[Change, ...]
+
+
 @dataclass(frozen=True)
 class Transformation:
     required: FeatureSet
     incompatible: FeatureSet
-    changes: list[Change]
+    changes: ChangeSequence
 
     def is_applicable(self, features: FeatureSet) -> bool:
         return (self.required <= features

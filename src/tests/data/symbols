@@ -2049,11 +2049,28 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ɻ̩	—	approximant, consonant, coronal, retroflex, simple consonant, sound, syllabic, voiced
 ɽ	—	consonant, coronal, retroflex, simple consonant, sound, tap/flap, voiced
 ɽr	—	consonant, coronal, retroflex, simple consonant, sound, trill, voiced
+ɽr͈	—	consonant, coronal, retroflex, simple consonant, sound, strong, trill, voiced
+ɽr͉	—	consonant, coronal, retroflex, simple consonant, sound, trill, voiced, weak
+ɽr͉͈	ɽr	—
+ɽr͉͉	ɽr	—
 ɽʱ	—	breathy, consonant, coronal, retroflex, simple consonant, sound, tap/flap, voiced
 ɽʷ	—	consonant, coronal, labialized, retroflex, simple consonant, sound, tap/flap, voiced
 ɽ̃	—	consonant, coronal, nasalized, retroflex, simple consonant, sound, tap/flap, voiced
 ɽ̊	—	consonant, coronal, retroflex, simple consonant, sound, tap/flap
+ɽ̊r̥	—	consonant, coronal, retroflex, simple consonant, sound, trill
+ɽ̊r̥̊	ɽr	—
 ɽ̟	—	advanced, consonant, coronal, retroflex, simple consonant, sound, tap/flap, voiced
+ɽ̥̊r̊	ɽr	—
+ɽ͈r	—	consonant, coronal, retroflex, simple consonant, sound, strong, trill, voiced
+ɽ͈r͈	—	consonant, coronal, retroflex, simple consonant, sound, strong, trill, voiced
+ɽ͈r͉	ɽr	—
+ɽ͈̊r̥͈	—	consonant, coronal, retroflex, simple consonant, sound, strong, trill
+ɽ͈̊r͈̥	—	consonant, coronal, retroflex, simple consonant, sound, strong, trill
+ɽ͈͈r	ɽr	—
+ɽ͈͉r	ɽr	—
+ɽ͉r	—	consonant, coronal, retroflex, simple consonant, sound, trill, voiced, weak
+ɽ͉r͈	ɽr	—
+ɽ͉r͉	—	consonant, coronal, retroflex, simple consonant, sound, trill, voiced, weak
 ɾ	—	alveolar, consonant, coronal, simple consonant, sound, tap/flap, voiced
 ɾʱ	—	alveolar, breathy, consonant, coronal, simple consonant, sound, tap/flap, voiced
 ɾʲ	—	alveolar, consonant, coronal, palatalized, simple consonant, sound, tap/flap, voiced

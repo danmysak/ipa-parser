@@ -204,7 +204,7 @@ def parse_combining_data(data: TabularData) -> CombiningData:
             incompatible = parse_incompatible(incompatible_content[0])
         else:
             incompatible = frozenset()
-        to_append = [Transformation(required, incompatible, list(filter(None, map(parse_change, changes))))
+        to_append = [Transformation(required, incompatible, tuple(filter(None, map(parse_change, changes))))
                      for required in required_feature_sets]
         for definition in characters:
             combining = parse_combining(definition)
