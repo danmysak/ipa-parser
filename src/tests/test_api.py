@@ -211,6 +211,7 @@ class TestApi(TestCase):
 
         self.assertEqual(list(IPA('[abct͡s]')), ['a', 'b', 'c', 't͡s'])
         self.assertEqual(len(IPA('/abct͡s/')), 4)
+        self.assertEqual(len(IPA('⟨⟩')), 0)
         self.assertTrue(isinstance(IPA('[abct͡s]')[0], IPASymbol))
         self.assertTrue(isinstance(IPA('/abct͡s/')[-1], IPASymbol))
         self.assertTrue(isinstance(IPA('/abct͡s/')[1:2], IPA))
