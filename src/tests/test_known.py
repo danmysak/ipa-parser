@@ -6,7 +6,7 @@ from unittest import main, TestCase
 from ..ipaparser import IPA, IPAConfig, IPASymbol
 
 DIRECTORY = Path(__file__).parent
-DATA = DIRECTORY / 'data'
+DATA = DIRECTORY / 'known'
 TRANSCRIPTIONS = DATA / 'transcriptions'
 SYMBOLS = DATA / 'symbols'
 SUBSTITUTIONS = DATA / 'substitutions'
@@ -97,9 +97,6 @@ class TestLinguistics(TestCase):
     def test_substitutions(self) -> None:
         for substitution in load_substitutions():
             self.assertEqual(str(IPA(substitution.original, IPAConfig(substitutions=True))), substitution.result)
-
-    def test_main_tie(self) -> None:
-        self.assertEqual(str(IPASymbol('ts', IPAConfig(combined=[('t', 's')]))), 't͡s')
 
 
 main()

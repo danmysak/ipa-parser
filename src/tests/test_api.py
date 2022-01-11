@@ -70,6 +70,8 @@ class TestApi(TestCase):
             IPAConfig(combined=[('d̥', 'z̥'), ('̥d', 'z')])
         self.assertEqual(context.exception.sound, '̥d')
 
+        self.assertEqual(str(IPASymbol('ts', IPAConfig(combined=[('t', 's')]))), 't͡s')
+
     def test_symbol_features(self) -> None:
         unknown = 'unknown'
 
