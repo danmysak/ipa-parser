@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterator, Optional
-from unittest import main, TestCase
+from unittest import TestCase
 
 from ..ipaparser import IPA, IPAConfig, IPASymbol
 
@@ -70,7 +70,7 @@ def load_substitutions() -> Iterator[Substitution]:
         yield Substitution(original, result)
 
 
-class TestLinguistics(TestCase):
+class TestKnown(TestCase):
     def test_transcriptions(self) -> None:
         for transcription in load_transcriptions():
             self.assertEqual(
@@ -97,6 +97,3 @@ class TestLinguistics(TestCase):
     def test_substitutions(self) -> None:
         for substitution in load_substitutions():
             self.assertEqual(str(IPA(substitution.original, IPAConfig(substitutions=True))), substitution.result)
-
-
-main()

@@ -1,5 +1,5 @@
 from typing import Any
-from unittest import main, TestCase
+from unittest import TestCase
 
 from ..ipaparser import IPA, IPAConfig, IPASymbol
 from ..ipaparser.definitions import BracketStrategy, TranscriptionType
@@ -90,6 +90,3 @@ class TestApi(TestCase):
     def test_operations(self) -> None:
         with self.assertRaises(IncompatibleTypesError):
             IPA('/a/') + IPA('[b]')
-
-
-main()

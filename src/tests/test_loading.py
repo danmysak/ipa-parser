@@ -1,5 +1,5 @@
 from timeit import timeit
-from unittest import main, TestCase
+from unittest import TestCase
 
 from ..ipaparser import IPA, load
 
@@ -21,6 +21,3 @@ class TestLoading(TestCase):
         second_parse = timeit(lambda: IPA('/def/'), number=1)
         self.assertTrue(is_much_larger(loading_time, first_parse))
         self.assertTrue(are_roughly_equal(first_parse, second_parse))
-
-
-main()

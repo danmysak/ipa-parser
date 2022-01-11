@@ -1,6 +1,6 @@
 from functools import partial
 from typing import Callable, Optional, Union
-from unittest import main, TestCase
+from unittest import TestCase
 
 from ..ipaparser.features import (
     Airflow,
@@ -48,7 +48,7 @@ def find_category(values_by_category: dict[str, list[str]], value: str) -> str:
     assert False
 
 
-class TesFeatures(TestCase):
+class TestFeatures(TestCase):
     def _test_values(self,
                      values: list[tuple[Feature, str]],
                      derived: Optional[Union[Feature, Callable[[Feature], str]]] = None,
@@ -421,6 +421,3 @@ class TesFeatures(TestCase):
 
     def test_feature_set(self) -> None:
         self.assertEqual(FeatureSet, frozenset[Feature])
-
-
-main()
