@@ -1,5 +1,6 @@
 from pathlib import Path
 from typing import Iterable, Optional
+from unicodedata import normalize
 
 from ....ipaparser import IPA, IPAConfig, IPASymbol
 from ....ipaparser.definitions import BracketStrategy
@@ -52,6 +53,7 @@ def process_transcription_and_symbols(transcription: str) -> None:
 
 
 def process_substitutions(transcription: str) -> None:
+    assert normalize('NFD', transcription) == transcription
     assert str(IPA(transcription)) == transcription
     with_substitutions = str(IPA(transcription, IPAConfig(substitutions=True)))
     if with_substitutions != transcription:
