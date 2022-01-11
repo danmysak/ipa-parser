@@ -1,3 +1,4 @@
+from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 
@@ -49,6 +50,9 @@ class Combining:
 class Change:
     feature: Feature
     is_positive: bool
+
+    def negate(self) -> Change:
+        return Change(self.feature, not self.is_positive)
 
 
 ChangeSequence = tuple[Change, ...]

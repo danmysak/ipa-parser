@@ -30,12 +30,14 @@ def apply_combining(
         *,
         basic: bool = False,
         meta: Optional[list[Combining]] = None,
-        always_allowed: Optional[set[ChangeSequence]] = None,
+        allowed: Optional[set[ChangeSequence]] = None,
+        disallowed: Optional[set[ChangeSequence]] = None,
 ) -> Optional[AppliedCombiningData]:
     data = get_data()
     transformations = (data.combining_basic if basic else data.combining_main).get(combining, [])
     for transformation in transformations:
-        if transformation.is_applicable(features) or transformation.changes in (always_allowed or set()):
+        if (transformation.changes not in (disallowed or set())
+                and (transformation.changes in (allowed or set()) or transformation.is_applicable(features))):
             applied_transformations: list[Transformation] = []
 
             def apply(current_transformation: transformation) -> None:
@@ -122,7 +124,12 @@ def apply_match_position(diacritics: list[Combining], history: set[ChangeSequenc
     while True:
         remaining: list[Combining] = []
         for combining in diacritics:
-            if applied := apply_combining(combining, features, always_allowed=history - changes):
+            if applied := apply_combining(
+                    combining,
+                    features,
+                    allowed=history - changes,
+                    disallowed=set(tuple(change.negate() for change in sequence) for sequence in history | changes),
+            ):
                 features = applied.features
                 changes.update(transformation.changes for transformation in applied.transformations)
             else:
