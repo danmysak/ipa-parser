@@ -7,6 +7,10 @@ __all__ = [
 
 
 class BreakType(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals
+    """
+
     SPACE = 'space'
     HYPHEN = 'hyphen'
     LINKING = 'linking'

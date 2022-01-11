@@ -11,6 +11,11 @@ __all__ = [
 
 
 class Tone(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Pitch_and_tone
+    """
+
     EXTRA_HIGH_TONE = 'extra-high tone'
     HIGH_TONE = 'high tone'
     MID_TONE = 'mid tone'
@@ -28,6 +33,12 @@ class Tone(Feature):
 
 
 class ToneType(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals
+    https://en.wikipedia.org/wiki/Tone_number
+    https://en.wiktionary.org/wiki/Template:IPA
+    """
+
     TONE_LETTER = 'tone letter'
     TONE_NUMBER = 'tone number'
     TONE_STEP = 'tone step'
@@ -37,6 +48,10 @@ class ToneType(Feature):
 
 
 class ToneLetter(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals
+    """
+
     HIGH_TONE_LETTER = 'high tone letter'
     HALF_HIGH_TONE_LETTER = 'half-high tone letter'
     MID_TONE_LETTER = 'mid tone letter'
@@ -48,6 +63,11 @@ class ToneLetter(Feature):
 
 
 class ToneNumber(Feature):
+    """
+    https://en.wikipedia.org/wiki/Tone_number
+    https://en.wiktionary.org/wiki/Template:IPA
+    """
+
     TONE_0 = 'tone 0'
     TONE_1 = 'tone 1'
     TONE_2 = 'tone 2'
@@ -63,6 +83,10 @@ class ToneNumber(Feature):
 
 
 class ToneStep(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals
+    """
+
     UPSTEP = 'upstep'
     DOWNSTEP = 'downstep'
 

@@ -8,6 +8,11 @@ __all__ = [
 
 
 class StressType(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Stress
+    """
+
     PRIMARY_STRESS = 'primary stress'
     SECONDARY_STRESS = 'secondary stress'
 
@@ -16,6 +21,11 @@ class StressType(Feature):
 
 
 class StressSubtype(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Stress
+    """
+
     REGULAR_PRIMARY_STRESS = 'regular primary stress'
     EXTRA_STRONG_PRIMARY_STRESS = 'extra-strong primary stress'
     REGULAR_SECONDARY_STRESS = 'regular secondary stress'

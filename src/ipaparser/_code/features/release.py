@@ -6,6 +6,10 @@ __all__ = [
 
 
 class Release(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation
+    """
+
     NO_AUDIBLE_RELEASE = 'no audible release'
     NASAL_RELEASE = 'nasal release'
     LATERAL_RELEASE = 'lateral release'

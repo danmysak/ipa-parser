@@ -7,6 +7,11 @@ __all__ = [
 
 
 class SuprasegmentalType(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals
+    https://en.wikipedia.org/wiki/Extensions_to_the_International_Phonetic_Alphabet#Diacritics
+    """
+
     STRESS = 'stress'
     TONE = 'tone'
     INTONATION = 'intonation'

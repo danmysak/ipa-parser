@@ -7,6 +7,10 @@ __all__ = [
 
 
 class PlaceCategory(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Consonants
+    """
+
     LABIAL = 'labial'
     CORONAL = 'coronal'
     DORSAL = 'dorsal'
@@ -14,6 +18,10 @@ class PlaceCategory(Feature):
 
 
 class Place(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Consonants
+    """
+
     BILABIAL = 'bilabial'
     LABIODENTAL = 'labiodental'
     LINGUOLABIAL = 'linguolabial'

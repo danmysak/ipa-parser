@@ -7,6 +7,10 @@ __all__ = [
 
 
 class Airflow(Feature):
+    """
+    https://en.wikipedia.org/wiki/Extensions_to_the_International_Phonetic_Alphabet#Diacritics
+    """
+
     EGRESSIVE_AIRFLOW = 'egressive airflow'
     INGRESSIVE_AIRFLOW = 'ingressive airflow'
 

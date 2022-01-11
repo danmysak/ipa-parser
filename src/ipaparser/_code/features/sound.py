@@ -16,6 +16,14 @@ class SoundType(Feature):
 
 
 class SoundSubtype(Feature):
+    """
+    https://en.wikipedia.org/wiki/Doubly_articulated_consonant
+    https://en.wikipedia.org/wiki/Pulmonic-contour_click
+    https://en.wikipedia.org/wiki/Ejective-contour_click
+    https://en.wikipedia.org/wiki/Diphthong
+    https://en.wikipedia.org/wiki/Triphthong
+    """
+
     SIMPLE_CONSONANT = 'simple consonant'
     DOUBLY_ARTICULATED_CONSONANT = 'doubly articulated consonant'
     CONTOUR_CLICK = 'contour click'

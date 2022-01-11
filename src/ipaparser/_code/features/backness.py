@@ -13,6 +13,10 @@ class BacknessCategory(Feature):
 
 
 class Backness(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Vowels
+    """
+
     FRONT = 'front'
     NEAR_FRONT = 'near-front'
     CENTRAL = 'central'

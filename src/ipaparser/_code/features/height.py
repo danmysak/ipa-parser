@@ -13,6 +13,10 @@ class HeightCategory(Feature):
 
 
 class Height(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Vowels
+    """
+
     CLOSE = 'close'
     NEAR_CLOSE = 'near-close'
     CLOSE_MID = 'close-mid'

@@ -6,6 +6,10 @@ __all__ = [
 
 
 class Manner(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Consonants
+    """
+
     AFFRICATE = 'affricate'
     APPROXIMANT = 'approximant'
     FRICATIVE = 'fricative'

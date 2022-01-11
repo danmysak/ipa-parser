@@ -7,6 +7,10 @@ __all__ = [
 
 
 class Intonation(Feature):
+    """
+    https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals
+    """
+
     GLOBAL_RISE = 'global rise'
     GLOBAL_FALL = 'global fall'
 
