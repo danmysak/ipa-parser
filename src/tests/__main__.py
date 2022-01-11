@@ -7,7 +7,7 @@ from .test_loading import TestLoading
 
 suite = TestSuite()
 for test_case in [
-    TestLoading,  # should be first to run properly
+    TestLoading,  # should go first to run properly
     TestKnown,
     TestApi,
     TestFeatures,

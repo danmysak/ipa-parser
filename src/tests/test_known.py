@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterator, Optional
+from unicodedata import normalize
 from unittest import TestCase
 
 from ..ipaparser import IPA, IPAConfig, IPASymbol
@@ -43,7 +44,11 @@ def load_data(path: Path) -> RawData:
         for unstripped in data:
             line = unstripped.rstrip('\n')
             item, *columns = line.split(COLUMN_DELIMITER)
-            yield item, tuple(map(lambda column: column.split(VALUE_DELIMITER) if column != NO_DATA else None, columns))
+            item_data = tuple(map(lambda column: column.split(VALUE_DELIMITER) if column != NO_DATA else None, columns))
+            yield item, item_data
+            for form in ['NFC', 'NFD']:
+                if (normalized := normalize(form, item)) != item:
+                    yield normalized, item_data
 
 
 def load_transcriptions() -> Iterator[Transcription]:
@@ -73,10 +78,10 @@ def load_substitutions() -> Iterator[Substitution]:
 class TestKnown(TestCase):
     def test_transcriptions(self) -> None:
         for transcription in load_transcriptions():
-            self.assertEqual(
-                list(map(str, IPA(transcription.transcription))),
-                transcription.symbols,
-            )
+            ipa = IPA(transcription.transcription)
+            self.assertEqual(list(ipa), transcription.symbols)
+            for symbol in ipa:
+                self.assertEqual(symbol.features(), IPASymbol(str(symbol)).features())
 
     def test_symbols(self) -> None:
         for symbol in load_symbols():
@@ -88,12 +93,20 @@ class TestKnown(TestCase):
                 symbol.features,
             )
             self.assertEqual(
-                list(map(str, ipa_symbol.components))
-                if ipa_symbol.components is not None
-                else None,
+                list(ipa_symbol.components) if ipa_symbol.components is not None else None,
                 symbol.components,
             )
 
     def test_substitutions(self) -> None:
         for substitution in load_substitutions():
-            self.assertEqual(str(IPA(substitution.original, IPAConfig(substitutions=True))), substitution.result)
+            original = IPA(substitution.original, IPAConfig(substitutions=False))
+            substituted = IPA(substitution.original, IPAConfig(substitutions=True))
+            expected = IPA(substitution.result, IPAConfig(substitutions=False))
+
+            self.assertNotEqual(str(original), substitution.result)
+            self.assertEqual(str(substituted), substitution.result)
+            self.assertEqual(str(expected), substitution.result)
+            self.assertEqual(len(substituted), len(expected))
+            for original_symbol, substituted_symbol in zip(substituted, expected):
+                self.assertEqual(original_symbol, substituted_symbol)
+                self.assertEqual(original_symbol.features(), substituted_symbol.features())

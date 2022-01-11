@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 from unittest import TestCase
 
 from ..ipaparser import IPA, IPAConfig, IPASymbol
@@ -12,7 +12,21 @@ from ..ipaparser.exceptions import (
     FeatureKindError,
     IncompatibleTypesError,
 )
-from ..ipaparser.features import Airflow, Height, HeightCategory, Manner, PlaceCategory, SoundType, SymbolType, Voicing
+from ..ipaparser.features import (
+    Airflow,
+    FeatureSet,
+    Height,
+    HeightCategory,
+    Manner,
+    PlaceCategory,
+    SoundType,
+    SymbolType,
+    Voicing,
+)
+
+
+def to_features(ipa: IPA) -> list[Optional[FeatureSet]]:
+    return [symbol.features() for symbol in ipa]
 
 
 class TestApi(TestCase):
@@ -21,12 +35,20 @@ class TestApi(TestCase):
         for value in rest:
             super().assertEqual(first, value)
 
-    def test_transcription_types(self) -> None:
+    def test_enclosing(self) -> None:
         self.assertEqual(IPA('[a]').type, TranscriptionType.PHONETIC, 'phonetic')
-        self.assertEqual(IPA('/a/').type, TranscriptionType.PHONEMIC, 'phonemic')
-        self.assertEqual(IPA('⟨a⟩').type, TranscriptionType.LITERAL, 'literal')
+        self.assertEqual(IPA('[a]').left_bracket, '[')
+        self.assertEqual(IPA('[a]').right_bracket, ']')
 
-        for transcription in ['abc', '(abc)', '[abc/']:
+        self.assertEqual(IPA('/a/').type, TranscriptionType.PHONEMIC, 'phonemic')
+        self.assertEqual(IPA('/a/').left_bracket, '/')
+        self.assertEqual(IPA('/a/').right_bracket, '/')
+
+        self.assertEqual(IPA('⟨a⟩').type, TranscriptionType.LITERAL, 'literal')
+        self.assertEqual(IPA('⟨a⟩').left_bracket, '⟨')
+        self.assertEqual(IPA('⟨a⟩').right_bracket, '⟩')
+
+        for transcription in ['abc', '(abc)', '[abc/', '/abc', 'abc]', '/', '']:
             with self.assertRaises(EnclosingError) as context:
                 IPA(transcription)
             self.assertEqual(context.exception.transcription, transcription)
@@ -138,6 +160,67 @@ class TestApi(TestCase):
             IPASymbol('a').features(role=unknown)  # type: ignore
         self.assertEqual(context.exception.value, unknown)
 
+    def test_representation(self) -> None:
+        self.assertEqual(str(IPA('/abc/')), IPA('/abc/').as_string(), '/abc/')
+        self.assertEqual(repr(IPA('[abc]')), "IPA('[abc]')")
+        self.assertEqual(str(IPASymbol('ts')), IPASymbol('ts').as_string(), 'ts')
+        self.assertEqual(repr(IPASymbol('ts')), "IPASymbol('ts')")
+
+    def test_equality(self) -> None:
+        self.assertEqual(IPA('[abc]'), IPA('[abc]'))
+        self.assertEqual(IPA('[abc]'), '[abc]')
+        self.assertEqual('[abc]', IPA('[abc]'))
+        self.assertNotEqual(IPA('[abc]'), IPA('/abc/'))
+        self.assertNotEqual(IPA('/abc/'), '[abc]')
+        self.assertNotEqual(IPA('[abc]'), IPA('[abd]'))
+        self.assertNotEqual(IPA('/a/'), IPASymbol('a'))
+        self.assertNotEqual(IPASymbol('a'), IPA('[a]'))
+
     def test_operations(self) -> None:
+        transcriptions = set()
+        transcriptions.add(IPA('[abc]'))
+        transcriptions.add(IPA('[def]'))
+        transcriptions.add(IPA('/abc/'))
+        transcriptions.add(IPA('[ghi]'))
+        transcriptions.add(IPA('[abc]'))
+        transcriptions.add(IPA('[cba]'))
+        self.assertEqual(len(transcriptions), 5)
+
+        self.assertTrue(isinstance(IPA('/abc/') + IPA('/def/'), IPA))
+        self.assertEqual(to_features(IPA('[abc]')) + to_features(IPA('[Vef]')), to_features(IPA('[abcVef]')))
+        self.assertEqual(IPA('/abc/') + IPA('/def/'), '/abcdef/')
+        self.assertEqual(IPA('[abc]') + IPA('[def]'), '[abcdef]')
+        self.assertEqual(IPA('[abc]') + IPASymbol('d'), '[abcd]')
+        self.assertEqual(IPASymbol('a') + IPA('/bcd/'), '/abcd/')
         with self.assertRaises(IncompatibleTypesError):
             IPA('/a/') + IPA('[b]')
+        with self.assertRaises(TypeError):
+            IPA('[a]') + '[b]'
+        with self.assertRaises(TypeError):
+            IPA('/a/') + 'b'
+        with self.assertRaises(TypeError):
+            3 + IPA('[a]')
+
+        self.assertTrue(isinstance(IPA('[abc]') * 4, IPA))
+        self.assertEqual(IPA('[abc]') * 4, 4 * IPA('[abc]'), '[abcabcabcabc]')
+        self.assertEqual(IPA('/abc/') * 0, 0 * IPA('/abc/'), '//')
+        with self.assertRaises(TypeError):
+            IPA('[abc]') * 4.0
+        with self.assertRaises(TypeError):
+            'abc' * IPA('/abc/')
+
+        self.assertEqual(list(IPA('[abct͡s]')), ['a', 'b', 'c', 't͡s'])
+        self.assertEqual(len(IPA('/abct͡s/')), 4)
+        self.assertTrue(isinstance(IPA('[abct͡s]')[0], IPASymbol))
+        self.assertTrue(isinstance(IPA('/abct͡s/')[-1], IPASymbol))
+        self.assertTrue(isinstance(IPA('/abct͡s/')[1:2], IPA))
+        self.assertEqual(IPA('[abct͡s]')[0], 'a')
+        self.assertEqual(IPA('[abct͡s]')[2], 'c')
+        self.assertEqual(IPA('/abct͡s/')[-1], 't͡s')
+        self.assertEqual(IPA('/abct͡sz/')[2:4], '/ct͡s/')
+        self.assertEqual(IPA('/abct͡sz/')[:], '/abct͡sz/')
+        self.assertEqual(IPA('[abct͡sz]')[100:0], '[]')
+        with self.assertRaises(IndexError):
+            self.assertEqual(IPA('[abc]')[10], None)
+        with self.assertRaises(TypeError):
+            self.assertEqual(IPA('[abc]')['a'], None)  # type: ignore
