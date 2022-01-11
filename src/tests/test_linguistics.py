@@ -98,5 +98,8 @@ class TestLinguistics(TestCase):
         for substitution in load_substitutions():
             self.assertEqual(str(IPA(substitution.original, IPAConfig(substitutions=True))), substitution.result)
 
+    def test_main_tie(self) -> None:
+        self.assertEqual(str(IPASymbol('ts', IPAConfig(combined=[('t', 's')]))), 't͡s')
+
 
 main()

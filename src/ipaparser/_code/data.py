@@ -228,6 +228,8 @@ def parse_tie_data(data: TabularData) -> tuple[TieData, Tie]:
             raise DataError(f'Expected value in the format "{PLACEHOLDER}(single-character tie){PLACEHOLDER}",'
                             f' got "{value}"')
         tie = value.removeprefix(PLACEHOLDER).removesuffix(PLACEHOLDER)
+        if not unicodedata.combining(tie):
+            raise DataError(f'The tie "{tie}" is not a combining character')
         if tie in ties:
             raise DataError(f'The tie "{value}" is encountered in data multiple times')
         ties.append(tie)
@@ -244,15 +246,15 @@ def parse_bracket_data(data: TabularData) -> tuple[OuterBracketData, InnerBracke
         if len(row) < 2:
             raise DataError(f'Expected at least two columns with opening and closing brackets in each row')
         if any(len(column) != 1 for column in row):
-            raise DataError(f'Expected exactly one value in each cell')
+            raise DataError(f'Expected exactly one value in each cell, got row {row}')
         opening, closing, rest = row[0][0], row[1][0], row[2:]
         if len(rest) > 1:
-            raise DataError(f'Unexpected trailing values')
+            raise DataError(f'Unexpected trailing values: {rest[1:]}')
         pair = opening, closing
         if any(len(bracket) != 1 for bracket in pair):
-            raise DataError(f'Brackets are expected to be of length 1 (got "{opening}"/"{closing}")')
+            raise DataError(f'Brackets are expected to be of length 1 (got "{opening}" and "{closing}")')
         if pair in outer or pair in inner:
-            raise DataError(f'The bracket pair "{opening}"/"{closing}" is encountered in data multiple times')
+            raise DataError(f'The bracket pair "{opening}" and "{closing}" is encountered in data multiple times')
         if rest:
             outer[pair] = TranscriptionType(rest[0][0])
         else:
@@ -267,9 +269,9 @@ def parse_substitution_data(data: TabularData) -> SubstitutionData:
     substitutions: SubstitutionData = []
     for row in data:
         if len(row) != 2:
-            raise DataError(f'Expected exactly two columns in each row')
+            raise DataError(f'Expected exactly two columns in each row, got {row}')
         if any(len(column) != 1 for column in row):
-            raise DataError(f'Expected exactly one value in each cell')
+            raise DataError(f'Expected exactly one value in each cell, got row {row}')
         substitutions.append((row[0][0], row[1][0]))
     return substitutions
 
