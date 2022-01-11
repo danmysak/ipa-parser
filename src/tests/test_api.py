@@ -12,7 +12,7 @@ from ..ipaparser.exceptions import (
     FeatureKindError,
     IncompatibleTypesError,
 )
-from ..ipaparser.features import Airflow, Voicing
+from ..ipaparser.features import Airflow, Height, HeightCategory, Manner, PlaceCategory, SoundType, SymbolType, Voicing
 
 
 class TestApi(TestCase):
@@ -78,6 +78,57 @@ class TestApi(TestCase):
         with self.assertRaises(FeatureKindError) as context:
             IPASymbol('a').features(unknown)  # type: ignore
         self.assertEqual(context.exception.value, unknown)
+
+        self.assertTrue(isinstance(IPASymbol('a').features(Height), frozenset))
+        self.assertTrue(isinstance(IPASymbol('l').features({Manner, 'voicing'}), frozenset))
+
+        self.assertEqual(
+            IPASymbol('a').features(Height),
+            IPASymbol('a').features('height', role='open'),  # type: ignore
+            IPASymbol('a').features({Height}, role=SoundType.VOWEL),
+            IPASymbol('a').features({'height'}),  # type: ignore
+            IPASymbol('a').features(frozenset({Height})),
+            IPASymbol('a').features(frozenset({'height'})),  # type: ignore
+            IPASymbol('a').features({Height, Manner}, role='simple vowel'),  # type: ignore
+            IPASymbol('a').features({'height', 'manner'}),  # type: ignore
+            IPASymbol('a').features(frozenset({Height, Manner})),
+            IPASymbol('a').features(frozenset({Height, 'manner'})),  # type: ignore
+            {Height.OPEN},
+        )
+        self.assertEqual(
+            IPASymbol('a').features({Height, HeightCategory}),
+            IPASymbol('a').features(frozenset({'height', 'height category'}), role='about open'),  # type: ignore
+            {Height.OPEN, HeightCategory.ABOUT_OPEN},
+        )
+        self.assertEqual(
+            IPASymbol('l').features(Manner, role=SymbolType.SOUND),
+            IPASymbol('l').features('manner'),  # type: ignore
+            IPASymbol('l').features({Manner}, role='approximant'),  # type: ignore
+            IPASymbol('l').features(frozenset({Manner})),
+            IPASymbol('l').features({Height, Manner}),
+            IPASymbol('l').features(frozenset({Height, Manner})),
+            IPASymbol('l').features(frozenset({'height', 'manner'})),  # type: ignore
+            {Manner.APPROXIMANT, Manner.LATERAL},
+        )
+        self.assertEqual(
+            IPASymbol('l').features({'manner', 'voicing'}),  # type: ignore
+            IPASymbol('l').features(frozenset({Manner, Voicing}), role=PlaceCategory.CORONAL),
+            {Manner.APPROXIMANT, Manner.LATERAL, Voicing.VOICED},
+        )
+        self.assertEqual(
+            IPASymbol('a').features(set()),
+            IPASymbol('l').features(frozenset()),
+            set(),
+        )
+        self.assertNotEqual(IPASymbol('a').features(), None)
+        self.assertNotEqual(IPASymbol('l').features(), None)
+        self.assertEqual(
+            IPASymbol('a').features(role=SoundType.CONSONANT),
+            IPASymbol('a').features({Height}, role='close'),  # type: ignore
+            IPASymbol('l').features(role='high tone'),  # type: ignore
+            IPASymbol('l').features({Manner, Voicing}, role=Height.OPEN),
+            None,
+        )
 
         with self.assertRaises(FeatureKindError) as context:
             IPASymbol('a').features({Airflow, unknown, Voicing})  # type: ignore
