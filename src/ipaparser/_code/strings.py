@@ -14,7 +14,6 @@ __all__ = [
     'strip_brackets',
     'to_positions',
     'to_string',
-    'upper_camel_to_spaces',
 ]
 
 DECOMPOSED_FORM = 'NFD'
@@ -40,18 +39,6 @@ def to_positions(string: str) -> StringPositions:
 
 def to_string(positions: StringPositions, *, combining: bool = True) -> str:
     return ''.join((position if combining else position[0]) for position in positions)
-
-
-def upper_camel_to_spaces(string: str) -> str:
-    result: list[str] = []
-    for index, character in enumerate(string):
-        if character.isupper():
-            if index > 0:
-                result.append(' ')
-            result.append(character.lower())
-        else:
-            result.append(character)
-    return ''.join(result)
 
 
 def perform_substitutions(string: str, substitutions: SubstitutionData) -> str:

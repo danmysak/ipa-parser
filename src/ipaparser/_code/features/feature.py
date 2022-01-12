@@ -9,8 +9,26 @@ __all__ = [
 ]
 
 
+def upper_camel_to_spaces(string: str) -> str:
+    result: list[str] = []
+    for index, character in enumerate(string):
+        if character.isupper():
+            if index > 0:
+                result.append(' ')
+            result.append(character.lower())
+        else:
+            result.append(character)
+    return ''.join(result)
+
+
 class Feature(str, Enum):
     """The base class for all features; compatible with strings."""
+
+    @classmethod
+    @final
+    def class_values(cls) -> list[str]:
+        """Return supported string equivalents for the class of features."""
+        return [cls.__name__, upper_camel_to_spaces(cls.__name__)] if cls != Feature else []
 
     def derived(self) -> Optional[Feature]:
         """Return the most specific derived feature of the caller, if any."""

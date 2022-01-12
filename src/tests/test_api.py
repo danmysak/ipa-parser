@@ -14,6 +14,7 @@ from ..ipaparser.exceptions import (
 )
 from ..ipaparser.features import (
     Airflow,
+    Feature,
     FeatureSet,
     Height,
     HeightCategory,
@@ -152,6 +153,10 @@ class TestApi(TestCase):
             IPASymbol('l').features({Manner, Voicing}, role=Height.OPEN),
             None,
         )
+
+        self.assertEqual(Manner.class_values(), ['Manner', 'manner'])
+        self.assertEqual(SymbolType.class_values(), ['SymbolType', 'symbol type'])
+        self.assertEqual(Feature.class_values(), [])
 
         with self.assertRaises(FeatureKindError) as context:
             IPASymbol('a').features({Airflow, unknown, Voicing})  # type: ignore

@@ -3,7 +3,6 @@ from typing import Any, Optional, Type, TypeVar
 
 from . import features
 from .features import Feature, FeatureSet
-from .strings import upper_camel_to_spaces
 
 __all__ = [
     'equivalent',
@@ -37,8 +36,8 @@ def build_maps() -> tuple[FeatureMap, KindMap]:
         if is_feature_kind(kind := getattr(features, name)):
             for option in kind:
                 append_unique(feature_map, option.value, option)
-            append_unique(kind_map, name, kind)
-            append_unique(kind_map, upper_camel_to_spaces(name), kind)
+            for class_name in kind.class_values():
+                append_unique(kind_map, class_name, kind)
 
     return feature_map, kind_map
 
