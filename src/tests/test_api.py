@@ -1,4 +1,5 @@
 from typing import Any, Optional
+import unicodedata
 from unittest import TestCase
 
 from ..ipaparser import IPA, IPAConfig, IPASymbol
@@ -55,22 +56,31 @@ class TestApi(TestCase):
             self.assertEqual(context.exception.transcription, transcription)
 
     def test_bracket_strategies(self) -> None:
-        string = '[(a)bc((d)e)fg⁽ʰ⁾i(j)]'
-        self.assertEqual(
-            str(IPA(string, IPAConfig(brackets=BracketStrategy.KEEP))),
-            str(IPA(string, IPAConfig(brackets='keep'))),  # type: ignore
-            string,
-        )
-        self.assertEqual(
-            str(IPA(string, IPAConfig(brackets=BracketStrategy.EXPAND))),
-            str(IPA(string, IPAConfig(brackets='expand'))),  # type: ignore
-            '[abcdefgʰij]',
-        )
-        self.assertEqual(
-            str(IPA(string, IPAConfig(brackets=BracketStrategy.STRIP))),
-            str(IPA(string, IPAConfig(brackets='strip'))),  # type: ignore
-            '[bcfgi]',
-        )
+        strings = [
+            ('[(a)bc((d)e)fg⁽ʰ⁾i(j)]', '[abcdefgʰij]', '[bcfgi]'),
+            ('//', '//', '//'),
+            ('[abc]', '[abc]', '[abc]'),
+            ('/a(b)c.a)b(c.a(b)c/', '/abc.abc.abc/', '/ac.a)b(c.ac/'),
+        ]
+        for string, expanded, stripped in strings:
+            self.assertEqual(
+                str(IPA(string, IPAConfig(brackets=BracketStrategy.KEEP))),
+                str(IPA(string, IPAConfig(brackets='keep'))),  # type: ignore
+                string,
+            )
+            self.assertEqual(
+                str(IPA(string, IPAConfig(brackets=BracketStrategy.EXPAND))),
+                str(IPA(string, IPAConfig(brackets='expand'))),  # type: ignore
+                expanded,
+            )
+            self.assertEqual(
+                str(IPA(string, IPAConfig(brackets=BracketStrategy.STRIP))),
+                str(IPA(string, IPAConfig(brackets='strip'))),  # type: ignore
+                stripped,
+            )
+        self.assertFalse(IPA('[a(b)c]', IPAConfig(brackets=BracketStrategy.KEEP))[1].is_known())
+        self.assertTrue(IPA('[a(b)c]', IPAConfig(brackets=BracketStrategy.KEEP))[2].is_known())
+        self.assertFalse(IPA('[a(b)c]', IPAConfig(brackets=BracketStrategy.KEEP))[3].is_known())
 
         with self.assertRaisesRegex(BracketStrategyError, r'keep/expand/strip') as context:
             IPAConfig(brackets='ignore')  # type: ignore
@@ -94,6 +104,128 @@ class TestApi(TestCase):
         self.assertEqual(context.exception.sound, '̥d')
 
         self.assertEqual(str(IPASymbol('ts', IPAConfig(combined=[('t', 's')]))), 't͡s')
+        self.assertEqual(str(IPA('⟨tstːsːts⟩', IPAConfig(combined=[('tː', 'sː')]))), '⟨tstː͡sːts⟩')
+
+        composed = 'ú'
+        decomposed = 'ú'
+        assert len(composed) == 1
+        assert len(decomposed) == 2
+        self.assertEqual(
+            IPA(f'[a{composed}]', IPAConfig(combined=[('a', decomposed)])),
+            IPA(f'[a{decomposed}]', IPAConfig(combined=[('a', composed)])),
+            IPA(f'[a{composed}]', IPAConfig(combined=[('a', composed)])),
+            IPA(f'[a{decomposed}]', IPAConfig(combined=[('a', decomposed)])),
+            f'[a͡{decomposed}]',
+        )
+
+        latin = 'g'
+        valid = 'ɡ'
+        assert latin != valid
+        for (transcription_letter, combined_letter, substitutions), (result_letter, result_length) in [
+            ((latin, latin, False), (latin, 1)),
+            ((latin, latin, True), (valid, 1)),
+            ((latin, valid, False), (latin, 2)),
+            ((latin, valid, True), (valid, 1)),
+            ((valid, latin, False), (valid, 2)),
+            ((valid, latin, True), (valid, 1)),
+            ((valid, valid, False), (valid, 1)),
+            ((valid, valid, True), (valid, 1)),
+        ]:
+            ipa = IPA(f'/{transcription_letter}b/',
+                      IPAConfig(combined=[(combined_letter, 'b')], substitutions=substitutions))
+            self.assertEqual(ipa, f'/{result_letter}{"͡" if result_length == 1 else ""}b/')
+            self.assertEqual(len(ipa), result_length)
+            self.assertEqual(ipa[0].is_known(), result_letter == valid)
+
+        for letter in ['t', 'ʈ']:
+            for mark in [':', 'ː']:
+                self.assertEqual(
+                    IPA(f'[{letter}{mark}ʂ]', IPAConfig(combined=[(f'{letter}{mark}', 'ʂ')], substitutions=True)),
+                    '[ʈː͡ʂ]',
+                )
+
+        latin = 'g'
+        valid = 'ɡ'
+        assert latin != valid
+        tone = '́'
+        syllabicity = '̩'
+        latin_tone = unicodedata.normalize('NFC', latin + tone)
+        assert len(latin_tone) == 1
+        for combined in [
+            valid + tone + syllabicity,
+            valid + syllabicity + tone,
+            latin + tone + syllabicity,
+            latin + syllabicity + tone,
+            latin_tone + syllabicity,
+        ]:
+            self.assertEqual(
+                IPA(f'/a{latin_tone}{syllabicity}bc/', IPAConfig(combined=[(combined, 'b')], substitutions=True)),
+                f'/a{valid}{syllabicity}{tone}͡bc/',
+            )
+
+        self.assertEqual(
+            IPA('[aɪ̯ aɪ ɔɪ̯ ɔɪ aʊ̯ aʊ]', IPAConfig(combined=[('a', 'ɪ̯'), ('a', 'ʊ̯'), ('ɔ', 'ɪ̯')])),
+            '[a͡ɪ̯ aɪ ɔ͡ɪ̯ ɔɪ a͡ʊ̯ aʊ]',
+        )
+        self.assertEqual(
+            IPA('[aɪ̯ aɪ ɔɪ̯ ɔɪ aʊ̯ aʊ]', IPAConfig(combined=[('a', 'ɪ'), ('a', 'ʊ'), ('ɔ', 'ɪ')])),
+            '[aɪ̯ a͡ɪ ɔɪ̯ ɔ͡ɪ aʊ̯ a͡ʊ]',
+        )
+        self.assertEqual(
+            IPA('[aɪ̯ a͜ɪ ɔɪ̯ ɔɪ a͡ʊ̯ aʊ]', IPAConfig(combined=[('a', 'ɪ̯'), ('a', 'ʊ̯'), ('ɔ', 'ɪ̯'),
+                                                                ('a', 'ɪ'), ('a', 'ʊ'), ('ɔ', 'ɪ')])),
+            '[a͡ɪ̯ a͜ɪ ɔ͡ɪ̯ ɔ͡ɪ a͡ʊ̯ a͡ʊ]',
+        )
+        self.assertEqual(IPA('[aɪ ɪa]', IPAConfig(combined=[('a', 'ɪ')])), '[a͡ɪ ɪa]')
+        self.assertEqual(IPA('[aɪ a̯ɪ aɪ̯ a̯ɪ̯]', IPAConfig(combined=[('a', 'ɪ')])), '[a͡ɪ a̯ɪ aɪ̯ a̯ɪ̯]')
+        self.assertEqual(IPA('[aɪ a̯ɪ aɪ̯ a̯ɪ̯]', IPAConfig(combined=[('a̯', 'ɪ')])), '[aɪ a̯͡ɪ aɪ̯ a̯ɪ̯]')
+        self.assertEqual(IPA('[aɪ a̯ɪ aɪ̯ a̯ɪ̯]', IPAConfig(combined=[('a', 'ɪ̯')])), '[aɪ a̯ɪ a͡ɪ̯ a̯ɪ̯]')
+        self.assertEqual(IPA('[aɪ a̯ɪ aɪ̯ a̯ɪ̯]', IPAConfig(combined=[('a̯', 'ɪ̯')])), '[aɪ a̯ɪ aɪ̯ a̯͡ɪ̯]')
+
+        for transcription in [
+            '[a̯ɪ̯̊]',
+            '[å̯ɪ̯]',
+            '[å̯ɪ̯̊]',
+            '[åɪ̯]',
+            '[a̯ɪ̊]',
+            '[åɪ̊]',
+        ]:
+            for combined in [
+                [('a', 'ɪ')],
+                [('a̯', 'ɪ')],
+                [('a', 'ɪ̯')],
+                [('a̯', 'ɪ̯')],
+            ]:
+                self.assertEqual(IPA(transcription, IPAConfig(combined=combined)), transcription)
+
+        self.assertEqual(
+            IPA('/ntsnttsns=nts=ouaoauaou/', IPAConfig(combined=[('n', 't', 's'), ('a', 'o', 'u')])),
+            '/n͡t͡snttsns=n͡t͡s=ouaoaua͡o͡u/',
+        )
+        self.assertEqual(
+            IPA('/ntsau/', IPAConfig(combined=[('a', 'u'), ('n', 't', 's')])),
+            '/n͡t͡sa͡u/',
+        )
+        self.assertEqual(
+            IPA('/nts/', IPAConfig(combined=[('n', 't'), ('t', 's')])),
+            IPA('/nts/', IPAConfig(combined=[('t', 's'), ('n', 't')])),
+            '/n͡t͡s/',
+        )
+        for transcription, result in [
+            ('/n͡ts/', '/n͡t͡s/'),
+            ('/nt͡s/', '/n͡t͡s/'),
+            ('/n͜ts/', '/n͜t͡s/'),
+            ('/nt͜s/', '/n͡t͜s/'),
+        ]:
+            for combined in [
+                [('n', 't'), ('t', 's')],
+                [('t', 's'), ('n', 't')],
+            ]:
+                self.assertEqual(IPA(transcription, IPAConfig(combined=combined)), result)
+        self.assertEqual(IPA('/nt͡snts/', IPAConfig(combined=[('n', 't͡s')])), '/n͡t͡snts/')
+        self.assertEqual(IPA('/nt͡snts/', IPAConfig(combined=[('n', 'ts')])), '/nt͡sn͡ts/')
+        self.assertEqual(IPA('/aoua͡ou/', IPAConfig(combined=[('a͡o', 'u')])), '/aoua͡o͡u/')
+        self.assertEqual(IPA('/aoua͡ou/', IPAConfig(combined=[('ao', 'u')])), '/ao͡ua͡ou/')
 
     def test_symbol_features(self) -> None:
         unknown = 'unknown'

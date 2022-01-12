@@ -64,7 +64,7 @@ class Parser:
             string = expand_brackets(string, data.inner_brackets)
         elif config.brackets == BracketStrategy.STRIP:
             string = strip_brackets(string, data.inner_brackets)
-        string = combine(string, config.combined, data.main_tie)
+        string = combine(string, config.combined, data.main_tie, data.ties)
         if config.substitutions:
             string = perform_substitutions(string, data.substitutions)  # second pass
         return string

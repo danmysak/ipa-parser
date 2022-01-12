@@ -88,7 +88,7 @@ def strip_brackets(string: str, brackets: InnerBracketData) -> str:
     return ''.join(taken)
 
 
-def combine_single(string: str, sequence: tuple[str, ...], tie: str) -> str:
+def combine_single(string: str, sequence: tuple[str, ...], tie: str, ties: set[str]) -> str:
     if len(sequence) <= 1:
         raise ValueError(f'Attempt to combine a sequence of length {len(sequence)}')
     substring = ''.join(sequence)
@@ -100,10 +100,19 @@ def combine_single(string: str, sequence: tuple[str, ...], tie: str) -> str:
         sections.append(string[position:next_position])
         position = next_position
 
+    def has_diacritics_but_ties(start: int) -> bool:
+        for character_position in range(start, len(string)):
+            character = string[character_position]
+            if character in ties:
+                continue
+            return bool(unicodedata.combining(character))
+        return False
+
     while (occurrence := string.find(substring, position)) >= 0:
+        advance(occurrence)
         following_position = occurrence + len(substring)
-        if following_position < len(string) and unicodedata.combining(string[following_position]):
-            advance(occurrence + 1)
+        if has_diacritics_but_ties(following_position):
+            advance(position + 1)
             continue
         for index, sound in enumerate(sequence):
             if not sound:
@@ -115,7 +124,7 @@ def combine_single(string: str, sequence: tuple[str, ...], tie: str) -> str:
     return ''.join(sections)
 
 
-def combine(string: str, combined: tuple[tuple[str, ...]], tie: str) -> str:
+def combine(string: str, combined: tuple[tuple[str, ...]], tie: str, ties: set[str]) -> str:
     for sequence in combined:
-        string = combine_single(string, sequence, tie)
+        string = combine_single(string, sequence, tie, ties)
     return string
