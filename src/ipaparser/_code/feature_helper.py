@@ -1,8 +1,8 @@
 from functools import partial
-from typing import Any, Optional, Type, TypeVar
+from typing import Any, Optional, TypeVar
 
 from . import features
-from .features import Feature, FeatureSet
+from .features import Feature, FeatureKind, FeatureSet
 
 __all__ = [
     'equivalent',
@@ -16,7 +16,7 @@ __all__ = [
 T = TypeVar('T')
 
 FeatureMap = dict[str, Feature]
-KindMap = dict[str, Type[Feature]]
+KindMap = dict[str, FeatureKind]
 
 
 def append_unique(mapping: dict[str, T], key: str, value: T) -> None:
@@ -49,7 +49,7 @@ def find_feature(value: str) -> Optional[Feature]:
     return FEATURE_MAP.get(value, None)
 
 
-def find_feature_kind(value: str) -> Optional[Type[Feature]]:
+def find_feature_kind(value: str) -> Optional[FeatureKind]:
     return KIND_MAP.get(value, None)
 
 
@@ -57,16 +57,16 @@ def extend(feature_set: FeatureSet) -> FeatureSet:
     return frozenset().union(*(feature.extend() for feature in feature_set))
 
 
-def include(kinds: set[Type[Feature]], feature_set: FeatureSet) -> FeatureSet:
+def include(kinds: set[FeatureKind], feature_set: FeatureSet) -> FeatureSet:
     return frozenset(feature for feature in feature_set if any(isinstance(feature, kind) for kind in kinds))
 
 
-def exclude(kinds: set[Type[Feature]], feature_set: FeatureSet) -> FeatureSet:
+def exclude(kinds: set[FeatureKind], feature_set: FeatureSet) -> FeatureSet:
     return feature_set - extend(include(kinds, feature_set))
 
 
-def equivalent(a: FeatureSet, b: FeatureSet, included: Optional[set[Type[Feature]]] = None,
-               *, excluded: Optional[set[Type[Feature]]] = None) -> bool:
+def equivalent(a: FeatureSet, b: FeatureSet, included: Optional[set[FeatureKind]] = None,
+               *, excluded: Optional[set[FeatureKind]] = None) -> bool:
     for processor, kinds in ((include, included),
                              (exclude, excluded)):
         if kinds is not None:

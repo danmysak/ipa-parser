@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Optional, Type
+from typing import Optional
 import unicodedata
 
 from .cacher import with_cache
@@ -22,7 +22,7 @@ from .data_types import (
 )
 from .definitions import TranscriptionType
 from .feature_helper import find_feature, find_feature_kind
-from .features import Feature, FeatureSet
+from .features import Feature, FeatureKind, FeatureSet
 from .strings import is_decomposed
 
 __all__ = [
@@ -87,7 +87,7 @@ def get_feature_conjunction(value: str) -> FeatureSet:
     return frozenset(map(get_feature, value.split(CONJUNCTION_DELIMITER)))
 
 
-def get_feature_kind(value: str) -> Type[Feature]:
+def get_feature_kind(value: str) -> FeatureKind:
     kind = find_feature_kind(value)
     if kind is None:
         raise DataError(f'Unknown feature kind: "{value}"')

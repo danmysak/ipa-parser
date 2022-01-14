@@ -3,7 +3,7 @@ from typing import Any, Optional, overload, Type, TypeVar, Union
 
 from .exceptions import FeatureError, FeatureKindError
 from .feature_helper import find_feature, find_feature_kind, include
-from .features import Feature, FeatureSet, SymbolType
+from .features import Feature, FeatureKind, FeatureSet, SymbolType
 from .ipa_config import IPAConfig
 from .parser import Parser
 from .phonetics import interpret
@@ -17,7 +17,7 @@ __all__ = [
 F = TypeVar('F', bound=Feature)
 
 RelaxedFeature = Union[Feature, str]
-RelaxedFeatureKind = Union[Type[Feature], str]
+RelaxedFeatureKind = Union[FeatureKind, str]
 
 
 class IPASymbol:
@@ -82,7 +82,7 @@ class IPASymbol:
         return str(self)
 
     @staticmethod
-    def _check_normalize_kind(kind: RelaxedFeatureKind) -> Type[Feature]:
+    def _check_normalize_kind(kind: RelaxedFeatureKind) -> FeatureKind:
         if isinstance(kind, type) and issubclass(kind, Feature):
             return kind
         if isinstance(kind, str) and (found_kind := find_feature_kind(kind)):
@@ -106,7 +106,7 @@ class IPASymbol:
         ...
 
     @overload
-    def features(self, kinds: Union[set[Type[Feature]], frozenset[Type[Feature]]],
+    def features(self, kinds: Union[set[FeatureKind], frozenset[FeatureKind]],
                  *, role: Optional[Feature] = None) -> Optional[FeatureSet]:
         ...
 
@@ -135,7 +135,7 @@ class IPASymbol:
             FeatureKindError: The value(s) of the `kinds` parameter are not valid feature kinds.
             FeatureError: The value of the `role` parameter is not a valid feature.
         """
-        kind_index: Optional[set[Type[Feature]]] = (
+        kind_index: Optional[set[FeatureKind]] = (
             set(map(self._check_normalize_kind, kinds if isinstance(kinds, (set, frozenset)) else {kinds}))
             if kinds is not None else None
         )

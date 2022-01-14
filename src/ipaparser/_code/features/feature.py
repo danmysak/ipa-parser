@@ -1,10 +1,11 @@
 from __future__ import annotations
 from enum import Enum
-from typing import Any, final, Optional, TypeVar
+from typing import Any, final, Optional, Type, TypeVar
 
 __all__ = [
     'assert_feature_mapping',
     'Feature',
+    'FeatureKind',
     'FeatureSet',
 ]
 
@@ -46,6 +47,7 @@ class Feature(str, Enum):
 
 
 FeatureSet = frozenset[Feature]
+FeatureKind = Type[Feature]
 
 M = TypeVar('M', bound=dict[Feature, Any])
 
