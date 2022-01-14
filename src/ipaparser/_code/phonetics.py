@@ -26,7 +26,7 @@ __all__ = [
 ]
 
 
-APPROXIMANTS_VS_NONSYLLABIC_VOWELS: list[list[tuple[set[Feature], set[Feature]]]] = [
+APPROXIMANTS_VS_VOWELS: list[list[tuple[set[Feature], set[Feature]]]] = [
     # General:
     [({
         SoundSubtype.SIMPLE_CONSONANT,
@@ -36,23 +36,23 @@ APPROXIMANTS_VS_NONSYLLABIC_VOWELS: list[list[tuple[set[Feature], set[Feature]]]
         Height.CLOSE,
     })],
     # Syllabicity:
-    [({
+    [(set(
         # -
-    }, {
+    ), {
         Syllabicity.NONSYLLABIC,
     }), ({
         Syllabicity.SYLLABIC,
-    }, {
+    }, set(
         # -
-    })],
+    ))],
     # Voicing:
     [({
         Voicing.VOICED,
-    }, {
+    }, set(
         # -
-    }), ({
+    )), (set(
         # -
-    }, {
+    ), {
         Voicing.DEVOICED,
     })],
     # Place/backness:
@@ -75,21 +75,28 @@ APPROXIMANTS_VS_NONSYLLABIC_VOWELS: list[list[tuple[set[Feature], set[Feature]]]
         SecondaryPlace.LABIALIZED,
     }, {
         Roundedness.ROUNDED,
-    }), ({
+    }), (set(
         # -
-    }, {
+    ), set(
         # -
-    })],
+    ))],
 ]
 
 
 def alternative_type(features: FeatureSet) -> Iterator[FeatureSet]:
-    for pairs in product(*APPROXIMANTS_VS_NONSYLLABIC_VOWELS):
-        approximant, nonsyllabic_vowel = map(extend, map(lambda sets: frozenset().union(*sets), zip(*pairs)))
-        if features == approximant:
-            yield nonsyllabic_vowel
-        elif features == nonsyllabic_vowel:
-            yield approximant
+    affected_kinds = set(feature.__class__
+                         for aspect in APPROXIMANTS_VS_VOWELS
+                         for consonant_features, vowel_features in aspect
+                         for feature in (consonant_features | vowel_features))
+
+    def with_replaced(match: FeatureSet, replace: FeatureSet) -> Iterator[FeatureSet]:
+        if include(affected_kinds, features) == match:
+            yield (features - extend(match)) | extend(replace)
+
+    for pairs in product(*APPROXIMANTS_VS_VOWELS):
+        approximant, vowel = map(lambda sets: frozenset().union(*sets), zip(*pairs))
+        yield from with_replaced(approximant, vowel)
+        yield from with_replaced(vowel, approximant)
 
 
 def alternative_coronal_place(features: FeatureSet) -> Iterator[FeatureSet]:
@@ -216,25 +223,28 @@ def combine_triple_right_to_left(left: FeatureSet, middle: FeatureSet, right: Fe
 def combine_features(feature_sets: list[FeatureSet]) -> Optional[FeatureSet]:
     if len(feature_sets) <= 1:
         raise ValueError(f'Feature sets to combine should contain at least two sets (got {len(feature_sets)})')
-    interpretations = list(product(*map(interpret, feature_sets)))
-    return next(
-        (combined
-         for combiner in {
-             2: [
-                 combine_affricate,
-                 combine_diphthong,
-                 combine_doubly_articulated,
-                 combine_contour_click,
-                 combine_prenasalized,
-                 combine_release,
-             ],
-             3: [
-                 combine_triphthong,
-                 combine_triple_left_to_right,
-                 combine_triple_right_to_left,
-             ],
-         }.get(len(feature_sets), [])
-         for interpretation in interpretations
-         if (combined := combiner(*interpretation)) is not None),
-        None,
-    )
+    if combiners := {
+        2: [
+            combine_affricate,
+            combine_diphthong,
+            combine_doubly_articulated,
+            combine_contour_click,
+            combine_prenasalized,
+            combine_release,
+        ],
+        3: [
+            combine_triphthong,
+            combine_triple_left_to_right,
+            combine_triple_right_to_left,
+        ],
+    }.get(len(feature_sets), None):
+        interpretations = list(product(*map(interpret, feature_sets)))
+        return next(
+            (combined
+             for combiner in combiners
+             for interpretation in interpretations
+             if (combined := combiner(*interpretation)) is not None),
+            None,
+        )
+    else:
+        return None

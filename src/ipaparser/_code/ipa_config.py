@@ -25,7 +25,7 @@ def process_brackets(brackets: Union[BracketStrategy, str]) -> BracketStrategy:
 
 def process_combined(combined: Optional[Iterable[tuple[str, ...]]], substitutions: bool) -> tuple[tuple[str, ...]]:
     result: list[tuple[str, ...]] = []
-    for sequence in combined or []:
+    for sequence in (combined or []):
         if len(sequence) < 2:
             raise CombinedLengthError(sequence)
         current: list[str] = []

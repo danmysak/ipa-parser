@@ -40,6 +40,10 @@ from ..ipaparser.features import (
     Voicing,
 )
 
+__all__ = [
+    'TestFeatures',
+]
+
 
 def find_category(values_by_category: dict[str, list[str]], value: str) -> str:
     for category, values in values_by_category.items():

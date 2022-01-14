@@ -30,7 +30,7 @@ class IPASymbol:
 
     @property
     def components(self) -> Optional[tuple[IPASymbol, ...]]:
-        """Component symbols of the compound sounds (or None if not a compound sound)."""
+        """Component symbols left to right (or None if the symbol is not a compound)."""
         return self._components
 
     @property
@@ -71,8 +71,11 @@ class IPASymbol:
         :param config: Parsing parameters.
         """
         parser = Parser(string, config, all_tied=True)
-        symbols = parser.parse()
-        self._set_raw(symbols[0] if len(symbols) == 1 else RawSymbol(parser.normalized))
+        if symbols := parser.parse():
+            assert len(symbols) == 1
+            self._set_raw(symbols[0])
+        else:
+            self._set_raw(RawSymbol(parser.normalized))
 
     def as_string(self) -> str:
         """Return the symbol as a string."""

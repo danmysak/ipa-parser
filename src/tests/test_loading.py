@@ -3,6 +3,10 @@ from unittest import TestCase
 
 from ..ipaparser import IPA, load
 
+__all__ = [
+    'TestLoading',
+]
+
 FACTOR = 10.0
 
 

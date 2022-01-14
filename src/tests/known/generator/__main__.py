@@ -40,7 +40,7 @@ def process_symbol(symbol: IPASymbol) -> None:
         format_components(symbol.components),
         format_features(symbol.features()),
     ))
-    for component in symbol.components or []:
+    for component in (symbol.components or []):
         process_symbol(component)
 
 

@@ -26,6 +26,10 @@ from ..ipaparser.features import (
     Voicing,
 )
 
+__all__ = [
+    'TestApi',
+]
+
 
 def to_features(ipa: IPA) -> list[Optional[FeatureSet]]:
     return [symbol.features() for symbol in ipa]
@@ -56,28 +60,48 @@ class TestApi(TestCase):
             self.assertEqual(context.exception.transcription, transcription)
 
     def test_bracket_strategies(self) -> None:
-        strings = [
-            ('[(a)bc((d)e)fg⁽ʰ⁾i(j)]', '[abcdefgʰij]', '[bcfgi]'),
-            ('//', '//', '//'),
-            ('[abc]', '[abc]', '[abc]'),
-            ('/a(b)c.a)b(c.a(b)c/', '/abc.abc.abc/', '/ac.a)b(c.ac/'),
-        ]
-        for string, expanded, stripped in strings:
+        for string, expanded, stripped in [
+            ('(a)bc((d)e)fg⁽ʰ⁾i(j)', 'abcdefgʰij', 'bcfgi'),
+            ('', '', ''),
+            ('abc', 'abc', 'abc'),
+            ('[]⟨()((()))//⟩', '[]⟨//⟩', '[]⟨//⟩'),
+            ('a(b)c.a)b(c.a(b)c', 'abc.abc.abc', 'ac.a)b(c.ac'),
+        ]:
             self.assertEqual(
-                str(IPA(string, IPAConfig(brackets=BracketStrategy.KEEP))),
-                str(IPA(string, IPAConfig(brackets='keep'))),  # type: ignore
+                str(IPASymbol(string, IPAConfig(brackets=BracketStrategy.KEEP))),
+                str(IPASymbol(string, IPAConfig(brackets='keep'))),  # type: ignore
                 string,
             )
             self.assertEqual(
-                str(IPA(string, IPAConfig(brackets=BracketStrategy.EXPAND))),
-                str(IPA(string, IPAConfig(brackets='expand'))),  # type: ignore
+                str(IPASymbol(string, IPAConfig(brackets=BracketStrategy.EXPAND))),
+                str(IPASymbol(string, IPAConfig(brackets='expand'))),  # type: ignore
                 expanded,
             )
             self.assertEqual(
-                str(IPA(string, IPAConfig(brackets=BracketStrategy.STRIP))),
-                str(IPA(string, IPAConfig(brackets='strip'))),  # type: ignore
+                str(IPASymbol(string, IPAConfig(brackets=BracketStrategy.STRIP))),
+                str(IPASymbol(string, IPAConfig(brackets='strip'))),  # type: ignore
                 stripped,
             )
+            for left, right in [
+                ('[', ']'),
+                ('/', '/'),
+                ('⟨', '⟩'),
+            ]:
+                self.assertEqual(
+                    str(IPA(left + string + right, IPAConfig(brackets=BracketStrategy.KEEP))),
+                    str(IPA(left + string + right, IPAConfig(brackets='keep'))),  # type: ignore
+                    left + string + right,
+                )
+                self.assertEqual(
+                    str(IPA(left + string + right, IPAConfig(brackets=BracketStrategy.EXPAND))),
+                    str(IPA(left + string + right, IPAConfig(brackets='expand'))),  # type: ignore
+                    left + expanded + right,
+                )
+                self.assertEqual(
+                    str(IPA(left + string + right, IPAConfig(brackets=BracketStrategy.STRIP))),
+                    str(IPA(left + string + right, IPAConfig(brackets='strip'))),  # type: ignore
+                    left + stripped + right,
+                )
         self.assertFalse(IPA('[a(b)c]', IPAConfig(brackets=BracketStrategy.KEEP))[1].is_known())
         self.assertTrue(IPA('[a(b)c]', IPAConfig(brackets=BracketStrategy.KEEP))[2].is_known())
         self.assertFalse(IPA('[a(b)c]', IPAConfig(brackets=BracketStrategy.KEEP))[3].is_known())
@@ -103,6 +127,7 @@ class TestApi(TestCase):
             IPAConfig(combined=[('d̥', 'z̥'), ('̥d', 'z')])
         self.assertEqual(context.exception.sound, '̥d')
 
+        self.assertEqual(str(IPASymbol('ts', IPAConfig(combined=[]))), 'ts')
         self.assertEqual(str(IPASymbol('ts', IPAConfig(combined=[('t', 's')]))), 't͡s')
         self.assertEqual(str(IPA('⟨tstːsːts⟩', IPAConfig(combined=[('tː', 'sː')]))), '⟨tstː͡sːts⟩')
 
@@ -230,9 +255,28 @@ class TestApi(TestCase):
     def test_symbol_features(self) -> None:
         unknown = 'unknown'
 
+        class UnknownKind:
+            def __eq__(self, other: Any) -> bool:
+                return other == 'height'
+
+            def __hash__(self) -> int:
+                return hash('height')
+
+        class UnknownFeature:
+            def __eq__(self, other: Any) -> bool:
+                return other == 'vowel'
+
+            def __hash__(self) -> int:
+                return hash('vowel')
+
         with self.assertRaises(FeatureKindError) as context:
             IPASymbol('a').features(unknown)  # type: ignore
         self.assertEqual(context.exception.value, unknown)
+        with self.assertRaises(FeatureKindError) as context:
+            IPASymbol('a').features(set)  # type: ignore
+        self.assertEqual(context.exception.value, set)
+        with self.assertRaises(FeatureKindError):
+            IPASymbol('a').features(UnknownKind())  # type: ignore
 
         self.assertTrue(isinstance(IPASymbol('a').features(Height), frozenset))
         self.assertTrue(isinstance(IPASymbol('l').features({Manner, 'voicing'}), frozenset))
@@ -297,11 +341,15 @@ class TestApi(TestCase):
         with self.assertRaises(FeatureError) as context:
             IPASymbol('a').features(role=unknown)  # type: ignore
         self.assertEqual(context.exception.value, unknown)
+        with self.assertRaises(FeatureError):
+            IPASymbol('a').features(role=UnknownFeature())  # type: ignore
 
     def test_representation(self) -> None:
         self.assertEqual(str(IPA('/abc/')), IPA('/abc/').as_string(), '/abc/')
+        self.assertEqual(str(IPA('/a͡bc͡/')), IPA('/a͡bc͡/').as_string(), '/a͡bc͡/')
         self.assertEqual(repr(IPA('[abc]')), "IPA('[abc]')")
         self.assertEqual(str(IPASymbol('ts')), IPASymbol('ts').as_string(), 'ts')
+        self.assertEqual(str(IPASymbol('t͡s')), IPASymbol('t͡s').as_string(), 't͡s')
         self.assertEqual(repr(IPASymbol('ts')), "IPASymbol('ts')")
 
     def test_equality(self) -> None:
@@ -311,8 +359,17 @@ class TestApi(TestCase):
         self.assertNotEqual(IPA('[abc]'), IPA('/abc/'))
         self.assertNotEqual(IPA('/abc/'), '[abc]')
         self.assertNotEqual(IPA('[abc]'), IPA('[abd]'))
+
+        self.assertEqual(IPASymbol('a'), IPASymbol('a'))
+        self.assertEqual(IPASymbol('abc'), IPASymbol('abc'))
+        self.assertEqual(IPASymbol('a'), 'a')
+        self.assertEqual('abc', IPASymbol('abc'))
+        self.assertNotEqual(IPASymbol('a'), IPASymbol('b'))
+        self.assertNotEqual(IPASymbol('a'), IPASymbol('ab'))
+
         self.assertNotEqual(IPA('/a/'), IPASymbol('a'))
         self.assertNotEqual(IPASymbol('a'), IPA('[a]'))
+        self.assertNotEqual(IPASymbol('[a]'), IPA('[a]'))
 
     def test_operations(self) -> None:
         transcriptions = set()
@@ -323,6 +380,20 @@ class TestApi(TestCase):
         transcriptions.add(IPA('[abc]'))
         transcriptions.add(IPA('[cba]'))
         self.assertEqual(len(transcriptions), 5)
+
+        symbols = set()
+        symbols.add(IPASymbol('a'))
+        symbols.add(IPASymbol('b'))
+        symbols.add(IPASymbol('ab'))
+        symbols.add(IPASymbol('a'))
+        symbols.add(IPASymbol('b'))
+        symbols.add(IPASymbol('ba'))
+        self.assertEqual(len(symbols), 4)
+
+        self.assertEqual(bool(IPA('[ ]')), True)
+        self.assertEqual(bool(IPA('[]')), False)
+        self.assertEqual(bool(IPASymbol(' ')), True)
+        self.assertEqual(bool(IPASymbol('')), False)
 
         self.assertTrue(isinstance(IPA('/abc/') + IPA('/def/'), IPA))
         self.assertEqual(to_features(IPA('[abc]')) + to_features(IPA('[Vef]')), to_features(IPA('[abcVef]')))
@@ -363,3 +434,16 @@ class TestApi(TestCase):
             self.assertEqual(IPA('[abc]')[10], None)
         with self.assertRaises(TypeError):
             self.assertEqual(IPA('[abc]')['a'], None)  # type: ignore
+
+    def test_hanging_diacritics(self) -> None:
+        self.assertEqual(IPASymbol('ts͡').features(), None)
+        self.assertEqual(IPASymbol('ts͡').components, ('ts',))
+        self.assertEqual(list(IPA('/ts͡/')), ['t', 's͡'])
+        self.assertEqual(IPA('/ts͡/')[1].features(), None)
+        self.assertEqual(IPA('/ts͡/')[1].components, ('s',))
+        self.assertEqual(list(IPA('/͡ts/')), ['͡', 't', 's'])
+        self.assertEqual(IPA('/͡ts/')[0].features(), None)
+        self.assertNotEqual(IPA('/͡ts/')[1].features(), None)
+        self.assertEqual(list(IPA('[̃a]')), ['̃', 'a'])
+        self.assertEqual(IPA('[̃a]')[0].features(), None)
+        self.assertNotEqual(IPA('[̃a]')[1].features(), None)

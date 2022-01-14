@@ -6,6 +6,10 @@ from unittest import TestCase
 
 from ..ipaparser import IPA, IPAConfig, IPASymbol
 
+__all__ = [
+    'TestKnown',
+]
+
 DIRECTORY = Path(__file__).parent
 DATA = DIRECTORY / 'known'
 TRANSCRIPTIONS = DATA / 'transcriptions'
@@ -75,17 +79,24 @@ def load_substitutions() -> Iterator[Substitution]:
         yield Substitution(original, result)
 
 
+def remove_ties(string: str) -> str:
+    return string.replace('͡', '').replace('͜', '')
+
+
 class TestKnown(TestCase):
     def test_transcriptions(self) -> None:
         for transcription in load_transcriptions():
             ipa = IPA(transcription.transcription)
             self.assertEqual(list(ipa), transcription.symbols)
             for symbol in ipa:
-                self.assertEqual(symbol.features(), IPASymbol(str(symbol)).features())
+                ipa_symbol = IPASymbol(str(symbol))
+                self.assertEqual(symbol.features(), ipa_symbol.features())
+                self.assertEqual(symbol.components, ipa_symbol.components)
 
     def test_symbols(self) -> None:
         for symbol in load_symbols():
             ipa_symbol = IPASymbol(symbol.symbol)
+            self.assertEqual(ipa_symbol, normalize('NFD', symbol.symbol))
             self.assertEqual(
                 [feature.value for feature in sorted(features)]
                 if (features := ipa_symbol.features()) is not None
@@ -96,6 +107,30 @@ class TestKnown(TestCase):
                 list(ipa_symbol.components) if ipa_symbol.components is not None else None,
                 symbol.components,
             )
+
+            if not symbol.components:
+                self.assertEqual(ipa_symbol.left, None)
+                self.assertEqual(ipa_symbol.middle, None)
+                self.assertEqual(ipa_symbol.right, None)
+            elif len(symbol.components) == 1:
+                self.assertEqual(ipa_symbol.left, symbol.components[0])
+                self.assertEqual(ipa_symbol.middle, symbol.components[0])
+                self.assertEqual(ipa_symbol.right, symbol.components[0])
+            elif len(symbol.components) == 2:
+                self.assertEqual(ipa_symbol.left, symbol.components[0])
+                self.assertEqual(ipa_symbol.middle, None)
+                self.assertEqual(ipa_symbol.right, symbol.components[1])
+            elif len(symbol.components) == 3:
+                self.assertEqual(ipa_symbol.left, symbol.components[0])
+                self.assertEqual(ipa_symbol.middle, symbol.components[1])
+                self.assertEqual(ipa_symbol.right, symbol.components[2])
+
+            no_ties = remove_ties(symbol.symbol)
+            if no_ties != symbol.symbol:
+                ipa_no_ties = IPASymbol(no_ties)
+                self.assertEqual(ipa_no_ties, remove_ties(str(ipa_symbol)))
+                self.assertEqual(ipa_no_ties.features(), ipa_symbol.features())
+                self.assertEqual(ipa_no_ties.components, ipa_symbol.components)
 
     def test_substitutions(self) -> None:
         for substitution in load_substitutions():
@@ -110,3 +145,6 @@ class TestKnown(TestCase):
             for original_symbol, substituted_symbol in zip(substituted, expected):
                 self.assertEqual(original_symbol, substituted_symbol)
                 self.assertEqual(original_symbol.features(), substituted_symbol.features())
+
+            self.assertEqual(str(IPASymbol(substitution.original, IPAConfig(substitutions=False))), original)
+            self.assertEqual(str(IPASymbol(substitution.original, IPAConfig(substitutions=True))), expected)

@@ -48,7 +48,7 @@ def apply_combining(
             apply(transformation)
             positive_changes = {change.feature for change in transformation.changes if change.is_positive}
             for index, meta_transformations in enumerate(data.combining_meta.get(meta_combining, [])
-                                                         for meta_combining in meta or []):
+                                                         for meta_combining in (meta or [])):
                 for meta_transformation in meta_transformations:
                     if meta_transformation.required == positive_changes and meta_transformation.is_applicable(features):
                         apply(meta_transformation)
