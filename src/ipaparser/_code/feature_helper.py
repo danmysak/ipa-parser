@@ -1,8 +1,7 @@
 from functools import partial
-from typing import Any, Optional, TypeVar
+from typing import Optional, TypeVar
 
-from . import features
-from .features import Feature, FeatureKind, FeatureSet
+from .features import Feature, FEATURE_KINDS, FeatureKind, FeatureSet
 
 __all__ = [
     'equivalent',
@@ -24,20 +23,15 @@ def append_unique(mapping: dict[str, T], key: str, value: T) -> None:
     mapping[key] = value
 
 
-def is_feature_kind(value: Any) -> bool:
-    return isinstance(value, type) and issubclass(value, Feature) and value != Feature
-
-
 def build_maps() -> tuple[FeatureMap, KindMap]:
     feature_map: FeatureMap = {}
     kind_map: KindMap = {}
 
-    for name in features.__all__:
-        if is_feature_kind(kind := getattr(features, name)):
-            for option in kind:
-                append_unique(feature_map, option.value, option)
-            for kind_name in kind.kind_values():
-                append_unique(kind_map, kind_name, kind)
+    for kind in FEATURE_KINDS:
+        for option in kind:
+            append_unique(feature_map, option.value, option)
+        for kind_name in kind.kind_values():
+            append_unique(kind_map, kind_name, kind)
 
     return feature_map, kind_map
 

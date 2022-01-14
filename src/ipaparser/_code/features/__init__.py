@@ -29,6 +29,7 @@ __all__ = [
     'BacknessCategory',
     'BreakType',
     'Feature',
+    'FEATURE_KINDS',
     'FeatureKind',
     'FeatureSet',
     'Height',
@@ -59,3 +60,9 @@ __all__ = [
     'ToneType',
     'Voicing',
 ]
+
+FEATURE_KINDS: list[FeatureKind] = [value for name in __all__
+                                    if (value := globals().get(name, None))
+                                    and isinstance(value, type)
+                                    and issubclass(value, Feature)
+                                    and value != Feature]
