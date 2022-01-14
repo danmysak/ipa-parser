@@ -36,8 +36,8 @@ def build_maps() -> tuple[FeatureMap, KindMap]:
         if is_feature_kind(kind := getattr(features, name)):
             for option in kind:
                 append_unique(feature_map, option.value, option)
-            for class_name in kind.class_values():
-                append_unique(kind_map, class_name, kind)
+            for kind_name in kind.kind_values():
+                append_unique(kind_map, kind_name, kind)
 
     return feature_map, kind_map
 
