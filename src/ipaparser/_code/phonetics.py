@@ -90,7 +90,8 @@ def alternative_type(features: FeatureSet) -> Iterator[FeatureSet]:
                          for feature in (consonant_features | vowel_features))
 
     def with_replaced(match: FeatureSet, replace: FeatureSet) -> Iterator[FeatureSet]:
-        if include(affected_kinds, features) == match:
+        # The first condition below is an (up to 2x!) optimization
+        if features >= match and include(affected_kinds, features) == match:
             yield (features - extend(match)) | extend(replace)
 
     for pairs in product(*APPROXIMANTS_VS_VOWELS):
