@@ -69,16 +69,16 @@
 ◌ː	sound	+long	!(length)
 ◌ˑ, ◌ː	long	+extra-long	!extra-short
 
-◌̋	vowel | syllabic	+extra-high tone	!(tone)
-◌́	vowel | syllabic	+high tone	!(tone)
-◌̄	vowel | syllabic	+mid tone	!(tone)
-◌̀	vowel | syllabic	+low tone	!(tone)
-◌̏	vowel | syllabic	+extra-low tone	!(tone)
-◌̌	vowel | syllabic	+rising tone	!(tone)
-◌̂	vowel | syllabic	+falling tone	!(tone)
-◌᷄	vowel | syllabic	+high/mid rising tone	!(tone)
-◌᷅	vowel | syllabic	+low rising tone	!(tone)
-◌᷇	vowel | syllabic	+high falling tone	!(tone)
-◌᷆	vowel | syllabic	+low/mid falling tone	!(tone)
-◌᷈	vowel | syllabic	+peaking tone	!(tone)
-◌᷉	vowel | syllabic	+dipping tone	!(tone)
+◌̋	vowel | syllabic	+extra-high tone	!(tone), !nonsyllabic
+◌́	vowel | syllabic	+high tone	!(tone), !nonsyllabic
+◌̄	vowel | syllabic	+mid tone	!(tone), !nonsyllabic
+◌̀	vowel | syllabic	+low tone	!(tone), !nonsyllabic
+◌̏	vowel | syllabic	+extra-low tone	!(tone), !nonsyllabic
+◌̌	vowel | syllabic	+rising tone	!(tone), !nonsyllabic
+◌̂	vowel | syllabic	+falling tone	!(tone), !nonsyllabic
+◌᷄	vowel | syllabic	+high/mid rising tone	!(tone), !nonsyllabic
+◌᷅	vowel | syllabic	+low rising tone	!(tone), !nonsyllabic
+◌᷇	vowel | syllabic	+high falling tone	!(tone), !nonsyllabic
+◌᷆	vowel | syllabic	+low/mid falling tone	!(tone), !nonsyllabic
+◌᷈	vowel | syllabic	+peaking tone	!(tone), !nonsyllabic
+◌᷉	vowel | syllabic	+dipping tone	!(tone), !nonsyllabic

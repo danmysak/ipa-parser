@@ -198,10 +198,9 @@ def parse_combining_data(data: TabularData) -> CombiningData:
                             f' got "{VALUE_DELIMITER.join(requirements)}"')
         required_feature_sets = map(get_feature_conjunction, requirements[0].split(DISJUNCTION_DELIMITER))
         if incompatible_content is not None:
-            if len(incompatible_content) != 1:
-                raise DataError(f'Expected exactly one incompatible feature or feature kind,'
-                                f' got "{VALUE_DELIMITER.join(incompatible_content)}"')
-            incompatible = parse_incompatible(incompatible_content[0])
+            if not incompatible_content:
+                raise DataError(f'Expected an incompatible feature or feature kind, got an empty cell')
+            incompatible = frozenset().union(*map(parse_incompatible, incompatible_content))
         else:
             incompatible = frozenset()
         to_append = [Transformation(required, incompatible, tuple(filter(None, map(parse_change, changes))))
