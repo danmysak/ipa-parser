@@ -428,7 +428,7 @@ class TestFeatures(TestCase):
         self.assertEqual(FeatureSet, frozenset[Feature])
 
     def test_feature_kinds(self) -> None:
-        self.assertEqual(FEATURE_KINDS, [
+        self.assertEqual(FEATURE_KINDS, (
             Airflow,
             Articulation,
             Aspiration,
@@ -462,4 +462,4 @@ class TestFeatures(TestCase):
             ToneStep,
             ToneType,
             Voicing,
-        ])
+        ))

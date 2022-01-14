@@ -29,6 +29,7 @@ def build_maps() -> tuple[FeatureMap, KindMap]:
 
     for kind in FEATURE_KINDS:
         for option in kind:
+            option: Feature
             append_unique(feature_map, option.value, option)
         for kind_name in kind.kind_values():
             append_unique(kind_map, kind_name, kind)
