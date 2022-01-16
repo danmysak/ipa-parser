@@ -78,8 +78,6 @@ class Parser:
 
     def _expand(self, segment: Segment, min_position: int, max_position: int) -> Segment:
         feature_sets = segment.feature_sets
-        if not feature_sets:
-            return segment
 
         def iterate(initial: int, step: int, final: int) -> int:
             nonlocal feature_sets
