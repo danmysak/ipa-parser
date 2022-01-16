@@ -136,6 +136,8 @@ def parse_non_letter_symbol_data(data: TabularData) -> set[Symbol]:
         if len(row) != 2:
             raise DataError(f'Each row must contain exactly two columns')
         symbol_options, features = row
+        if not symbol_options:
+            raise DataError(f'Expected at least one symbol')
         if len(features) != 1:
             raise DataError(f'Expected exactly one feature, got "{VALUE_DELIMITER.join(features)}"')
         for symbol in symbol_options:
