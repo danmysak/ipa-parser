@@ -121,31 +121,27 @@ def combine_triple_right_to_left(left: FeatureSet, middle: FeatureSet, right: Fe
     return combine_feature_sets([left], combine_feature_sets([middle], [right]))
 
 
+COMBINERS = {
+    2: [
+        combine_affricate,
+        combine_diphthong,
+        combine_doubly_articulated,
+        combine_contour_click,
+        combine_prenasalized,
+        combine_release,
+    ],
+    3: [
+        combine_triphthong,
+        combine_triple_left_to_right,
+        combine_triple_right_to_left,
+    ],
+}
+
+
 def combine_feature_sets(*feature_sets: list[FeatureSet]) -> list[FeatureSet]:
     if len(feature_sets) <= 1:
         raise ValueError(f'There should be at least two lists of feature sets to combine (got {len(feature_sets)})')
-    if combiners := {
-        2: [
-            combine_affricate,
-            combine_diphthong,
-            combine_doubly_articulated,
-            combine_contour_click,
-            combine_prenasalized,
-            combine_release,
-        ],
-        3: [
-            combine_triphthong,
-            combine_triple_left_to_right,
-            combine_triple_right_to_left,
-        ],
-    }.get(len(feature_sets), None):  # This check is required so that product() is not called on large sequences
-        interpretations = list(product(*feature_sets))
-        return [
-            features
-            for combiner in combiners
-            for interpretation in interpretations
-            if (combined := combiner(*interpretation)) is not None
-            for features in combined
-        ]
-    else:
-        return []
+    return [features
+            for combiner in COMBINERS.get(len(feature_sets), [])
+            for interpretation in product(*feature_sets)
+            for features in combiner(*interpretation)]
