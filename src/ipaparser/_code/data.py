@@ -12,10 +12,9 @@ from .data_types import (
     Data,
     DataError,
     InnerBracketData,
-    LetterData,
     OuterBracketData,
     SubstitutionData,
-    SymbolData,
+    Symbol,
     Tie,
     TieData,
     Transformation,
@@ -38,7 +37,7 @@ ADD_PREFIX = '+'
 SUBTRACT_PREFIX = '-'
 NO_CHANGE = '='
 INCOMPATIBLE_PREFIX = '!'
-INCOMPATIBLE_KIND_BRACKETS = '(', ')'
+META_BRACKETS = '(', ')'
 
 
 DIRECTORY = Path(__file__).parent.parent / '_data'
@@ -94,7 +93,19 @@ def get_feature_kind(value: str) -> FeatureKind:
     return kind
 
 
-def parse_letter_data(data: TabularData) -> LetterData:
+def parse_symbol(string: str, features: FeatureSet) -> Symbol:
+    if not string:
+        raise DataError(f'No empty symbols allowed')
+    left_bracket, right_bracket = META_BRACKETS
+    is_alternative = string.startswith(left_bracket) and string.endswith(right_bracket)
+    return Symbol(
+        string=string.removeprefix(left_bracket).removesuffix(right_bracket) if is_alternative else string,
+        is_main_interpretation=not is_alternative,
+        features=features,
+    )
+
+
+def parse_letter_data(data: TabularData) -> set[Symbol]:
     row_count = len(data)
     if row_count == 0:
         raise DataError(f'Letter data must contain some rows')
@@ -110,34 +121,25 @@ def parse_letter_data(data: TabularData) -> LetterData:
     common_set = to_features(data[0][0])
     column_sets = [to_features(column) for column in data[0]]
     row_sets = [to_features(row[0]) for row in data]
-    mapping: LetterData = {}
+    letters: set[Symbol] = set()
     for row_index in range(1, row_count):
         for column_index in range(1, column_count):
             for letter in data[row_index][column_index]:
-                if not letter:
-                    raise DataError(f'No empty letters allowed')
-                if letter in mapping:
-                    raise DataError(f'The letter "{letter}" is encountered in data multiple times')
-                mapping[letter] = common_set | row_sets[row_index] | column_sets[column_index]
-    return mapping
+                letters.add(parse_symbol(letter, common_set | row_sets[row_index] | column_sets[column_index]))
+    return letters
 
 
-def parse_symbol_data(data: TabularData) -> SymbolData:
-    mapping: SymbolData = {}
+def parse_non_letter_symbol_data(data: TabularData) -> set[Symbol]:
+    symbols: set[Symbol] = set()
     for row in data:
         if len(row) != 2:
             raise DataError(f'Each row must contain exactly two columns')
-        symbols, features = row
+        symbol_options, features = row
         if len(features) != 1:
             raise DataError(f'Expected exactly one feature, got "{VALUE_DELIMITER.join(features)}"')
-        feature = get_feature(features[0])
-        for symbol in symbols:
-            if not symbol:
-                raise DataError(f'No empty symbols allowed')
-            if symbol in mapping:
-                raise DataError(f'The symbol "{symbol}" is encountered in data multiple times')
-            mapping[symbol] = feature
-    return mapping
+        for symbol in symbol_options:
+            symbols.add(parse_symbol(symbol, frozenset({get_feature(features[0])})))
+    return symbols
 
 
 def parse_combining(definition: str) -> Combining:
@@ -165,7 +167,7 @@ def parse_incompatible(definition: str) -> FeatureSet:
         raise DataError(f'Definition of incompatible features must start with "{INCOMPATIBLE_PREFIX}",'
                         f' got "{definition}"')
     value = definition.removeprefix(INCOMPATIBLE_PREFIX)
-    left_bracket, right_bracket = INCOMPATIBLE_KIND_BRACKETS
+    left_bracket, right_bracket = META_BRACKETS
     return (frozenset(get_feature_kind(value.removeprefix(left_bracket).removesuffix(right_bracket)))
             if value.startswith(left_bracket) and value.endswith(right_bracket)
             else frozenset({get_feature(value)}))
@@ -281,8 +283,8 @@ def load_data() -> Data:
     return Data(
         consonants=parse_letter_data(read(CONSONANTS)),
         vowels=parse_letter_data(read(VOWELS)),
-        breaks=parse_symbol_data(read(BREAKS)),
-        suprasegmentals=parse_symbol_data(read(SUPRASEGMENTALS)),
+        breaks=parse_non_letter_symbol_data(read(BREAKS)),
+        suprasegmentals=parse_non_letter_symbol_data(read(SUPRASEGMENTALS)),
         combining_basic=parse_combining_data(read(COMBINING_BASIC)),
         combining_main=parse_combining_data(read(COMBINING_MAIN)),
         combining_meta=parse_combining_data(read(COMBINING_META)),

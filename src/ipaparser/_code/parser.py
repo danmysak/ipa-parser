@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from typing import Optional
 
-from .combiner import apply_position, get_matcher, match_to_features
+from .combiner import apply_position, get_matcher, match_to_feature_sets
 from .data import get_data
 from .definitions import BracketStrategy
 from .features import FeatureSet
 from .ipa_config import IPAConfig
-from .phonetics import combine_features
+from .phonetics import combine_feature_sets
 from .raw_symbol import RawSymbol
 from .strings import (
     combine,
@@ -16,7 +16,6 @@ from .strings import (
     StringPositions,
     strip_brackets,
     to_positions,
-    to_string,
 )
 
 __all__ = [
@@ -28,7 +27,7 @@ __all__ = [
 class Segment:
     start: int
     end: int
-    features: Optional[FeatureSet] = None
+    feature_sets: list[FeatureSet]
     components: Optional[list[RawSymbol]] = None
 
 
@@ -78,32 +77,34 @@ class Parser:
                 or len(self._tie_free[position]) < len(self._positions[position]))
 
     def _expand(self, segment: Segment, min_position: int, max_position: int) -> Segment:
-        features = segment.features
-        if features is None:
+        feature_sets = segment.feature_sets
+        if not feature_sets:
             return segment
 
         def iterate(initial: int, step: int, final: int) -> int:
-            nonlocal features
+            nonlocal feature_sets
             position = initial
-            while position != final and (next_features := apply_position(
+            while position != final and (next_feature_sets := apply_position(
                 position=self._tie_free[(next_position := position + step)],
-                features=features,
+                feature_sets=feature_sets,
                 is_preceding=step < 0,
-            )) is not None:
+            )):
                 position = next_position
-                features = next_features
+                feature_sets = next_feature_sets
             return position
 
         start = iterate(segment.start, -1, min_position)
         end = iterate(segment.end - 1, 1, max_position) + 1
-        return Segment(start, end, features, segment.components)
+        return Segment(start, end, feature_sets, segment.components)
 
     def _get_segment_at(self, start: int) -> Optional[Segment]:
         if match := get_matcher().match(self._tie_free, start):
-            features = match_to_features(match)
+            feature_sets = match_to_feature_sets(match)
             end = start + match.length
-            return Segment(start, end, features,
-                           components=[RawSymbol(to_string(match.matched), match.data)] if features is None else None)
+            return Segment(start, end, feature_sets, components=None if feature_sets else [RawSymbol(
+                string=match.primary_option.data.string,
+                feature_sets=[match.primary_option.data.features],
+            )])
         else:
             return None
 
@@ -143,7 +144,7 @@ class Parser:
     def _segment_to_symbol(self, segment: Segment, *, is_component: bool = False) -> RawSymbol:
         return RawSymbol(
             string=self._extract(segment.start, segment.end, omit_final_tie=is_component),
-            features=segment.features,
+            feature_sets=segment.feature_sets,
             components=segment.components,
         )
 
@@ -151,11 +152,11 @@ class Parser:
         result: list[Segment] = []
         for group in groups:
             if len(group) > 1:
-                feature_sets = [segment.features for segment in group]
+                feature_sets = [segment.feature_sets for segment in group]
                 result.append(Segment(
                     start=group[0].start,
                     end=group[-1].end,
-                    features=combine_features(feature_sets) if None not in feature_sets else None,
+                    feature_sets=combine_feature_sets(feature_sets),
                     components=[self._segment_to_symbol(segment, is_component=True) for segment in group],
                 ))
             else:
@@ -175,13 +176,14 @@ class Parser:
                     collected.append(segments[next_segment])
                     next_segment += 1
                 else:
-                    collected.append(Segment(end, end + 1))
+                    collected.append(Segment(end, end + 1, []))
                 end = collected[-1].end
             if len(collected) == 1 and not self._is_tied(end - 1):
                 symbols.append(self._segment_to_symbol(collected[0]))
             else:
                 symbols.append(RawSymbol(
                     string=self._extract(start, end),
+                    feature_sets=[],
                     components=[self._segment_to_symbol(segment, is_component=True) for segment in collected],
                 ))
             start = end

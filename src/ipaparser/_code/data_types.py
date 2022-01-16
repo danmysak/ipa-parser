@@ -15,12 +15,9 @@ __all__ = [
     'Data',
     'DataError',
     'InnerBracketData',
-    'Letter',
-    'LetterData',
     'OuterBracketData',
     'SubstitutionData',
     'Symbol',
-    'SymbolData',
     'Tie',
     'TieData',
     'Transformation',
@@ -75,10 +72,13 @@ class Transformation:
         return features
 
 
-Letter = str  # guaranteed to be non-empty
-Symbol = str  # guaranteed to be non-empty
-LetterData = dict[Letter, FeatureSet]
-SymbolData = dict[Symbol, Feature]
+@dataclass(frozen=True)
+class Symbol:
+    string: str  # guaranteed to be non-empty
+    is_main_interpretation: bool
+    features: FeatureSet
+
+
 CombiningData = dict[Combining, list[Transformation]]
 Tie = str  # guaranteed to be of length 1
 TieData = set[Tie]
@@ -90,10 +90,10 @@ SubstitutionData = list[tuple[str, str]]
 
 @dataclass(frozen=True)
 class Data:
-    consonants: LetterData
-    vowels: LetterData
-    breaks: SymbolData
-    suprasegmentals: SymbolData
+    consonants: set[Symbol]
+    vowels: set[Symbol]
+    breaks: set[Symbol]
+    suprasegmentals: set[Symbol]
     combining_basic: CombiningData
     combining_main: CombiningData
     combining_meta: CombiningData

@@ -6,7 +6,6 @@ from .feature_helper import find_feature, find_feature_kind, include
 from .features import Feature, FeatureKind, FeatureSet, SymbolType
 from .ipa_config import IPAConfig
 from .parser import Parser
-from .phonetics import interpret
 from .raw_symbol import RawSymbol
 
 __all__ = [
@@ -24,7 +23,7 @@ class IPASymbol:
     """Parser and feature retriever for standalone symbols/sounds."""
 
     _string: str
-    _features: Optional[FeatureSet]
+    _feature_sets: list[FeatureSet]
 
     _components: Optional[tuple[IPASymbol, ...]]
 
@@ -75,7 +74,7 @@ class IPASymbol:
             assert len(symbols) == 1
             self._set_raw(symbols[0])
         else:
-            self._set_raw(RawSymbol(parser.normalized))
+            self._set_raw(RawSymbol(parser.normalized, []))
 
     def as_string(self) -> str:
         """Return the symbol as a string."""
@@ -123,12 +122,12 @@ class IPASymbol:
                       s.features({Manner, Place}) will return a combined set of manner(s) and place(s), etc.
                       Strings may be used ('PlaceCategory' or 'place category') instead of Feature subclasses (with
                       no typing support).
-        :param role: If provided, the returned feature set is guaranteed to be consistent with this feature (that is, to
-                     contain this feature before being filtered by `kinds`); if the symbol does not have this feature
-                     and cannot be reinterpreted to have this feature, None will be returned.
+        :param role: If provided, the symbol's feature set may be reinterpreted (see below) so that the returned set is
+                     guaranteed to be consistent with `role`: to contain `role` before being filtered by `kinds`. If
+                     the symbol does not have the feature and cannot be reinterpreted to have it, None will be returned.
                      Currently, the only reinterpretations supported are:
-                     1) close vowels as palatal/velar approximants and vice versa;
-                     2) alveolar consonants (except sibilant and non-sibilant fricatives) as dental and as postalveolar.
+                     1) nonsyllabic front/back close vowels as palatal/velar approximants;
+                     2) "graphically ambiguous" alveolar consonants (t, n, ǁ, etc.) as dental and as postalveolar.
                      Strings may be used ('consonant') instead of Feature subclass values (with no typing support).
         :return: A (frozen)set of the features or None for unknown symbols and symbols with an incompatible `role`.
         :raises:
@@ -143,19 +142,19 @@ class IPASymbol:
         return next(
             (
                 include(kind_index, features) if kind_index is not None else features
-                for features in interpret(self._features)
+                for features in self._feature_sets
                 if features >= required_features
             ),
             None
-        ) if self._features is not None else None
+        )
 
     def is_known(self) -> bool:
         """Whether the symbol has a set of associated features."""
-        return self._features is not None
+        return len(self._feature_sets) > 0
 
     def has_feature(self, feature: Feature) -> bool:
         """Whether the symbol is known and has a given feature."""
-        return feature is (self._features or {})
+        return self._feature_sets and feature is self._feature_sets[0]
 
     def is_sound(self) -> bool:
         """Whether the symbol is a known sound."""
@@ -171,7 +170,7 @@ class IPASymbol:
 
     def _set_raw(self, data: RawSymbol) -> None:
         self._string = data.string
-        self._features = data.features
+        self._feature_sets = data.feature_sets
         self._components = (tuple(IPASymbol._from_raw(component) for component in data.components)
                             if data.components is not None else None)
 
