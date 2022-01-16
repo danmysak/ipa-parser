@@ -94,12 +94,13 @@ def get_feature_kind(value: str) -> FeatureKind:
 
 
 def parse_symbol(string: str, features: FeatureSet) -> Symbol:
-    if not string:
-        raise DataError(f'No empty symbols allowed')
     left_bracket, right_bracket = META_BRACKETS
     is_alternative = string.startswith(left_bracket) and string.endswith(right_bracket)
+    symbol = string.removeprefix(left_bracket).removesuffix(right_bracket) if is_alternative else string
+    if not symbol:
+        raise DataError(f'No empty symbols allowed')
     return Symbol(
-        string=string.removeprefix(left_bracket).removesuffix(right_bracket) if is_alternative else string,
+        string=symbol,
         is_main_interpretation=not is_alternative,
         features=features,
     )
