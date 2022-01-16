@@ -4,7 +4,7 @@ from typing import Iterable, Optional, TypeVar
 
 from .cacher import with_cache
 from .data import get_data
-from .data_types import ChangeSequence, Combining, CombiningType, Symbol, Transformation
+from .data_types import ChangeSequence, Combining, CombiningType, DataError, Symbol, Transformation
 from .feature_helper import extend
 from .features import FeatureSet
 from .matcher import Match, Matcher, MatchOption
@@ -107,13 +107,23 @@ def collect_basic_combined_symbols(extended_non_combined: set[Symbol]) -> set[Sy
     }
 
 
+def check_basic_symbol_uniqueness(symbols: set[Symbol]) -> set[Symbol]:
+    encountered: set[str] = set()
+    for symbol in symbols:
+        if symbol.is_main_interpretation:
+            if symbol.string in encountered:
+                raise DataError(f'"{symbol.string}" can be interpreted in multiple ways')
+            encountered.add(symbol.string)
+    return symbols
+
+
 def collect_basic_symbols() -> set[Symbol]:
     data = get_data()
     non_combined = set(map(
         extend_symbol,
         data.consonants | data.vowels | data.breaks | data.suprasegmentals,
     ))
-    return non_combined | collect_basic_combined_symbols(non_combined)
+    return check_basic_symbol_uniqueness(non_combined | collect_basic_combined_symbols(non_combined))
 
 
 def build_matcher() -> Matcher[Symbol]:
