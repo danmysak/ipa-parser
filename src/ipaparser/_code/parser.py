@@ -154,7 +154,7 @@ class Parser:
                 result.append(Segment(
                     start=group[0].start,
                     end=group[-1].end,
-                    feature_sets=combine_feature_sets(feature_sets),
+                    feature_sets=combine_feature_sets(*feature_sets),
                     components=[self._segment_to_symbol(segment, is_component=True) for segment in group],
                 ))
             else:

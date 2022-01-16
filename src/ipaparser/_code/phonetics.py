@@ -114,16 +114,16 @@ def combine_triphthong(left: FeatureSet, middle: FeatureSet, right: FeatureSet) 
 
 
 def combine_triple_left_to_right(left: FeatureSet, middle: FeatureSet, right: FeatureSet) -> list[FeatureSet]:
-    return combine_feature_sets([combine_feature_sets([[left], [middle]]), [right]])
+    return combine_feature_sets(combine_feature_sets([left], [middle]), [right])
 
 
 def combine_triple_right_to_left(left: FeatureSet, middle: FeatureSet, right: FeatureSet) -> list[FeatureSet]:
-    return combine_feature_sets([[left], combine_feature_sets([[middle], [right]])])
+    return combine_feature_sets([left], combine_feature_sets([middle], [right]))
 
 
-def combine_feature_sets(feature_sets: list[list[FeatureSet]]) -> list[FeatureSet]:
+def combine_feature_sets(*feature_sets: list[FeatureSet]) -> list[FeatureSet]:
     if len(feature_sets) <= 1:
-        raise ValueError(f'Feature sets to combine should contain at least two sets (got {len(feature_sets)})')
+        raise ValueError(f'There should be at least two lists of feature sets to combine (got {len(feature_sets)})')
     if combiners := {
         2: [
             combine_affricate,
@@ -138,7 +138,7 @@ def combine_feature_sets(feature_sets: list[list[FeatureSet]]) -> list[FeatureSe
             combine_triple_left_to_right,
             combine_triple_right_to_left,
         ],
-    }.get(len(feature_sets), None):
+    }.get(len(feature_sets), None):  # This check is required so that product() is not called on large sequences
         interpretations = list(product(*feature_sets))
         return [
             features
