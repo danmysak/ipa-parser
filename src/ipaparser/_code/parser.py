@@ -3,9 +3,11 @@ from typing import Optional
 
 from .combiner import apply_position, get_matcher, match_to_feature_sets
 from .data import get_data
+from .data_types import Symbol
 from .definitions import BracketStrategy
 from .features import FeatureSet
 from .ipa_config import IPAConfig
+from .matcher import Match
 from .phonetics import combine_feature_sets
 from .raw_symbol import RawSymbol
 from .strings import (
@@ -42,8 +44,8 @@ class Parser:
     def normalized(self) -> str:
         return self._string
 
-    def __init__(self, string: str, config: IPAConfig, *, all_tied: bool = False) -> None:
-        self._string = self._normalize(string, config)
+    def __init__(self, string: str, config: Optional[IPAConfig] = None, *, all_tied: bool = False) -> None:
+        self._string = self._normalize(string, config) if config else string
         self._positions = to_positions(self._string)
         ties = get_data().ties
         self._tie_free = tuple(''.join(character
@@ -76,7 +78,7 @@ class Parser:
         return ((self._all_tied and position < self._total - 1)
                 or len(self._tie_free[position]) < len(self._positions[position]))
 
-    def _expand(self, segment: Segment, min_position: int, max_position: int) -> Segment:
+    def _expand(self, segment: Segment, from_position: int, until_position: int) -> Segment:
         feature_sets = segment.feature_sets
 
         def iterate(initial: int, step: int, final: int) -> int:
@@ -91,18 +93,27 @@ class Parser:
                 feature_sets = next_feature_sets
             return position
 
-        start = iterate(segment.start, -1, min_position)
-        end = iterate(segment.end - 1, 1, max_position) + 1
+        start = iterate(segment.start, -1, from_position)
+        end = iterate(segment.end - 1, 1, until_position - 1) + 1
         return Segment(start, end, feature_sets, segment.components)
 
+    def _match(self, start: int, length: Optional[int] = None) -> Optional[Match[Symbol]]:
+        return get_matcher().match(self._tie_free, start, length)
+
     def _get_segment_at(self, start: int) -> Optional[Segment]:
-        if match := get_matcher().match(self._tie_free, start):
-            feature_sets = match_to_feature_sets(match)
+        if match := self._match(start):
             end = start + match.length
-            return Segment(start, end, feature_sets, components=None if feature_sets else [RawSymbol(
-                string=match.primary_option.data.string,
-                feature_sets=[match.primary_option.data.features],
-            )])
+            feature_sets = match_to_feature_sets(match)
+            for submatch_length in range(match.length - 1, 0, -1):
+                for submatch_start in range(start, start + match.length - submatch_length + 1):
+                    if submatch := self._match(submatch_start, submatch_length):
+                        submatch_end = submatch_start + submatch_length
+                        expanded = self._expand(Segment(submatch_start, submatch_end, match_to_feature_sets(submatch)),
+                                                start, end)
+                        if expanded.start == start and expanded.end == end:
+                            feature_sets.extend(expanded.feature_sets)
+            return Segment(start, end, feature_sets,
+                           components=None if feature_sets else Parser(match.primary_option.data.string).parse())
         else:
             return None
 
@@ -124,7 +135,7 @@ class Parser:
             expanded.append(self._expand(
                 segment,
                 expanded[index - 1].end if index > 0 else 0,
-                (segments[index + 1].start if index + 1 < len(segments) else self._total) - 1,
+                segments[index + 1].start if index + 1 < len(segments) else self._total,
             ))
         return expanded
 

@@ -69,11 +69,11 @@ class Matcher(Generic[T]):
             combining.append(combining_single)
         return combining
 
-    def match(self, positions: StringPositions, start: int) -> Optional[Match[T]]:
-        for length in range(min(self._max_length, len(positions) - start), 0, -1):
-            given = positions[start:start + length]
+    def match(self, positions: StringPositions, start: int, length: Optional[int] = None) -> Optional[Match[T]]:
+        for match_length in range(min(self._max_length, len(positions) - start), 0, -1) if length is None else [length]:
+            given = positions[start:start + match_length]
             if options := [MatchOption(matched, data, combining)
                            for matched, data in self._mapping.get(to_string(given, combining=False), [])
                            if (combining := Matcher._match_with_combining(given, matched)) is not None]:
-                return Match(length, sorted(options, key=self._option_sorting_key))
+                return Match(match_length, sorted(options, key=self._option_sorting_key))
         return None

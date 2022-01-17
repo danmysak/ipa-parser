@@ -5,6 +5,7 @@ from unicodedata import normalize
 from unittest import TestCase
 
 from ..ipaparser import IPA, IPAConfig, IPASymbol
+from ..ipaparser.features import Feature, FEATURE_KINDS
 
 __all__ = [
     'TestKnown',
@@ -25,7 +26,7 @@ NO_DATA = '—'
 class Symbol:
     symbol: str
     components: Optional[list[str]]
-    features: Optional[list[str]]
+    feature_sets: list[set[str]]
 
 
 @dataclass(frozen=True)
@@ -65,9 +66,13 @@ def load_transcriptions() -> Iterator[Transcription]:
 
 def load_symbols() -> Iterator[Symbol]:
     for symbol, data in load_data(SYMBOLS):
-        assert len(data) == 2
-        components, features = data
-        yield Symbol(symbol, components, features)
+        assert data
+        components, *feature_sets = data
+        assert feature_sets
+        if feature_sets == [None]:
+            feature_sets = []
+        assert all(features is not None for features in feature_sets)
+        yield Symbol(symbol, components, list(map(set, feature_sets)))
 
 
 def load_substitutions() -> Iterator[Substitution]:
@@ -98,11 +103,24 @@ class TestKnown(TestCase):
             ipa_symbol = IPASymbol(symbol.symbol)
             self.assertEqual(ipa_symbol, normalize('NFD', symbol.symbol))
             self.assertEqual(
-                [feature.value for feature in sorted(features)]
-                if (features := ipa_symbol.features()) is not None
-                else None,
-                symbol.features,
+                ipa_symbol.features(),
+                symbol.feature_sets[0] if symbol.feature_sets else None,
             )
+            all_features = {feature for features in symbol.feature_sets for feature in features}
+            for kind in FEATURE_KINDS:
+                for feature in kind:
+                    feature: Feature
+                    features = ipa_symbol.features(role=feature)
+                    if feature in all_features:
+                        self.assertNotEqual(features, None)
+                        self.assertTrue(feature in features)
+                        if feature in symbol.feature_sets[0]:
+                            self.assertEqual(features, symbol.feature_sets[0])
+                        else:
+                            self.assertTrue(features in symbol.feature_sets[1:])
+                    else:
+                        self.assertEqual(features, None)
+
             self.assertEqual(
                 list(ipa_symbol.components) if ipa_symbol.components is not None else None,
                 symbol.components,

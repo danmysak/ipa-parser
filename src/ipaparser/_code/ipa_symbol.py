@@ -29,7 +29,11 @@ class IPASymbol:
 
     @property
     def components(self) -> Optional[tuple[IPASymbol, ...]]:
-        """Component symbols left to right (or None if the symbol is not a compound)."""
+        """
+        If the symbol is either a known or an unknown compound: component symbols left to right;
+        if the symbol is an unknown combination of a base symbol and combining mark(s): the base symbol;
+        otherwise: None.
+        """
         return self._components
 
     @property
@@ -125,9 +129,11 @@ class IPASymbol:
         :param role: If provided, the symbol's feature set may be reinterpreted (see below) so that the returned set is
                      guaranteed to be consistent with `role`: to contain `role` before being filtered by `kinds`. If
                      the symbol does not have the feature and cannot be reinterpreted to have it, None will be returned.
-                     Currently, the only reinterpretations supported are:
+                     Currently, the reinterpretations supported are:
                      1) nonsyllabic front/back close vowels as palatal/velar approximants;
-                     2) "graphically ambiguous" alveolar consonants (t, n, ǁ, etc.) as dental and as postalveolar.
+                     2) "ambiguous" alveolar consonants (t, n, ǁ, etc.) as dental and as postalveolar;
+                     3) ad-hoc combinations (e.g., ä ~ central vowel) as literal ones (ä ~ centralized front vowel);
+                     4) voiceless velar and alveolar sibilant affricates as stops with fricative releases.
                      Strings may be used ('consonant') instead of Feature subclass values (with no typing support).
         :return: A (frozen)set of the features or None for unknown symbols and symbols with an incompatible `role`.
         :raises:

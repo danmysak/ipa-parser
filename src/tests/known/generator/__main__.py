@@ -4,7 +4,7 @@ from unicodedata import normalize
 
 from ....ipaparser import IPA, IPAConfig, IPASymbol
 from ....ipaparser.definitions import BracketStrategy
-from ....ipaparser.features import FeatureSet
+from ....ipaparser.features import Feature, FEATURE_KINDS, FeatureSet
 
 DIRECTORY = Path(__file__).parent
 PARENT_DIRECTORY = DIRECTORY.parent
@@ -35,10 +35,16 @@ def format_features(features: Optional[FeatureSet]) -> str:
 
 
 def process_symbol(symbol: IPASymbol) -> None:
+    interpretations = [symbol.features()]
+    for kind in FEATURE_KINDS:
+        for feature in kind:
+            feature: Feature
+            if (features := symbol.features(role=feature)) is not None and features not in interpretations:
+                interpretations.append(features)
     symbols.add(format_line(
         str(symbol),
         format_components(symbol.components),
-        format_features(symbol.features()),
+        *map(format_features, interpretations),
     ))
     for component in (symbol.components or []):
         process_symbol(component)
