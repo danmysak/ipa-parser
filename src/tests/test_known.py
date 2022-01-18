@@ -102,6 +102,7 @@ class TestKnown(TestCase):
         for symbol in load_symbols():
             ipa_symbol = IPASymbol(symbol.symbol)
             self.assertEqual(ipa_symbol, normalize('NFD', symbol.symbol))
+
             self.assertEqual(
                 ipa_symbol.features(),
                 symbol.feature_sets[0] if symbol.feature_sets else None,
