@@ -156,7 +156,8 @@ class TestKnown(TestCase):
                 ipa_no_ties = IPASymbol(no_ties)
                 self.assertEqual(ipa_no_ties, remove_ties(str(ipa_symbol)))
                 self.assertEqual(ipa_no_ties.features(), ipa_symbol.features())
-                self.assertEqual(ipa_no_ties.components, ipa_symbol.components)
+                self.assertEqual(ipa_no_ties.components, (tuple(map(remove_ties, map(str, ipa_symbol.components)))
+                                                          if ipa_symbol.components is not None else None))
 
     def test_substitutions(self) -> None:
         for substitution in load_substitutions():
