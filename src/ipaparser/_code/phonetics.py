@@ -25,9 +25,9 @@ def combine_affricate(left: FeatureSet, right: FeatureSet) -> list[FeatureSet]:
 
     if (include({SoundSubtype, Manner}, left) - {Manner.EJECTIVE} == {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}
             and Manner.FRICATIVE in right
-            and equivalent(left - {Manner.STOP, Manner.EJECTIVE},
-                           right - {Manner.FRICATIVE, Manner.SIBILANT, Manner.LATERAL, Manner.EJECTIVE},
-                           {SoundSubtype, Manner, Voicing})
+            and equivalent({SoundSubtype, Manner, Voicing},
+                           left - {Manner.STOP, Manner.EJECTIVE},
+                           right - {Manner.FRICATIVE, Manner.SIBILANT, Manner.LATERAL, Manner.EJECTIVE})
             and matching_places(*(include({Place}, side) for side in (left, right)))):
         return [((left | right | {Manner.AFFRICATE})
                  - {Manner.STOP, Manner.FRICATIVE})]
@@ -37,10 +37,10 @@ def combine_affricate(left: FeatureSet, right: FeatureSet) -> list[FeatureSet]:
 
 def combine_doubly_articulated(left: FeatureSet, right: FeatureSet) -> list[FeatureSet]:
     if (include({SoundSubtype}, left) == {SoundSubtype.SIMPLE_CONSONANT}
-            and equivalent(left - {Manner.EJECTIVE},
-                           right - {Manner.EJECTIVE},
-                           {SoundSubtype, Manner, Voicing})
-            and not equivalent(left, right, {PlaceCategory})):
+            and equivalent({SoundSubtype, Manner, Voicing},
+                           left - {Manner.EJECTIVE},
+                           right - {Manner.EJECTIVE})
+            and not equivalent({PlaceCategory}, left, right)):
         return [((left | right | {SoundSubtype.DOUBLY_ARTICULATED_CONSONANT})
                  - {SoundSubtype.SIMPLE_CONSONANT})]
     else:

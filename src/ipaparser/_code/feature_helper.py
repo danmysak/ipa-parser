@@ -1,11 +1,9 @@
-from functools import partial
 from typing import Optional, TypeVar
 
 from .features import Feature, FEATURE_KINDS, FeatureKind, FeatureSet
 
 __all__ = [
     'equivalent',
-    'exclude',
     'extend',
     'include',
     'find_feature',
@@ -56,14 +54,5 @@ def include(kinds: set[FeatureKind], feature_set: FeatureSet) -> FeatureSet:
     return frozenset(feature for feature in feature_set if any(isinstance(feature, kind) for kind in kinds))
 
 
-def exclude(kinds: set[FeatureKind], feature_set: FeatureSet) -> FeatureSet:
-    return feature_set - extend(include(kinds, feature_set))
-
-
-def equivalent(a: FeatureSet, b: FeatureSet, included: Optional[set[FeatureKind]] = None,
-               *, excluded: Optional[set[FeatureKind]] = None) -> bool:
-    for processor, kinds in ((include, included),
-                             (exclude, excluded)):
-        if kinds is not None:
-            a, b = map(partial(processor, kinds), (a, b))
-    return a == b
+def equivalent(kinds: set[FeatureKind], a: FeatureSet, b: FeatureSet) -> bool:
+    return include(kinds, a) == include(kinds, b)

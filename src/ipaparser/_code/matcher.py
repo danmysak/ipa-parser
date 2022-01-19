@@ -58,8 +58,7 @@ class Matcher(Generic[T]):
 
     @staticmethod
     def _match_with_combining(given: StringPositions, required: StringPositions) -> Optional[list[list[str]]]:
-        if len(given) != len(required):
-            return None
+        assert len(given) == len(required)
         combining: list[list[str]] = []
         for given_position, required_position in zip(given, required):
             combining_single = Matcher._match_with_combining_single(given_position, required_position)
