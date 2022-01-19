@@ -5,9 +5,9 @@ from .features import Feature, FEATURE_KINDS, FeatureKind, FeatureSet
 __all__ = [
     'equivalent',
     'extend',
-    'include',
     'find_feature',
     'find_feature_kind',
+    'include',
 ]
 
 T = TypeVar('T')
