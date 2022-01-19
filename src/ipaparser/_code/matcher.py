@@ -14,7 +14,6 @@ T = TypeVar('T')
 
 @dataclass(frozen=True)
 class MatchOption(Generic[T]):
-    matched: StringPositions
     data: T
     combining: list[list[str]]
 
@@ -72,7 +71,7 @@ class Matcher(Generic[T]):
     def match(self, positions: StringPositions, start: int, length: Optional[int] = None) -> Optional[Match[T]]:
         for match_length in range(min(self._max_length, len(positions) - start), 0, -1) if length is None else [length]:
             given = positions[start:start + match_length]
-            if options := [MatchOption(matched, data, combining)
+            if options := [MatchOption(data, combining)
                            for matched, data in self._mapping.get(to_string(given, combining=False), [])
                            if (combining := Matcher._match_with_combining(given, matched)) is not None]:
                 return Match(match_length, sorted(options, key=self._option_sorting_key))
