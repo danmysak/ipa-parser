@@ -49,7 +49,9 @@ def load_data(path: Path) -> RawData:
         for unstripped in data:
             line = unstripped.rstrip('\n')
             item, *columns = line.split(COLUMN_DELIMITER)
-            item_data = tuple(map(lambda column: column.split(VALUE_DELIMITER) if column != NO_DATA else None, columns))
+            item_data = tuple(map(lambda column: ((column.split(VALUE_DELIMITER) if column else [])
+                                                  if column != NO_DATA else None),
+                                  columns))
             yield item, item_data
             for form in ['NFC', 'NFD']:
                 if (normalized := normalize(form, item)) != item:
