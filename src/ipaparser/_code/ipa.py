@@ -7,7 +7,7 @@ from .definitions import TranscriptionType
 from .exceptions import EnclosingError, IncompatibleTypesError
 from .ipa_config import IPAConfig
 from .ipa_symbol import from_raw, IPASymbol
-from .parser import Parser
+from .parser import parse
 
 __all__ = [
     'IPA',
@@ -135,7 +135,7 @@ class IPA:
         if not enclosing:
             raise EnclosingError(transcription)
         self._type = enclosing.type
-        self._symbols = [from_raw(symbol) for symbol in Parser(enclosing.text, config).parse()]
+        self._symbols = [from_raw(symbol) for symbol in parse(enclosing.text, config)]
 
     def as_string(self) -> str:
         """Return the transcription as a string."""

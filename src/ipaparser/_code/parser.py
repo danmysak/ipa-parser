@@ -21,7 +21,7 @@ from .strings import (
 )
 
 __all__ = [
-    'Parser',
+    'parse',
 ]
 
 
@@ -34,19 +34,13 @@ class Segment:
 
 
 class Parser:
-    _string: str
     _positions: StringPositions
     _tie_free: StringPositions
     _total: int
     _all_tied: bool
 
-    @property
-    def normalized(self) -> str:
-        return self._string
-
-    def __init__(self, string: str, config: Optional[IPAConfig] = None, *, all_tied: bool = False) -> None:
-        self._string = self._normalize(string, config) if config else string
-        self._positions = to_positions(self._string)
+    def __init__(self, string: str, *, all_tied: bool = False) -> None:
+        self._positions = to_positions(string)
         ties = get_data().ties
         self._tie_free = tuple(''.join(character
                                        for index, character in enumerate(position)
@@ -54,21 +48,6 @@ class Parser:
                                for position in self._positions)
         self._total = len(self._positions)
         self._all_tied = all_tied
-
-    @staticmethod
-    def _normalize(string: str, config: IPAConfig) -> str:
-        data = get_data()
-        string = decompose(string)
-        if config.substitutions:
-            string = perform_substitutions(string, data.substitutions)  # first pass
-        if config.brackets == BracketStrategy.EXPAND:
-            string = expand_brackets(string, data.inner_brackets)
-        elif config.brackets == BracketStrategy.STRIP:
-            string = strip_brackets(string, data.inner_brackets)
-        string = combine(string, config.combined, data.main_tie, data.ties)
-        if config.substitutions:
-            string = perform_substitutions(string, data.substitutions)  # second pass
-        return string
 
     def _extract(self, start: int, end: int, *, omit_final_tie: bool = False) -> str:
         return ''.join((self._tie_free if omit_final_tie and position == end - 1 else self._positions)[position]
@@ -197,3 +176,22 @@ class Parser:
                 ))
             start = end
         return symbols
+
+
+def normalize(string: str, config: IPAConfig) -> str:
+    data = get_data()
+    string = decompose(string)
+    if config.substitutions:
+        string = perform_substitutions(string, data.substitutions)  # first pass
+    if config.brackets == BracketStrategy.EXPAND:
+        string = expand_brackets(string, data.inner_brackets)
+    elif config.brackets == BracketStrategy.STRIP:
+        string = strip_brackets(string, data.inner_brackets)
+    string = combine(string, config.combined, data.main_tie, data.ties)
+    if config.substitutions:
+        string = perform_substitutions(string, data.substitutions)  # second pass
+    return string
+
+
+def parse(string: str, config: IPAConfig, *, all_tied: bool = False) -> list[RawSymbol]:
+    return Parser(normalize(string, config), all_tied=all_tied).parse()

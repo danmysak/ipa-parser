@@ -5,7 +5,7 @@ from .exceptions import FeatureError, FeatureKindError
 from .feature_helper import find_feature, find_feature_kind, include
 from .features import Feature, FeatureKind, FeatureSet, SymbolType
 from .ipa_config import IPAConfig
-from .parser import Parser
+from .parser import parse
 from .raw_symbol import RawSymbol
 
 __all__ = [
@@ -74,7 +74,7 @@ class IPASymbol:
         :param config: Parsing parameters.
         """
         self._set_raw(symbols[0]
-                      if (symbols := Parser(string, config, all_tied=True).parse())
+                      if (symbols := parse(string, config, all_tied=True))
                       else RawSymbol(string, []))
 
     def as_string(self) -> str:
