@@ -20,6 +20,7 @@ from ..ipaparser.features import (
     Height,
     HeightCategory,
     Manner,
+    Place,
     PlaceCategory,
     SoundType,
     SymbolType,
@@ -343,6 +344,42 @@ class TestApi(TestCase):
         self.assertEqual(context.exception.value, unknown)
         with self.assertRaises(FeatureError):
             IPASymbol('a').features(role=UnknownFeature())  # type: ignore
+
+    def test_symbol_feature_utilities(self) -> None:
+        unknown = 'Unseen Feature'
+        self.assertEqual(IPASymbol('a').is_known(), True)
+        self.assertEqual(IPASymbol('%').is_known(), False)
+        self.assertEqual(IPASymbol('t').has_feature(Place.ALVEOLAR), True)
+        self.assertEqual(IPASymbol('t').has_feature('alveolar'), True)  # type: ignore
+        self.assertEqual(IPASymbol('t').has_feature(Place.DENTAL), False)
+        self.assertEqual(IPASymbol('t').has_feature('dental'), False)  # type: ignore
+        self.assertTrue(IPASymbol('t').features(role=Place.DENTAL) is not None)
+        self.assertEqual(IPASymbol('%').has_feature(Place.ALVEOLAR), False)
+        self.assertEqual(IPASymbol('%').has_feature('alveolar'), False)  # type: ignore
+        with self.assertRaises(FeatureError) as context:
+            self.assertEqual(IPASymbol('t').has_feature(unknown), True)  # type: ignore
+        self.assertEqual(context.exception.value, unknown)
+
+        self.assertEqual(IPASymbol('a').is_sound(), True)
+        self.assertEqual(IPASymbol('ts').is_sound(), True)
+        self.assertEqual(IPASymbol(' ').is_sound(), False)
+        self.assertEqual(IPASymbol('¹').is_sound(), False)
+        self.assertEqual(IPASymbol('¹²').is_sound(), False)
+        self.assertEqual(IPASymbol('%').is_sound(), False)
+
+        self.assertEqual(IPASymbol('a').is_break(), False)
+        self.assertEqual(IPASymbol('ts').is_break(), False)
+        self.assertEqual(IPASymbol(' ').is_break(), True)
+        self.assertEqual(IPASymbol('¹').is_break(), False)
+        self.assertEqual(IPASymbol('¹²').is_break(), False)
+        self.assertEqual(IPASymbol('%').is_break(), False)
+
+        self.assertEqual(IPASymbol('a').is_suprasegmental(), False)
+        self.assertEqual(IPASymbol('ts').is_suprasegmental(), False)
+        self.assertEqual(IPASymbol(' ').is_suprasegmental(), False)
+        self.assertEqual(IPASymbol('¹').is_suprasegmental(), True)
+        self.assertEqual(IPASymbol('¹²').is_suprasegmental(), False)
+        self.assertEqual(IPASymbol('%').is_suprasegmental(), False)
 
     def test_representation(self) -> None:
         self.assertEqual(str(IPA('/abc/')), IPA('/abc/').as_string(), '/abc/')

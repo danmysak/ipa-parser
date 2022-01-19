@@ -155,9 +155,16 @@ class IPASymbol:
         """Whether the symbol has a set of associated features."""
         return len(self._feature_sets) > 0
 
+    @overload
     def has_feature(self, feature: Feature) -> bool:
-        """Whether the symbol is known and has a given feature."""
-        return self._feature_sets and feature is self._feature_sets[0]
+        ...
+
+    def has_feature(self, feature: RelaxedFeature) -> bool:
+        """
+        Whether the symbol is known and has a given feature; strings may be used ('consonant') instead of Feature
+        subclass values (with no typing support).
+        """
+        return bool(self._feature_sets) and self._check_normalize_feature(feature) in self._feature_sets[0]
 
     def is_sound(self) -> bool:
         """Whether the symbol is a known sound."""

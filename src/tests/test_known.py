@@ -105,6 +105,7 @@ class TestKnown(TestCase):
             ipa_symbol = IPASymbol(symbol.symbol)
             self.assertEqual(ipa_symbol, normalize('NFD', symbol.symbol))
 
+            self.assertEqual(ipa_symbol.is_known(), bool(symbol.feature_sets))
             self.assertEqual(
                 ipa_symbol.features(),
                 symbol.feature_sets[0] if symbol.feature_sets else None,
@@ -123,6 +124,10 @@ class TestKnown(TestCase):
                             self.assertTrue(features in symbol.feature_sets[1:])
                     else:
                         self.assertEqual(features, None)
+                    self.assertEqual(
+                        ipa_symbol.has_feature(feature),
+                        len(symbol.feature_sets) > 0 and feature in symbol.feature_sets[0],
+                    )
 
             self.assertEqual(
                 list(ipa_symbol.components) if ipa_symbol.components is not None else None,
