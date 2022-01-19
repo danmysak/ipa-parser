@@ -129,8 +129,7 @@ class IPASymbol:
                      Currently, the reinterpretations supported are:
                      1) nonsyllabic front/back close vowels as palatal/velar approximants;
                      2) "ambiguous" alveolar consonants (t, n, ǁ, etc.) as dental and as postalveolar;
-                     3) ad-hoc combinations (e.g., ä ~ central vowel) as literal ones (ä ~ centralized front vowel);
-                     4) voiceless velar and alveolar sibilant affricates as stops with fricative releases.
+                     3) ad-hoc combinations (e.g., ä ~ central vowel) as literal ones (ä ~ centralized front vowel).
                      Strings may be used ('consonant') instead of Feature subclass values (with no typing support).
         :return: A (frozen)set of the features or None for unknown symbols and symbols with an incompatible `role`.
         :raises:

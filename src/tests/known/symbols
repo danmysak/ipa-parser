@@ -212,7 +212,7 @@ d̥ʲ	—	alveolar, consonant, coronal, palatalized, simple consonant, sound, st
 d̥ʷ	—	alveolar, consonant, coronal, labialized, simple consonant, sound, stop	consonant, coronal, dental, labialized, simple consonant, sound, stop	consonant, coronal, labialized, postalveolar, simple consonant, sound, stop
 d̥ˀ	—	alveolar, consonant, coronal, glottalized, simple consonant, sound, stop	consonant, coronal, dental, glottalized, simple consonant, sound, stop	consonant, coronal, glottalized, postalveolar, simple consonant, sound, stop
 d̥̚	—	alveolar, consonant, coronal, no audible release, simple consonant, sound, stop	consonant, coronal, dental, no audible release, simple consonant, sound, stop	consonant, coronal, no audible release, postalveolar, simple consonant, sound, stop
-d̥͡s	d̥, s	affricate, alveolar, consonant, coronal, sibilant, simple consonant, sound	alveolar, consonant, coronal, simple consonant, sound, stop, voiceless alveolar sibilant fricative release	consonant, coronal, dental, simple consonant, sound, stop, voiceless alveolar sibilant fricative release	consonant, coronal, postalveolar, simple consonant, sound, stop, voiceless alveolar sibilant fricative release
+d̥͡s	d̥, s	affricate, alveolar, consonant, coronal, sibilant, simple consonant, sound
 d̥͡ʒ̊	d̥, ʒ̊	affricate, consonant, coronal, postalveolar, sibilant, simple consonant, sound
 d̩	—	alveolar, consonant, coronal, simple consonant, sound, stop, syllabic, voiced	consonant, coronal, dental, simple consonant, sound, stop, syllabic, voiced	consonant, coronal, postalveolar, simple consonant, sound, stop, syllabic, voiced
 d̪	—	consonant, coronal, dental, simple consonant, sound, stop, voiced
@@ -234,8 +234,8 @@ d̼	—	consonant, coronal, linguolabial, simple consonant, sound, stop, voiced
 d͜z	d, z	affricate, alveolar, consonant, coronal, sibilant, simple consonant, sound, voiced
 d͡.	d, .	—
 d͡aː	d, aː	—
-d͡l	d, l	alveolar, consonant, coronal, lateral release, simple consonant, sound, stop, voiced	consonant, coronal, dental, lateral release, simple consonant, sound, stop, voiced	consonant, coronal, lateral release, postalveolar, simple consonant, sound, stop, voiced
-d͡s	d, s	alveolar, consonant, coronal, simple consonant, sound, stop, voiced, voiceless alveolar sibilant fricative release	consonant, coronal, dental, simple consonant, sound, stop, voiced, voiceless alveolar sibilant fricative release	consonant, coronal, postalveolar, simple consonant, sound, stop, voiced, voiceless alveolar sibilant fricative release
+d͡l	d, l	—
+d͡s	d, s	—
 d͡z	d, z	affricate, alveolar, consonant, coronal, sibilant, simple consonant, sound, voiced
 d͡zʱ	d, zʱ	affricate, alveolar, breathy, consonant, coronal, sibilant, simple consonant, sound, voiced
 d͡zʲ	d, zʲ	affricate, alveolar, consonant, coronal, palatalized, sibilant, simple consonant, sound, voiced
@@ -525,13 +525,13 @@ k͜ǁ	—	alveolar, click, consonant, coronal, lateral, simple consonant, sound	
 k͜ǁʰ	—	alveolar, aspirated, click, consonant, coronal, lateral, simple consonant, sound	aspirated, click, consonant, coronal, dental, lateral, simple consonant, sound	aspirated, click, consonant, coronal, lateral, postalveolar, simple consonant, sound
 k͜ǃ	—	alveolar, click, consonant, coronal, simple consonant, sound	click, consonant, coronal, postalveolar, simple consonant, sound
 k͜ǃʰ	—	alveolar, aspirated, click, consonant, coronal, simple consonant, sound	aspirated, click, consonant, coronal, postalveolar, simple consonant, sound
-k͡l	k, l	consonant, dorsal, lateral release, simple consonant, sound, stop, velar
+k͡l	k, l	—
 k͡p	k, p	bilabial, consonant, dorsal, doubly articulated consonant, labial, sound, stop, velar
 k͡pʷ	k, pʷ	bilabial, consonant, dorsal, doubly articulated consonant, labial, labialized, sound, stop, velar
 k͡p̚	k, p̚	bilabial, consonant, dorsal, doubly articulated consonant, labial, no audible release, sound, stop, velar
-k͡s	k, s	consonant, dorsal, simple consonant, sound, stop, velar, voiceless alveolar sibilant fricative release
+k͡s	k, s	—
 k͡s̠	k, s̠	—
-k͡x	k, x	affricate, consonant, dorsal, simple consonant, sound, velar	consonant, dorsal, simple consonant, sound, stop, velar, voiceless velar fricative release
+k͡x	k, x	affricate, consonant, dorsal, simple consonant, sound, velar
 k͡ǀ	—	click, consonant, coronal, dental, simple consonant, sound
 kⁿ	—	consonant, dorsal, nasal release, simple consonant, sound, stop, velar
 l	—	alveolar, approximant, consonant, coronal, lateral, simple consonant, sound, voiced	approximant, consonant, coronal, dental, lateral, simple consonant, sound, voiced	approximant, consonant, coronal, lateral, postalveolar, simple consonant, sound, voiced
@@ -654,7 +654,7 @@ n̼	—	consonant, coronal, linguolabial, nasal, simple consonant, sound, voiced
 n͈	—	alveolar, consonant, coronal, nasal, simple consonant, sound, strong, voiced	consonant, coronal, dental, nasal, simple consonant, sound, strong, voiced	consonant, coronal, nasal, postalveolar, simple consonant, sound, strong, voiced
 n͈ʲ	—	alveolar, consonant, coronal, nasal, palatalized, simple consonant, sound, strong, voiced	consonant, coronal, dental, nasal, palatalized, simple consonant, sound, strong, voiced	consonant, coronal, nasal, palatalized, postalveolar, simple consonant, sound, strong, voiced
 n͡t	n, t	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop	consonant, coronal, dental, prenasalized, simple consonant, sound, stop	consonant, coronal, postalveolar, prenasalized, simple consonant, sound, stop
-n͡t͡s	n, t, s	affricate, alveolar, consonant, coronal, prenasalized, sibilant, simple consonant, sound	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop, voiceless alveolar sibilant fricative release	consonant, coronal, dental, prenasalized, simple consonant, sound, stop, voiceless alveolar sibilant fricative release	consonant, coronal, postalveolar, prenasalized, simple consonant, sound, stop, voiceless alveolar sibilant fricative release
+n͡t͡s	n, t, s	affricate, alveolar, consonant, coronal, prenasalized, sibilant, simple consonant, sound
 n͡ŋ	n, ŋ	alveolar, consonant, coronal, dorsal, doubly articulated consonant, nasal, sound, velar, voiced	consonant, coronal, dental, dorsal, doubly articulated consonant, nasal, sound, velar, voiced	consonant, coronal, dorsal, doubly articulated consonant, nasal, postalveolar, sound, velar, voiced
 n͡ŋǃ̃	n, ŋǃ̃	—
 o	—	about back, about mid, back, close-mid, rounded, simple vowel, sound, vowel
@@ -907,7 +907,7 @@ tːʰ	—	alveolar, aspirated, consonant, coronal, long, simple consonant, sound
 tːʱ	—	alveolar, breathy, consonant, coronal, long, simple consonant, sound, stop	breathy, consonant, coronal, dental, long, simple consonant, sound, stop	breathy, consonant, coronal, long, postalveolar, simple consonant, sound, stop
 tːʼ	—	alveolar, consonant, coronal, ejective, long, simple consonant, sound, stop	consonant, coronal, dental, ejective, long, simple consonant, sound, stop	consonant, coronal, ejective, long, postalveolar, simple consonant, sound, stop
 tːː	—	alveolar, consonant, coronal, extra-long, long, simple consonant, sound, stop	consonant, coronal, dental, extra-long, long, simple consonant, sound, stop	consonant, coronal, extra-long, long, postalveolar, simple consonant, sound, stop
-tː͡s	tː, s	affricate, alveolar, consonant, coronal, long, sibilant, simple consonant, sound	alveolar, consonant, coronal, long, simple consonant, sound, stop, voiceless alveolar sibilant fricative release	consonant, coronal, dental, long, simple consonant, sound, stop, voiceless alveolar sibilant fricative release	consonant, coronal, long, postalveolar, simple consonant, sound, stop, voiceless alveolar sibilant fricative release
+tː͡s	tː, s	affricate, alveolar, consonant, coronal, long, sibilant, simple consonant, sound
 tː͡ʂ	tː, ʂ	—
 tː͡ʃ	tː, ʃ	affricate, consonant, coronal, long, postalveolar, sibilant, simple consonant, sound
 tˑ	—	alveolar, consonant, coronal, half-long, simple consonant, sound, stop	consonant, coronal, dental, half-long, simple consonant, sound, stop	consonant, coronal, half-long, postalveolar, simple consonant, sound, stop
@@ -958,7 +958,7 @@ t̺͡s̺	t̺, s̺	affricate, alveolar, apical, consonant, coronal, sibilant, sim
 t̻	—	alveolar, consonant, coronal, laminal, simple consonant, sound, stop	consonant, coronal, dental, laminal, simple consonant, sound, stop	consonant, coronal, laminal, postalveolar, simple consonant, sound, stop
 t̼	—	consonant, coronal, linguolabial, simple consonant, sound, stop
 t͈	—	alveolar, consonant, coronal, simple consonant, sound, stop, strong	consonant, coronal, dental, simple consonant, sound, stop, strong	consonant, coronal, postalveolar, simple consonant, sound, stop, strong
-t͜s	t, s	affricate, alveolar, consonant, coronal, sibilant, simple consonant, sound	alveolar, consonant, coronal, simple consonant, sound, stop, voiceless alveolar sibilant fricative release	consonant, coronal, dental, simple consonant, sound, stop, voiceless alveolar sibilant fricative release	consonant, coronal, postalveolar, simple consonant, sound, stop, voiceless alveolar sibilant fricative release
+t͜s	t, s	affricate, alveolar, consonant, coronal, sibilant, simple consonant, sound
 t͜sʰ	t, sʰ	affricate, alveolar, aspirated, consonant, coronal, sibilant, simple consonant, sound
 t͜sʼ	t, sʼ	affricate, alveolar, consonant, coronal, ejective, sibilant, simple consonant, sound
 t͜sˠ	t, sˠ	affricate, alveolar, consonant, coronal, sibilant, simple consonant, sound, velarized
@@ -973,9 +973,9 @@ t͡çʰ	t, çʰ	affricate, alveolar, aspirated, consonant, coronal, dorsal, pa
 t͡e	t, e	—
 t͡i	t, i	—
 t͡j	t, j	—
-t͡l	t, l	alveolar, consonant, coronal, lateral release, simple consonant, sound, stop	consonant, coronal, dental, lateral release, simple consonant, sound, stop	consonant, coronal, lateral release, postalveolar, simple consonant, sound, stop
+t͡l	t, l	—
 t͡pʼ	t, pʼ	alveolar, bilabial, consonant, coronal, doubly articulated consonant, ejective, labial, sound, stop	bilabial, consonant, coronal, dental, doubly articulated consonant, ejective, labial, sound, stop	bilabial, consonant, coronal, doubly articulated consonant, ejective, labial, postalveolar, sound, stop
-t͡s	t, s	affricate, alveolar, consonant, coronal, sibilant, simple consonant, sound	alveolar, consonant, coronal, simple consonant, sound, stop, voiceless alveolar sibilant fricative release	consonant, coronal, dental, simple consonant, sound, stop, voiceless alveolar sibilant fricative release	consonant, coronal, postalveolar, simple consonant, sound, stop, voiceless alveolar sibilant fricative release
+t͡s	t, s	affricate, alveolar, consonant, coronal, sibilant, simple consonant, sound
 t͡sʰ	t, sʰ	affricate, alveolar, aspirated, consonant, coronal, sibilant, simple consonant, sound
 t͡sʰʲ	t, sʰʲ	affricate, alveolar, aspirated, consonant, coronal, palatalized, sibilant, simple consonant, sound
 t͡sʰː	t, sʰː	affricate, alveolar, aspirated, consonant, coronal, long, sibilant, simple consonant, sound
@@ -997,7 +997,7 @@ t͡s̻	t, s̻	affricate, alveolar, consonant, coronal, laminal, sibilant, simple
 t͡s͈	t, s͈	affricate, alveolar, consonant, coronal, sibilant, simple consonant, sound, strong
 t͡t	t, t	—
 t͡t͡s	t, t, s	—
-t͡x	t, x	alveolar, consonant, coronal, simple consonant, sound, stop, voiceless velar fricative release	consonant, coronal, dental, simple consonant, sound, stop, voiceless velar fricative release	consonant, coronal, postalveolar, simple consonant, sound, stop, voiceless velar fricative release
+t͡x	t, x	—
 t͡ɕ	t, ɕ	affricate, alveolar, consonant, coronal, dorsal, palatal, sibilant, simple consonant, sound
 t͡ɕʰ	t, ɕʰ	affricate, alveolar, aspirated, consonant, coronal, dorsal, palatal, sibilant, simple consonant, sound
 t͡ɕʰʲ	t, ɕʰʲ	affricate, alveolar, aspirated, consonant, coronal, dorsal, palatal, palatalized, sibilant, simple consonant, sound
@@ -1776,7 +1776,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ɡ̥	—	consonant, dorsal, simple consonant, sound, stop, velar
 ɡ̥ʲ	—	consonant, dorsal, palatalized, simple consonant, sound, stop, velar
 ɡ͡b	ɡ, b	bilabial, consonant, dorsal, doubly articulated consonant, labial, sound, stop, velar, voiced
-ɡ͡s	ɡ, s	consonant, dorsal, simple consonant, sound, stop, velar, voiced, voiceless alveolar sibilant fricative release
+ɡ͡s	ɡ, s	—
 ɡ͡ɣ	ɡ, ɣ	affricate, consonant, dorsal, simple consonant, sound, velar, voiced
 ɡ͡ʟ̝	ɡ, ʟ̝	affricate, consonant, dorsal, lateral, simple consonant, sound, velar, voiced
 ɢ	—	consonant, dorsal, simple consonant, sound, stop, uvular, voiced
@@ -2373,7 +2373,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ʰkʰʲ	—	aspirated, consonant, dorsal, palatalized, preaspirated, simple consonant, sound, stop, velar
 ʰkʲ	—	consonant, dorsal, palatalized, preaspirated, simple consonant, sound, stop, velar
 ʰkː	—	consonant, dorsal, long, preaspirated, simple consonant, sound, stop, velar
-ʰk͡x	ʰk, x	affricate, consonant, dorsal, preaspirated, simple consonant, sound, velar	consonant, dorsal, preaspirated, simple consonant, sound, stop, velar, voiceless velar fricative release
+ʰk͡x	ʰk, x	affricate, consonant, dorsal, preaspirated, simple consonant, sound, velar
 ʰm͡p	m, p	bilabial, consonant, labial, preaspirated, prenasalized, simple consonant, sound, stop
 ʰp	—	bilabial, consonant, labial, preaspirated, simple consonant, sound, stop
 ʰpʰ	—	aspirated, bilabial, consonant, labial, preaspirated, simple consonant, sound, stop
@@ -2385,7 +2385,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ʰtː	—	alveolar, consonant, coronal, long, preaspirated, simple consonant, sound, stop	consonant, coronal, dental, long, preaspirated, simple consonant, sound, stop	consonant, coronal, long, postalveolar, preaspirated, simple consonant, sound, stop
 ʰt̪	—	consonant, coronal, dental, preaspirated, simple consonant, sound, stop
 ʰt̪ʰ	—	aspirated, consonant, coronal, dental, preaspirated, simple consonant, sound, stop
-ʰt͡s	ʰt, s	affricate, alveolar, consonant, coronal, preaspirated, sibilant, simple consonant, sound	alveolar, consonant, coronal, preaspirated, simple consonant, sound, stop, voiceless alveolar sibilant fricative release	consonant, coronal, dental, preaspirated, simple consonant, sound, stop, voiceless alveolar sibilant fricative release	consonant, coronal, postalveolar, preaspirated, simple consonant, sound, stop, voiceless alveolar sibilant fricative release
+ʰt͡s	ʰt, s	affricate, alveolar, consonant, coronal, preaspirated, sibilant, simple consonant, sound
 ʰt͡ɕ	ʰt, ɕ	affricate, alveolar, consonant, coronal, dorsal, palatal, preaspirated, sibilant, simple consonant, sound
 ʰt͡ʃ	ʰt, ʃ	affricate, consonant, coronal, postalveolar, preaspirated, sibilant, simple consonant, sound
 ʰt͡ʃː	ʰt, ʃː	affricate, consonant, coronal, long, postalveolar, preaspirated, sibilant, simple consonant, sound
@@ -2582,7 +2582,7 @@ z̻	—	alveolar, consonant, coronal, fricative, laminal, sibilant, simple conso
 ⁿtʷ	—	alveolar, consonant, coronal, labialized, prenasalized, simple consonant, sound, stop	consonant, coronal, dental, labialized, prenasalized, simple consonant, sound, stop	consonant, coronal, labialized, postalveolar, prenasalized, simple consonant, sound, stop
 ⁿtʼ	—	alveolar, consonant, coronal, ejective, prenasalized, simple consonant, sound, stop	consonant, coronal, dental, ejective, prenasalized, simple consonant, sound, stop	consonant, coronal, ejective, postalveolar, prenasalized, simple consonant, sound, stop
 ⁿtˠ	—	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop, velarized	consonant, coronal, dental, prenasalized, simple consonant, sound, stop, velarized	consonant, coronal, postalveolar, prenasalized, simple consonant, sound, stop, velarized
-ⁿt͡s	ⁿt, s	affricate, alveolar, consonant, coronal, prenasalized, sibilant, simple consonant, sound	alveolar, consonant, coronal, prenasalized, simple consonant, sound, stop, voiceless alveolar sibilant fricative release	consonant, coronal, dental, prenasalized, simple consonant, sound, stop, voiceless alveolar sibilant fricative release	consonant, coronal, postalveolar, prenasalized, simple consonant, sound, stop, voiceless alveolar sibilant fricative release
+ⁿt͡s	ⁿt, s	affricate, alveolar, consonant, coronal, prenasalized, sibilant, simple consonant, sound
 ⁿt͡sʰ	ⁿt, sʰ	affricate, alveolar, aspirated, consonant, coronal, prenasalized, sibilant, simple consonant, sound
 ⁿt͡ʃ	ⁿt, ʃ	affricate, consonant, coronal, postalveolar, prenasalized, sibilant, simple consonant, sound
 ⁿt͡ʃʰ	ⁿt, ʃʰ	affricate, aspirated, consonant, coronal, postalveolar, prenasalized, sibilant, simple consonant, sound

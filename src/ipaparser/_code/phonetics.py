@@ -7,7 +7,6 @@ from .features import (
     Manner,
     Place,
     PlaceCategory,
-    Release,
     SecondaryModifier,
     SoundSubtype,
     Syllabicity,
@@ -72,29 +71,6 @@ def combine_prenasalized(left: FeatureSet, right: FeatureSet) -> list[FeatureSet
         return []
 
 
-def combine_release(left: FeatureSet, right: FeatureSet) -> list[FeatureSet]:
-    if include({SoundSubtype, Manner, Release}, left) != {SoundSubtype.SIMPLE_CONSONANT, Manner.STOP}:
-        return []
-    if include({SoundSubtype, Manner, Voicing}, right) == {SoundSubtype.SIMPLE_CONSONANT, Manner.NASAL, Voicing.VOICED}:
-        return [left | {Release.NASAL_RELEASE}]
-    for features, release in [(
-        {Place.ALVEOLAR, Manner.APPROXIMANT, Manner.LATERAL, Voicing.VOICED},
-        Release.LATERAL_RELEASE,
-    ), (
-        {Place.DENTAL, Manner.FRICATIVE},
-        Release.VOICELESS_DENTAL_FRICATIVE_RELEASE,
-    ), (
-        {Place.ALVEOLAR, Manner.SIBILANT, Manner.FRICATIVE},
-        Release.VOICELESS_ALVEOLAR_SIBILANT_FRICATIVE_RELEASE,
-    ), (
-        {Place.VELAR, Manner.FRICATIVE},
-        Release.VOICELESS_VELAR_FRICATIVE_RELEASE,
-    )]:
-        if right == extend(frozenset({SoundSubtype.SIMPLE_CONSONANT}) | features):
-            return [left | {release}]
-    return []
-
-
 def combine_polyphthong(subtype: SoundSubtype, *feature_sets: FeatureSet) -> list[FeatureSet]:
     weak_syllabicity = {Syllabicity.NONSYLLABIC, Syllabicity.ANAPTYCTIC}
     if (all(include({SoundSubtype}, features) == {SoundSubtype.SIMPLE_VOWEL} for features in feature_sets)
@@ -128,7 +104,6 @@ COMBINERS = {
         combine_doubly_articulated,
         combine_contour_click,
         combine_prenasalized,
-        combine_release,
     ],
     3: [
         combine_triphthong,
