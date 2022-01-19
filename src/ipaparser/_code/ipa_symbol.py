@@ -73,12 +73,9 @@ class IPASymbol:
         :param string: The string to parse (like 'a', 'pʰ', '˦', or 'ˈˈ').
         :param config: Parsing parameters.
         """
-        parser = Parser(string, config, all_tied=True)
-        if symbols := parser.parse():
-            assert len(symbols) == 1
-            self._set_raw(symbols[0])
-        else:
-            self._set_raw(RawSymbol(parser.normalized, []))
+        self._set_raw(symbols[0]
+                      if (symbols := Parser(string, config, all_tied=True).parse())
+                      else RawSymbol(string, []))
 
     def as_string(self) -> str:
         """Return the symbol as a string."""
