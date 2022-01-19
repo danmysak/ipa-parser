@@ -241,6 +241,8 @@ class TestApi(TestCase):
         )
         self.assertEqual(
             IPA('/ntsau/', IPAConfig(combined=[('a', 'u'), ('n', 't', 's')])),
+            IPA('/ntsau/', IPAConfig(combined=(('a', 'u'), ('n', 't', 's')))),
+            IPA('/ntsau/', IPAConfig(combined=iter([('a', 'u'), ('n', 't', 's')]))),
             '/n͡t͡sa͡u/',
         )
         self.assertEqual(
