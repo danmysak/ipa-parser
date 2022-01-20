@@ -524,7 +524,7 @@ for kind in FEATURE_KINDS:
 
 ```python
 from ipaparser import IPASymbol
-from ipaparser.features import FeatureSet, Syllabicity, SoundType
+from ipaparser.features import FeatureSet, SoundType, Syllabicity
 
 
 def is_syllabic(features: FeatureSet) -> bool:
