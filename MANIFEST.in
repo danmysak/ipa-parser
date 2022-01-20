@@ -1,2 +1,3 @@
 graft src/ipaparser/_data
-recursive-exclude src/tests
+prune src/scripts
+prune src/tests
