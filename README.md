@@ -497,3 +497,58 @@ except IncompatibleTypesError as e:
 ### Features
 
 TODO
+
+### Feature typing and helper methods
+
+You can iterate through all the supported features using the tuple `FEATURE_KINDS`. Feature kinds (such as `Height`, `Manner`, or `Voicing`) are all enums and subclasses of the base class `Feature` and themselves can be typed with an alias `FeatureKind`. The `.kind_values()` method can be called to retrieve supported string representations of the feature kind. 
+
+```python
+from ipaparser.features import Feature, FEATURE_KINDS, FeatureKind
+
+kind: FeatureKind
+for kind in FEATURE_KINDS:
+    print(kind)
+    # <enum 'Airflow'>, <enum 'Articulation'>, ..., <enum 'ToneType'>, <enum 'Voicing'>
+    print(kind.kind_values())
+    # ['Airflow', 'airflow'], ['Articulation', 'articulation'], ..., ['ToneType', 'tone type'], ['Voicing', 'voicing']
+    
+    feature: Feature
+    for feature in kind:
+        print(feature)
+        # Airflow.EGRESSIVE_AIRFLOW, Airflow.INGRESSIVE_AIRFLOW, Articulation.APICAL, ..., Voicing.DEVOICED
+        print(feature.value)
+        # 'egressive airflow', 'ingressive airflow', 'apical', ..., 'devoiced'
+```
+
+`FeatureSet` is an alias for `frozenset[Feature]` (the return type of `IPASymbol.features()`).
+
+```python
+from ipaparser import IPASymbol
+from ipaparser.features import FeatureSet, Syllabicity, SoundType
+
+
+def is_syllabic(features: FeatureSet) -> bool:
+    if SoundType.CONSONANT in features:
+        return Syllabicity.SYLLABIC in features
+    if SoundType.VOWEL in features:
+        return Syllabicity.NONSYLLABIC not in features
+    return False
+
+
+print(is_syllabic(IPASymbol('a').features()))
+```
+
+Finally, the `.derived()` and `.extend()` methods of individual features may be called to obtain basic hierarchical relationships between features:
+
+```python
+from ipaparser.features import Place, ToneLetter
+
+print(Place.ALVEOLAR.derived())
+# PlaceCategory.CORONAL
+
+print(ToneLetter.HIGH_TONE_LETTER.extend())
+# frozenset({<SuprasegmentalType.TONE: 'tone'>,
+#            <ToneLetter.HIGH_TONE_LETTER: 'high tone letter'>,
+#            <ToneType.TONE_LETTER: 'tone letter'>,
+#            <SymbolType.SUPRASEGMENTAL: 'suprasegmental'>})
+```
