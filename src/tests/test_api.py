@@ -118,7 +118,7 @@ class TestApi(TestCase):
         self.assertTrue(IPA('[a(b)c]', IPAConfig(brackets=BracketStrategy.KEEP))[2].is_known())
         self.assertFalse(IPA('[a(b)c]', IPAConfig(brackets=BracketStrategy.KEEP))[3].is_known())
 
-        with self.assertRaisesRegex(BracketStrategyError, r'keep/expand/strip') as context:
+        with self.assertRaisesRegex(BracketStrategyError, r"'keep'/'expand'/'strip'") as context:
             IPAConfig(brackets='ignore')  # type: ignore
         self.assertEqual(context.exception.value, 'ignore')
 
@@ -451,8 +451,10 @@ class TestApi(TestCase):
         self.assertEqual(IPA('[abc]') + IPA('[def]'), '[abcdef]')
         self.assertEqual(IPA('[abc]') + IPASymbol('d'), '[abcd]')
         self.assertEqual(IPASymbol('a') + IPA('/bcd/'), '/abcd/')
-        with self.assertRaises(IncompatibleTypesError):
+        with self.assertRaises(IncompatibleTypesError) as context:
             IPA('/a/') + IPA('[b]')
+        self.assertEqual(context.exception.left, '/a/')
+        self.assertEqual(context.exception.right, '[b]')
         with self.assertRaises(TypeError):
             IPA('[a]') + '[b]'
         with self.assertRaises(TypeError):

@@ -20,7 +20,8 @@ def process_brackets(brackets: Union[BracketStrategy, str]) -> BracketStrategy:
     try:
         return BracketStrategy(brackets)
     except ValueError:
-        raise BracketStrategyError(brackets, list(BracketStrategy))
+        strategy: BracketStrategy
+        raise BracketStrategyError(brackets, [strategy.value for strategy in BracketStrategy])
 
 
 def process_combined(combined: Iterable[tuple[str, ...]], substitutions: bool) -> tuple[tuple[str, ...]]:
