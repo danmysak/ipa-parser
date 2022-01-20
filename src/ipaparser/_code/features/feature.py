@@ -28,7 +28,7 @@ class Feature(str, Enum):
     @classmethod
     @final
     def kind_values(cls) -> list[str]:
-        """Return supported string equivalents for the kind of features."""
+        """Return supported string representations for the kind of features."""
         return [cls.__name__, upper_camel_to_spaces(cls.__name__)] if cls != Feature else []
 
     def derived(self) -> Optional[Feature]:

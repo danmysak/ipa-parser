@@ -413,21 +413,21 @@ print(
 
 For usage, see [IPAConfig](#IPAConfig).
 
-| Value                    | String equivalent |
-|--------------------------|-------------------|
-| `BracketStrategy.KEEP`   | `keep`            |
-| `BracketStrategy.EXPAND` | `expand`          |
-| `BracketStrategy.STRIP`  | `strip`           |
+| Value                    | String representation |
+|--------------------------|-----------------------|
+| `BracketStrategy.KEEP`   | `keep`                |
+| `BracketStrategy.EXPAND` | `expand`              |
+| `BracketStrategy.STRIP`  | `strip`               |
 
 #### `TranscriptionType`
 
 For usage, see [IPA transcription type](#IPA-transcription-type).
 
-| Value                        | String equivalent | Brackets |
-|------------------------------|-------------------|----------|
-| `TranscriptionType.PHONETIC` | `phonetic`        | `[...]`  |
-| `TranscriptionType.PHONEMIC` | `phonemic`        | `/.../`  |
-| `TranscriptionType.LITERAL`  | `literal`         | `⟨...⟩`  |
+| Value                        | String representation | Brackets |
+|------------------------------|-----------------------|----------|
+| `TranscriptionType.PHONETIC` | `phonetic`            | `[...]`  |
+| `TranscriptionType.PHONEMIC` | `phonemic`            | `/.../`  |
+| `TranscriptionType.LITERAL`  | `literal`             | `⟨...⟩`  |
 
 
 ### Exceptions
