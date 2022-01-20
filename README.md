@@ -500,7 +500,7 @@ TODO
 
 ### Feature typing and helper methods
 
-You can iterate through all the supported features using the tuple `FEATURE_KINDS`. Feature kinds (such as `Height`, `Manner`, or `Voicing`) are all enums and subclasses of the base class `Feature` and themselves can be typed with an alias `FeatureKind`. The `.kind_values()` method can be called to retrieve supported string representations of the feature kind. 
+You can iterate through all the supported features using the tuple `FEATURE_KINDS`. Feature kinds (such as `Height`, `Manner`, or `Voicing`) are all enums subclassed off of the base class `Feature`. Feature kinds themselves have the type `Type[Feature]`, aliased `FeatureKind`. The `.kind_values()` method can be called to retrieve supported string representations of the feature kind. 
 
 ```python
 from ipaparser.features import Feature, FEATURE_KINDS, FeatureKind
@@ -543,10 +543,10 @@ Finally, the `.derived()` and `.extend()` methods of individual features may be 
 ```python
 from ipaparser.features import Place, ToneLetter
 
-print(Place.ALVEOLAR.derived())
+print(Place.ALVEOLAR.derived())  # get the most specific derived feature
 # PlaceCategory.CORONAL
 
-print(ToneLetter.HIGH_TONE_LETTER.extend())
+print(ToneLetter.HIGH_TONE_LETTER.extend())  # all the derived features, including the caller
 # frozenset({<SuprasegmentalType.TONE: 'tone'>,
 #            <ToneLetter.HIGH_TONE_LETTER: 'high tone letter'>,
 #            <ToneType.TONE_LETTER: 'tone letter'>,
