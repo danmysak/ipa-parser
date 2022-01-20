@@ -138,7 +138,7 @@ class IPA:
         self._symbols = [from_raw(symbol) for symbol in parse(enclosing.text, config)]
 
     def as_string(self) -> str:
-        """Return the transcription as a string."""
+        """Return the transcription's underlying (normalized) string."""
         return str(self)
 
     def _from_symbols(self, symbols: list[IPASymbol]) -> IPA:

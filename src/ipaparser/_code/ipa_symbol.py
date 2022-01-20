@@ -78,7 +78,7 @@ class IPASymbol:
                       else RawSymbol(string, []))
 
     def as_string(self) -> str:
-        """Return the symbol as a string."""
+        """Return the symbol's underlying (normalized) string."""
         return str(self)
 
     @staticmethod
@@ -128,7 +128,7 @@ class IPASymbol:
                      the symbol does not have the feature and cannot be reinterpreted to have it, None will be returned.
                      Currently, the reinterpretations supported are:
                      1) nonsyllabic front/back close vowels as palatal/velar approximants;
-                     2) "ambiguous" alveolar consonants (t, n, ǁ, etc.) as dental and as postalveolar;
+                     2) "ambiguous" alveolar consonants (t, n, ǁ, etc.) as dental or as postalveolar;
                      3) ad-hoc combinations (e.g., ä ~ central vowel) as literal ones (ä ~ centralized front vowel).
                      Strings may be used ('consonant') instead of Feature subclass values (with no typing support).
         :return: A (frozen)set of the features or None for unknown symbols and symbols with an incompatible `role`.

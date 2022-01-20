@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Iterable, Optional, Union
+from typing import Any, Iterable, Union
 import unicodedata
 
 from .data import get_data
@@ -23,9 +23,9 @@ def process_brackets(brackets: Union[BracketStrategy, str]) -> BracketStrategy:
         raise BracketStrategyError(brackets, list(BracketStrategy))
 
 
-def process_combined(combined: Optional[Iterable[tuple[str, ...]]], substitutions: bool) -> tuple[tuple[str, ...]]:
+def process_combined(combined: Iterable[tuple[str, ...]], substitutions: bool) -> tuple[tuple[str, ...]]:
     result: list[tuple[str, ...]] = []
-    for sequence in (combined or []):
+    for sequence in combined:
         if len(sequence) < 2:
             raise CombinedLengthError(sequence)
         current: list[str] = []
@@ -50,7 +50,7 @@ class IPAConfig:
             self, *,
             substitutions: bool = False,
             brackets: BracketStrategy = BracketStrategy.KEEP,
-            combined: Optional[Iterable[tuple[str, ...]]] = None,
+            combined: Iterable[tuple[str, ...]] = (),
     ) -> None:
         """Set parameters for how IPA transcriptions and symbols are parsed.
 
@@ -60,9 +60,9 @@ class IPAConfig:
                          - keep (and treat brackets as invalid IPA characters),
                          - expand: [bəjɪzʲˈlʲivɨj],
                          - strip: [bəɪzˈlʲivɨj].
-        :param combined: Sound sequences to be treated as though they were connected by a tie, for instance,
+        :param combined: Sound sequences to be treated as though they were connected by a tie, e.g.,
                          [('t', 's'), ('d̠', 'ɹ̠˔'), ('a', 'ɪ'), ('u̯', 'e', 'i̯')];
-                         note that, e.g., ('a', 'ɪ') will not match 'aɪ̯', and likewise ('a', 'ɪ̯') will not match 'aɪ'.
+                         note that, say, ('a', 'ɪ') will not match 'aɪ̯', and likewise ('a', 'ɪ̯') will not match 'aɪ'.
         :raises:
             BracketStrategyError: The `brackets` parameter is a string which does not name a valid strategy.
             CombinedLengthError: Some sequences in the `combined` parameter contain less than two elements.
