@@ -510,7 +510,7 @@ for kind in FEATURE_KINDS:
     print(kind)
     # <enum 'Airflow'>, <enum 'Articulation'>, ..., <enum 'ToneType'>, <enum 'Voicing'>
     print(kind.kind_values())
-    # ['Airflow', 'airflow'], ['Articulation', 'articulation'], ..., ['ToneType', 'tone type'], ['Voicing', 'voicing']
+    # ('Airflow', 'airflow'), ('Articulation', 'articulation'), ..., ('ToneType', 'tone type'), ('Voicing', 'voicing')
     
     feature: Feature
     for feature in kind:

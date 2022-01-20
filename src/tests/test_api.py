@@ -344,9 +344,9 @@ class TestApi(TestCase):
             None,
         )
 
-        self.assertEqual(Manner.kind_values(), ['Manner', 'manner'])
-        self.assertEqual(SymbolType.kind_values(), ['SymbolType', 'symbol type'])
-        self.assertEqual(Feature.kind_values(), [])
+        self.assertEqual(Manner.kind_values(), ('Manner', 'manner'))
+        self.assertEqual(SymbolType.kind_values(), ('SymbolType', 'symbol type'))
+        self.assertEqual(Feature.kind_values(), ())
 
         with self.assertRaises(FeatureKindError) as context:
             IPASymbol('a').features({Airflow, unknown, Voicing})  # type: ignore
