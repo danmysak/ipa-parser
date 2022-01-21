@@ -496,297 +496,885 @@ except IncompatibleTypesError as e:
 
 ### Features
 
-#### `Airflow`/`'airflow'` [[1]](https://en.wikipedia.org/wiki/Extensions_to_the_International_Phonetic_Alphabet#Diacritics)
-| Value                        | String representation | Examples |
-| ---------------------------- | --------------------- | -------- |
-| `Airflow.EGRESSIVE_AIRFLOW`  | `egressive airflow`   | `↑`      |
-| `Airflow.INGRESSIVE_AIRFLOW` | `ingressive airflow`  | `↓`      |
-
-#### `Articulation`/`'articulation'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation)
-| Value                          | String representation | Examples             |
-| ------------------------------ | --------------------- | -------------------- |
-| `Articulation.APICAL`          | `apical`              | `s̺`, `z̺`, `ɾ̺`     |
-| `Articulation.LAMINAL`         | `laminal`             | `s̻`, `z̻`, `n̻`     |
-| `Articulation.ADVANCED`        | `advanced`            | `ɯ̟ᵝ`, `o̞˖`, `ʎ̟`   |
-| `Articulation.RETRACTED`       | `retracted`           | `a̠`, `ð̩˕˗ˠˀ`, `i̠` |
-| `Articulation.CENTRALIZED`     | `centralized`         | `æ̈`, `ɑ̈ː`, `ö`    |
-| `Articulation.MID_CENTRALIZED` | `mid-centralized`     | `e̽`, `ɯ̥̽`, `ɤ̽`    |
-| `Articulation.RAISED`          | `raised`              | `ɛ̝`, `ʎ̥˔`, `e̝ˀ`   |
-| `Articulation.LOWERED`         | `lowered`             | `ʏ̞`, `ò˕`, `ɛ̞̃`   |
-
-#### `Aspiration`/`'aspiration'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation), [[2]](https://en.wikipedia.org/wiki/Extensions_to_the_International_Phonetic_Alphabet#Diacritics)
-| Value                     | String representation | Examples             |
-| ------------------------- | --------------------- | -------------------- |
-| `Aspiration.ASPIRATED`    | `aspirated`           | `tʰ`, `kʰː`, `ǀʰ`    |
-| `Aspiration.UNASPIRATED`  | `unaspirated`         | `ʔ˭`, `p˭`           |
-| `Aspiration.PREASPIRATED` | `preaspirated`        | `ʰt͡s`, `ʰkʰʲ`, `ʰp` |
-
-#### `Backness`/`'backness'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Vowels)
-| Value                 | String representation | Examples          |
-| --------------------- | --------------------- | ----------------- |
-| `Backness.FRONT`      | `front`               | `a`, `ɛ̀ː`, `ǽ`  |
-| `Backness.NEAR_FRONT` | `near-front`          | `ɪ`, `ʏ˞`, `ɪˑ`   |
-| `Backness.CENTRAL`    | `central`             | `ə`, `ʉ́`, `ɘ̯`   |
-| `Backness.NEAR_BACK`  | `near-back`           | `ʊ`, `ʊ́`, `ʊ̂`   |
-| `Backness.BACK`       | `back`                | `o`, `ü`, `ɯ̟̃ᵝ` |
-
-#### `BacknessCategory`/`'backness category'`
-| Value                            | String representation | Examples          |
-| -------------------------------- | --------------------- | ----------------- |
-| `BacknessCategory.ABOUT_FRONT`   | `about front`         | `a`, `ɪ̙́`, `ʏ˞`  |
-| `BacknessCategory.ABOUT_CENTRAL` | `about central`       | `ə`, `ʉ́`, `ɘ̯`   |
-| `BacknessCategory.ABOUT_BACK`    | `about back`          | `o`, `ü`, `ɯ̟̃ᵝ` |
-
-#### `BreakType`/`'break type'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals)
-| Value                      | String representation | Examples |
-| -------------------------- | --------------------- | -------- |
-| `BreakType.SPACE`          | `space`               | ` `      |
-| `BreakType.HYPHEN`         | `hyphen`              | `-`      |
-| `BreakType.LINKING`        | `linking`             | `‿`      |
-| `BreakType.SYLLABLE_BREAK` | `syllable break`      | `.`      |
-| `BreakType.MINOR_BREAK`    | `minor break`         | `|`      |
-| `BreakType.MAJOR_BREAK`    | `major break`         | `‖`      |
-| `BreakType.EQUIVALENCE`    | `equivalence`         | `~`, `⁓` |
-| `BreakType.ELLIPSIS`       | `ellipsis`            | `…`      |
-
-#### `Height`/`'height'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Vowels)
-| Value               | String representation | Examples           |
-| ------------------- | --------------------- | ------------------ |
-| `Height.CLOSE`      | `close`               | `i`, `ṳ̌ː`, `ʉ̀`  |
-| `Height.NEAR_CLOSE` | `near-close`          | `ɪ`, `ʏ˞`, `ʊ̯ˑ`   |
-| `Height.CLOSE_MID`  | `close-mid`           | `e`, `ɤː`, `o̟`    |
-| `Height.MID`        | `mid`                 | `ə`, `ɚː`, `ɤ̞`    |
-| `Height.OPEN_MID`   | `open-mid`            | `ɛ`, `ɔ̃ː`, `ɜ˞`   |
-| `Height.NEAR_OPEN`  | `near-open`           | `ɐ`, `ǽ`, `ɐ̆`    |
-| `Height.OPEN`       | `open`                | `a`, `ɒ̯̽ˀ`, `ɑ̃ː` |
-
-#### `HeightCategory`/`'height category'`
-| Value                        | String representation | Examples         |
-| ---------------------------- | --------------------- | ---------------- |
-| `HeightCategory.ABOUT_CLOSE` | `about close`         | `i`, `ʏ˞`, `ʊ̯ˑ` |
-| `HeightCategory.ABOUT_MID`   | `about mid`           | `ə`, `ɘ̯`, `ø̃`  |
-| `HeightCategory.ABOUT_OPEN`  | `about open`          | `a`, `ɑ̆`, `æːˀ` |
-
-#### `Intonation`/`'intonation'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals)
-| Value                    | String representation | Examples |
-| ------------------------ | --------------------- | -------- |
-| `Intonation.GLOBAL_RISE` | `global rise`         | `↗`      |
-| `Intonation.GLOBAL_FALL` | `global fall`         | `↘`      |
-
-#### `Length`/`'length'` [[1]](https://en.wikipedia.org/wiki/Length_(phonetics))
-| Value                | String representation | Examples             |
-| -------------------- | --------------------- | -------------------- |
-| `Length.EXTRA_SHORT` | `extra-short`         | `n̆`, `ø̆`, `ŏ`     |
-| `Length.HALF_LONG`   | `half-long`           | `äˑ`, `e̞ˑ`, `øˑ`   |
-| `Length.LONG`        | `long`                | `aː`, `l̺ː`, `ɞː`    |
-| `Length.EXTRA_LONG`  | `extra-long`          | `øːˑ`, `ɛːː`, `ɨˤːː` |
-
-#### `Manner`/`'manner'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Consonants)
-| Value                | String representation | Examples              |
-| -------------------- | --------------------- | --------------------- |
-| `Manner.AFFRICATE`   | `affricate`           | `t͡s`, `d͡zː`, `q͡χʷ` |
-| `Manner.APPROXIMANT` | `approximant`         | `l`, `w̥ʰ`, `ɻ̊`      |
-| `Manner.FRICATIVE`   | `fricative`           | `s`, `ʂ͜ʲ`, `xʼ`      |
-| `Manner.LATERAL`     | `lateral`             | `l`, `t͡ɬʼ`, `ŋ͜ǁ`    |
-| `Manner.NASAL`       | `nasal`               | `n`, `mʷ`, `ɳ̩`       |
-| `Manner.SIBILANT`    | `sibilant`            | `s`, `ʑː`, `t͡ʃʲ`     |
-| `Manner.STOP`        | `stop`                | `k`, `tʲʰː`, `qˤ`     |
-| `Manner.TAP_FLAP`    | `tap/flap`            | `ɾ`, `ɽ̃`, `ɺ`        |
-| `Manner.TRILL`       | `trill`               | `r`, `ʀ̟`, `ʙ`        |
-| `Manner.CLICK`       | `click`               | `ǃ`, `ᵑǀʱ`, `ǁ`       |
-| `Manner.EJECTIVE`    | `ejective`            | `tʼ`, `ɬˤʼ`, `kʼʷ`    |
-| `Manner.IMPLOSIVE`   | `implosive`           | `ɓ`, `ʄ`, `ɗʲ`        |
-
-#### `Phonation`/`'phonation'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation), [[2]](https://en.wikipedia.org/wiki/Extensions_to_the_International_Phonetic_Alphabet#Diacritics)
-| Value                | String representation | Examples            |
-| -------------------- | --------------------- | ------------------- |
-| `Phonation.BREATHY`  | `breathy`             | `bʱ`, `ṳ̌`, `ᵑǀʱ`  |
-| `Phonation.CREAKY`   | `creaky`              | `æ̰ˀ`, `ɑ̰́ː`, `j̰` |
-| `Phonation.WHISPERY` | `whispery`            | `ạ`, `ạ̀`, `x̣`   |
-
-#### `Place`/`'place'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Consonants)
-| Value                         | String representation   | Examples           |
-| ----------------------------- | ----------------------- | ------------------ |
-| `Place.BILABIAL`              | `bilabial`              | `m`, `b̥ˀ`, `p͡f`  |
-| `Place.LABIODENTAL`           | `labiodental`           | `f`, `ᶬv`, `ʋ̥`    |
-| `Place.LINGUOLABIAL`          | `linguolabial`          | `n̼`, `θ̼`         |
-| `Place.DENTAL`                | `dental`                | `t̪`, `ðˠ`, `ɡ̊ǀ`  |
-| `Place.ALVEOLAR`              | `alveolar`              | `n`, `t͜ɬ`, `lʱ`   |
-| `Place.POSTALVEOLAR`          | `postalveolar`          | `ʃ`, `d͡ʒʲ`, `t̠̚` |
-| `Place.RETROFLEX`             | `retroflex`             | `ʂ`, `ʈⁿ`, `ɽʷ`    |
-| `Place.PALATAL`               | `palatal`               | `j`, `ɟʱ`, `kǂʰ`   |
-| `Place.VELAR`                 | `velar`                 | `k`, `ɡ̞`, `xʼ`    |
-| `Place.UVULAR`                | `uvular`                | `ʁ`, `q͡χʷ`, `ʀ̥`  |
-| `Place.PHARYNGEAL_EPIGLOTTAL` | `pharyngeal/epiglottal` | `ħ`, `ʕː`, `ħʷ`    |
-| `Place.GLOTTAL`               | `glottal`               | `ʔ`, `ɦʲ`, `hː`    |
-
-#### `PlaceCategory`/`'place category'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Consonants)
-| Value                     | String representation | Examples           |
-| ------------------------- | --------------------- | ------------------ |
-| `PlaceCategory.LABIAL`    | `labial`              | `m`, `b̥ˀ`, `ᶬv`   |
-| `PlaceCategory.CORONAL`   | `coronal`             | `n`, `t͡ʃʲ`, `d̥̚` |
-| `PlaceCategory.DORSAL`    | `dorsal`              | `k`, `q͡χʷ`, `ʎ̥˔` |
-| `PlaceCategory.LARYNGEAL` | `laryngeal`           | `ʔ`, `h̃`, `ɦʲ`    |
-
-#### `Release`/`'release'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation)
-| Value                                                   | String representation                           | Examples          |
-| ------------------------------------------------------- | ----------------------------------------------- | ----------------- |
-| `Release.NO_AUDIBLE_RELEASE`                            | `no audible release`                            | `t̚`, `ʔ̚`, `d̪̚` |
-| `Release.NASAL_RELEASE`                                 | `nasal release`                                 | `tⁿ`, `t̪ⁿ`, `ʈⁿ` |
-| `Release.LATERAL_RELEASE`                               | `lateral release`                               | `tˡ`, `bˡ`, `ᵐbˡ` |
-| `Release.VOICELESS_DENTAL_FRICATIVE_RELEASE`            | `voiceless dental fricative release`            | `tᶿ`              |
-| `Release.VOICELESS_ALVEOLAR_SIBILANT_FRICATIVE_RELEASE` | `voiceless alveolar sibilant fricative release` | `tˢ`, `kˢ`, `tˢʰ` |
-| `Release.VOICELESS_VELAR_FRICATIVE_RELEASE`             | `voiceless velar fricative release`             | `kˣ`              |
-
-#### `Roundedness`/`'roundedness'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Vowels)
-| Value                 | String representation | Examples          |
-| --------------------- | --------------------- | ----------------- |
-| `Roundedness.ROUNDED` | `rounded`             | `o`, `ṳ̌ː`, `ʉ̀` |
-
-#### `RoundednessModifier`/`'roundedness modifier'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation), [[2]](https://en.wikipedia.org/wiki/Extensions_to_the_International_Phonetic_Alphabet#Diacritics)
-| Value                                  | String representation | Examples            |
-| -------------------------------------- | --------------------- | ------------------- |
-| `RoundednessModifier.MORE_ROUNDED`     | `more rounded`        | `ʌ̹`, `ə̹`, `ɔ̹`    |
-| `RoundednessModifier.LESS_ROUNDED`     | `less rounded`        | `w̜`, `ɒ̜˔ː`, `ɔ̜ˑ` |
-| `RoundednessModifier.COMPRESSED`       | `compressed`          | `ɯ̟ᵝ`, `ɨ̃ᵝ`, `ɰᵝ`  |
-| `RoundednessModifier.LABIAL_SPREADING` | `labial spreading`    | `u͍`, `u͍ː`, `w͍`   |
-
-#### `SecondaryModifier`/`'secondary modifier'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation), [[2]](https://en.wikipedia.org/wiki/Prenasalized_consonant), [[3]](https://en.wikipedia.org/wiki/Pre-stopped_consonant), [[4]](https://linguistics.ucla.edu/people/keating/Keating_JIPA_diacritics_accepted_complete_Feb2019.pdf), [[5]](https://en.wikipedia.org/wiki/Glottalized_click#Preglottalized_nasal_clicks)
-| Value                                        | String representation      | Examples            |
-| -------------------------------------------- | -------------------------- | ------------------- |
-| `SecondaryModifier.ADVANCED_TONGUE_ROOT`     | `advanced tongue root`     | `ɨ̘`, `ɤ̘`, `í̘ː`  |
-| `SecondaryModifier.RETRACTED_TONGUE_ROOT`    | `retracted tongue root`    | `ɪ̙̞`, `ɒ̙̀`, `ʊ̙́` |
-| `SecondaryModifier.R_COLORED`                | `r-colored`                | `ɚ`, `ɝˑ`, `ɑ˞`     |
-| `SecondaryModifier.NASALIZED`                | `nasalized`                | `ĩ`, `õ̤`, `ɯ̟̃ᵝ` |
-| `SecondaryModifier.PRENASALIZED`             | `prenasalized`             | `ⁿdˠ`, `n͡t`, `ᶬv`  |
-| `SecondaryModifier.VOICELESSLY_PRENASALIZED` | `voicelessly prenasalized` | `m̥͡bʷ`             |
-| `SecondaryModifier.PRESTOPPED`               | `prestopped`               | `ᵈn`, `ᵇm`, `ᵈl`    |
-| `SecondaryModifier.PREGLOTTALIZED`           | `preglottalized`           | `ˀt`, `ˀd`          |
-
-#### `SecondaryPlace`/`'secondary place'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation)
-| Value                           | String representation | Examples           |
-| ------------------------------- | --------------------- | ------------------ |
-| `SecondaryPlace.LABIALIZED`     | `labialized`          | `w`, `sʷː`, `ʍ`    |
-| `SecondaryPlace.PALATALIZED`    | `palatalized`         | `tʲ`, `ʃᶣ`, `k̚ʲ`  |
-| `SecondaryPlace.VELARIZED`      | `velarized`           | `ɫ`, `l̩ˠ`, `mˠ`   |
-| `SecondaryPlace.PHARYNGEALIZED` | `pharyngealized`      | `t̪ˤ`, `bˤ`, `ɑˤː` |
-| `SecondaryPlace.GLOTTALIZED`    | `glottalized`         | `æ̰ˀ`, `ɔˀ`, `yˀ`  |
-
-#### `SoundSubtype`/`'sound subtype'` [[1]](https://en.wikipedia.org/wiki/Doubly_articulated_consonant), [[2]](https://en.wikipedia.org/wiki/Pulmonic-contour_click), [[3]](https://en.wikipedia.org/wiki/Ejective-contour_click), [[4]](https://en.wikipedia.org/wiki/Diphthong), [[5]](https://en.wikipedia.org/wiki/Triphthong)
-| Value                                       | String representation          | Examples             |
-| ------------------------------------------- | ------------------------------ | -------------------- |
-| `SoundSubtype.SIMPLE_CONSONANT`             | `simple consonant`             | `n`, `ʑː`, `t͡ʃʲ`    |
-| `SoundSubtype.DOUBLY_ARTICULATED_CONSONANT` | `doubly articulated consonant` | `ŋ͡m`, `k͡p̚`, `ɡ͡b` |
-| `SoundSubtype.CONTOUR_CLICK`                | `contour click`                | `ᵏǃ͡χʼ`, `ǃ͡qʰ`      |
-| `SoundSubtype.SIMPLE_VOWEL`                 | `simple vowel`                 | `a`, `ə̹`, `ɯ̟̃ᵝ`    |
-| `SoundSubtype.DIPHTHONG`                    | `diphthong`                    | `ʉ͜i`, `u͡ɛ`, `e͡ɪ`  |
-| `SoundSubtype.TRIPHTHONG`                   | `triphthong`                   | `œ̞͡ɐ̯͡u̯`           |
-
-#### `SoundType`/`'sound type'`
-| Value                 | String representation | Examples          |
-| --------------------- | --------------------- | ----------------- |
-| `SoundType.CONSONANT` | `consonant`           | `n`, `vː`, `t͡ʃʲ` |
-| `SoundType.VOWEL`     | `vowel`               | `a`, `ø̯`, `ʏ̟`   |
-
-#### `Strength`/`'strength'` [[1]](https://en.wikipedia.org/wiki/Extensions_to_the_International_Phonetic_Alphabet#Diacritics)
-| Value             | String representation | Examples           |
-| ----------------- | --------------------- | ------------------ |
-| `Strength.STRONG` | `strong`              | `t͡s͈`, `n͈`, `l͈` |
-| `Strength.WEAK`   | `weak`                | `v͉`               |
-
-#### `StressSubtype`/`'stress subtype'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals), [[2]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Stress)
-| Value                                       | String representation         | Examples |
-| ------------------------------------------- | ----------------------------- | -------- |
-| `StressSubtype.REGULAR_PRIMARY_STRESS`      | `regular primary stress`      | `ˈ`      |
-| `StressSubtype.EXTRA_STRONG_PRIMARY_STRESS` | `extra-strong primary stress` | `ˈˈ`     |
-| `StressSubtype.REGULAR_SECONDARY_STRESS`    | `regular secondary stress`    | `ˌ`      |
-| `StressSubtype.EXTRA_WEAK_SECONDARY_STRESS` | `extra-weak secondary stress` | `ˌˌ`     |
-
-#### `StressType`/`'stress type'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals), [[2]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Stress)
-| Value                         | String representation | Examples  |
-| ----------------------------- | --------------------- | --------- |
-| `StressType.PRIMARY_STRESS`   | `primary stress`      | `ˈ`, `ˈˈ` |
-| `StressType.SECONDARY_STRESS` | `secondary stress`    | `ˌ`, `ˌˌ` |
-
-#### `SuprasegmentalType`/`'suprasegmental type'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals), [[2]](https://en.wikipedia.org/wiki/Extensions_to_the_International_Phonetic_Alphabet#Diacritics)
-| Value                           | String representation | Examples       |
-| ------------------------------- | --------------------- | -------------- |
-| `SuprasegmentalType.STRESS`     | `stress`              | `ˈ`, `ˌ`, `ˈˈ` |
-| `SuprasegmentalType.TONE`       | `tone`                | `˥`, `⁴`, `¹`  |
-| `SuprasegmentalType.INTONATION` | `intonation`          | `↘`, `↗`       |
-| `SuprasegmentalType.AIRFLOW`    | `airflow`             | `↓`, `↑`       |
-
-#### `Syllabicity`/`'syllabicity'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation), [[2]](https://en.wiktionary.org/wiki/%E1%B5%8A)
-| Value                     | String representation | Examples           |
-| ------------------------- | --------------------- | ------------------ |
-| `Syllabicity.SYLLABIC`    | `syllabic`            | `n̩`, `ŋ̍`, `r̩̂`  |
-| `Syllabicity.NONSYLLABIC` | `nonsyllabic`         | `i̯`, `ʏ̯ː`, `ɪ̯ˑ` |
-| `Syllabicity.ANAPTYCTIC`  | `anaptyctic`          | `ᵊ`                |
-
-#### `SymbolType`/`'symbol type'`
-| Value                       | String representation | Examples         |
-| --------------------------- | --------------------- | ---------------- |
-| `SymbolType.SOUND`          | `sound`               | `a`, `ɡʲʷ`, `ʰk` |
-| `SymbolType.BREAK`          | `break`               | `.`, `-`, `‿`    |
-| `SymbolType.SUPRASEGMENTAL` | `suprasegmental`      | `ˈ`, `ꜜ`, `⁻`    |
-
-#### `Tone`/`'tone'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals), [[2]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Pitch_and_tone)
-| Value                       | String representation  | Examples               |
-| --------------------------- | ---------------------- | ---------------------- |
-| `Tone.EXTRA_HIGH_TONE`      | `extra-high tone`      | `ɹ̩̋`, `ő`, `a̋`      |
-| `Tone.HIGH_TONE`            | `high tone`            | `í`, `ɑ̃́`, `ɯ́ᵝː`    |
-| `Tone.MID_TONE`             | `mid tone`             | `ā`, `ɵ̄`, `īː`      |
-| `Tone.LOW_TONE`             | `low tone`             | `à`, `ù̘`, `æ̀ː`     |
-| `Tone.EXTRA_LOW_TONE`       | `extra-low tone`       | `ɨ̏ː`, `ȁ`            |
-| `Tone.RISING_TONE`          | `rising tone`          | `ǎ`, `ěː`, `m̩̌`     |
-| `Tone.FALLING_TONE`         | `falling tone`         | `êː`, `û`, `ɔ̂`      |
-| `Tone.HIGH_MID_RISING_TONE` | `high/mid rising tone` | `a᷄ː`, `a᷄`, `u᷄`      |
-| `Tone.LOW_RISING_TONE`      | `low rising tone`      | `i᷅ː`, `a᷅ː`, `ɛ᷅`     |
-| `Tone.HIGH_FALLING_TONE`    | `high falling tone`    | `a᷇`, `u᷇ː`, `u᷇`      |
-| `Tone.LOW_MID_FALLING_TONE` | `low/mid falling tone` | `ɪ᷆`, `e᷆ː`, `ə᷆`      |
-| `Tone.PEAKING_TONE`         | `peaking tone`         | `a̤᷈ː`, `e̤᷈ː`, `ṳ᷈ː` |
-| `Tone.DIPPING_TONE`         | `dipping tone`         | `a᷉`                   |
-
-#### `ToneLetter`/`'tone letter'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals)
-| Value                              | String representation   | Examples         |
-| ---------------------------------- | ----------------------- | ---------------- |
-| `ToneLetter.HIGH_TONE_LETTER`      | `high tone letter`      | `˥`              |
-| `ToneLetter.HALF_HIGH_TONE_LETTER` | `half-high tone letter` | `˦`, `˦ˀ`        |
-| `ToneLetter.MID_TONE_LETTER`       | `mid tone letter`       | `˧`, `꜔`, `˧ˀ`   |
-| `ToneLetter.HALF_LOW_TONE_LETTER`  | `half-low tone letter`  | `˨`, `˨ˀ`        |
-| `ToneLetter.LOW_TONE_LETTER`       | `low tone letter`       | `˩`, `˩̰ˀ`, `˩̤` |
-
-#### `ToneNumber`/`'tone number'` [[1]](https://en.wikipedia.org/wiki/Tone_number), [[2]](https://en.wiktionary.org/wiki/Template:IPA)
-| Value                              | String representation   | Examples |
-| ---------------------------------- | ----------------------- | -------- |
-| `ToneNumber.TONE_0`                | `tone 0`                | `⁰`      |
-| `ToneNumber.TONE_1`                | `tone 1`                | `¹`      |
-| `ToneNumber.TONE_2`                | `tone 2`                | `²`      |
-| `ToneNumber.TONE_3`                | `tone 3`                | `³`      |
-| `ToneNumber.TONE_4`                | `tone 4`                | `⁴`      |
-| `ToneNumber.TONE_5`                | `tone 5`                | `⁵`      |
-| `ToneNumber.TONE_6`                | `tone 6`                | `⁶`      |
-| `ToneNumber.TONE_7`                | `tone 7`                | `⁷`      |
-| `ToneNumber.TONE_NUMBER_SEPARATOR` | `tone number separator` | `⁻`      |
-
-#### `ToneStep`/`'tone step'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals)
-| Value               | String representation | Examples |
-| ------------------- | --------------------- | -------- |
-| `ToneStep.UPSTEP`   | `upstep`              | `ꜛ`      |
-| `ToneStep.DOWNSTEP` | `downstep`            | `ꜜ`      |
-
-#### `ToneType`/`'tone type'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals), [[2]](https://en.wikipedia.org/wiki/Tone_number), [[3]](https://en.wiktionary.org/wiki/Template:IPA)
-| Value                  | String representation | Examples      |
-| ---------------------- | --------------------- | ------------- |
-| `ToneType.TONE_LETTER` | `tone letter`         | `˥`, `˦`, `˨` |
-| `ToneType.TONE_NUMBER` | `tone number`         | `⁵`, `¹`, `²` |
-| `ToneType.TONE_STEP`   | `tone step`           | `ꜜ`, `ꜛ`      |
-
-#### `Voicing`/`'voicing'` [[1]](https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Consonants), [[2]](https://en.wikipedia.org/wiki/Voicelessness#Voiceless_vowels_and_other_sonorants)
-| Value              | String representation | Examples           |
-| ------------------ | --------------------- | ------------------ |
-| `Voicing.VOICED`   | `voiced`              | `n`, `bˤ`, `ɡʰ`    |
-| `Voicing.DEVOICED` | `devoiced`            | `u̥`, `ɯ̟̊`, `ĭ̥` |
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>Feature</th>
+<th>String representation</th>
+<th>Examples</th>
+<th>Sources</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center" rowspan="2"><code>Airflow</code><br><code>'airflow'</code></td>
+<td><code>Airflow.EGRESSIVE_AIRFLOW</code></td>
+<td><code>egressive airflow</code></td>
+<td><code>↑</code></td>
+<td align="center" rowspan="2"><a href="https://en.wikipedia.org/wiki/Extensions_to_the_International_Phonetic_Alphabet#Diacritics">[1]</a></td>
+</tr>
+<tr>
+<td><code>Airflow.INGRESSIVE_AIRFLOW</code></td>
+<td><code>ingressive airflow</code></td>
+<td><code>↓</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="8"><code>Articulation</code><br><code>'articulation'</code></td>
+<td><code>Articulation.APICAL</code></td>
+<td><code>apical</code></td>
+<td><code>s̺</code>, <code>z̺</code>, <code>ɾ̺</code></td>
+<td align="center" rowspan="8"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation">[1]</a></td>
+</tr>
+<tr>
+<td><code>Articulation.LAMINAL</code></td>
+<td><code>laminal</code></td>
+<td><code>s̻</code>, <code>z̻</code>, <code>n̻</code></td>
+</tr>
+<tr>
+<td><code>Articulation.ADVANCED</code></td>
+<td><code>advanced</code></td>
+<td><code>ɯ̟ᵝ</code>, <code>o̞˖</code>, <code>ʎ̟</code></td>
+</tr>
+<tr>
+<td><code>Articulation.RETRACTED</code></td>
+<td><code>retracted</code></td>
+<td><code>a̠</code>, <code>ð̩˕˗ˠˀ</code>, <code>i̠</code></td>
+</tr>
+<tr>
+<td><code>Articulation.CENTRALIZED</code></td>
+<td><code>centralized</code></td>
+<td><code>æ̈</code>, <code>ɑ̈ː</code>, <code>ö</code></td>
+</tr>
+<tr>
+<td><code>Articulation.MID_CENTRALIZED</code></td>
+<td><code>mid-centralized</code></td>
+<td><code>e̽</code>, <code>ɯ̥̽</code>, <code>ɤ̽</code></td>
+</tr>
+<tr>
+<td><code>Articulation.RAISED</code></td>
+<td><code>raised</code></td>
+<td><code>ɛ̝</code>, <code>ʎ̥˔</code>, <code>e̝ˀ</code></td>
+</tr>
+<tr>
+<td><code>Articulation.LOWERED</code></td>
+<td><code>lowered</code></td>
+<td><code>ʏ̞</code>, <code>ò˕</code>, <code>ɛ̞̃</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><code>Aspiration</code><br><code>'aspiration'</code></td>
+<td><code>Aspiration.ASPIRATED</code></td>
+<td><code>aspirated</code></td>
+<td><code>tʰ</code>, <code>kʰː</code>, <code>ǀʰ</code></td>
+<td align="center" rowspan="3"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation">[1]</a>, <a href="https://en.wikipedia.org/wiki/Extensions_to_the_International_Phonetic_Alphabet#Diacritics">[2]</a></td>
+</tr>
+<tr>
+<td><code>Aspiration.UNASPIRATED</code></td>
+<td><code>unaspirated</code></td>
+<td><code>ʔ˭</code>, <code>p˭</code></td>
+</tr>
+<tr>
+<td><code>Aspiration.PREASPIRATED</code></td>
+<td><code>preaspirated</code></td>
+<td><code>ʰt͡s</code>, <code>ʰkʰʲ</code>, <code>ʰp</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="5"><code>Backness</code><br><code>'backness'</code></td>
+<td><code>Backness.FRONT</code></td>
+<td><code>front</code></td>
+<td><code>a</code>, <code>ɛ̀ː</code>, <code>ǽ</code></td>
+<td align="center" rowspan="5"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Vowels">[1]</a></td>
+</tr>
+<tr>
+<td><code>Backness.NEAR_FRONT</code></td>
+<td><code>near-front</code></td>
+<td><code>ɪ</code>, <code>ʏ˞</code>, <code>ɪˑ</code></td>
+</tr>
+<tr>
+<td><code>Backness.CENTRAL</code></td>
+<td><code>central</code></td>
+<td><code>ə</code>, <code>ʉ́</code>, <code>ɘ̯</code></td>
+</tr>
+<tr>
+<td><code>Backness.NEAR_BACK</code></td>
+<td><code>near-back</code></td>
+<td><code>ʊ</code>, <code>ʊ́</code>, <code>ʊ̂</code></td>
+</tr>
+<tr>
+<td><code>Backness.BACK</code></td>
+<td><code>back</code></td>
+<td><code>o</code>, <code>ü</code>, <code>ɯ̟̃ᵝ</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><code>BacknessCategory</code><br><code>'backness category'</code></td>
+<td><code>BacknessCategory.ABOUT_FRONT</code></td>
+<td><code>about front</code></td>
+<td><code>a</code>, <code>ɪ̙́</code>, <code>ʏ˞</code></td>
+<td align="center" rowspan="3"></td>
+</tr>
+<tr>
+<td><code>BacknessCategory.ABOUT_CENTRAL</code></td>
+<td><code>about central</code></td>
+<td><code>ə</code>, <code>ʉ́</code>, <code>ɘ̯</code></td>
+</tr>
+<tr>
+<td><code>BacknessCategory.ABOUT_BACK</code></td>
+<td><code>about back</code></td>
+<td><code>o</code>, <code>ü</code>, <code>ɯ̟̃ᵝ</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="8"><code>BreakType</code><br><code>'break type'</code></td>
+<td><code>BreakType.SPACE</code></td>
+<td><code>space</code></td>
+<td><code> </code></td>
+<td align="center" rowspan="8"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals">[1]</a></td>
+</tr>
+<tr>
+<td><code>BreakType.HYPHEN</code></td>
+<td><code>hyphen</code></td>
+<td><code>-</code></td>
+</tr>
+<tr>
+<td><code>BreakType.LINKING</code></td>
+<td><code>linking</code></td>
+<td><code>‿</code></td>
+</tr>
+<tr>
+<td><code>BreakType.SYLLABLE_BREAK</code></td>
+<td><code>syllable break</code></td>
+<td><code>.</code></td>
+</tr>
+<tr>
+<td><code>BreakType.MINOR_BREAK</code></td>
+<td><code>minor break</code></td>
+<td><code>|</code></td>
+</tr>
+<tr>
+<td><code>BreakType.MAJOR_BREAK</code></td>
+<td><code>major break</code></td>
+<td><code>‖</code></td>
+</tr>
+<tr>
+<td><code>BreakType.EQUIVALENCE</code></td>
+<td><code>equivalence</code></td>
+<td><code>~</code>, <code>⁓</code></td>
+</tr>
+<tr>
+<td><code>BreakType.ELLIPSIS</code></td>
+<td><code>ellipsis</code></td>
+<td><code>…</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="7"><code>Height</code><br><code>'height'</code></td>
+<td><code>Height.CLOSE</code></td>
+<td><code>close</code></td>
+<td><code>i</code>, <code>ṳ̌ː</code>, <code>ʉ̀</code></td>
+<td align="center" rowspan="7"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Vowels">[1]</a></td>
+</tr>
+<tr>
+<td><code>Height.NEAR_CLOSE</code></td>
+<td><code>near-close</code></td>
+<td><code>ɪ</code>, <code>ʏ˞</code>, <code>ʊ̯ˑ</code></td>
+</tr>
+<tr>
+<td><code>Height.CLOSE_MID</code></td>
+<td><code>close-mid</code></td>
+<td><code>e</code>, <code>ɤː</code>, <code>o̟</code></td>
+</tr>
+<tr>
+<td><code>Height.MID</code></td>
+<td><code>mid</code></td>
+<td><code>ə</code>, <code>ɚː</code>, <code>ɤ̞</code></td>
+</tr>
+<tr>
+<td><code>Height.OPEN_MID</code></td>
+<td><code>open-mid</code></td>
+<td><code>ɛ</code>, <code>ɔ̃ː</code>, <code>ɜ˞</code></td>
+</tr>
+<tr>
+<td><code>Height.NEAR_OPEN</code></td>
+<td><code>near-open</code></td>
+<td><code>ɐ</code>, <code>ǽ</code>, <code>ɐ̆</code></td>
+</tr>
+<tr>
+<td><code>Height.OPEN</code></td>
+<td><code>open</code></td>
+<td><code>a</code>, <code>ɒ̯̽ˀ</code>, <code>ɑ̃ː</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><code>HeightCategory</code><br><code>'height category'</code></td>
+<td><code>HeightCategory.ABOUT_CLOSE</code></td>
+<td><code>about close</code></td>
+<td><code>i</code>, <code>ʏ˞</code>, <code>ʊ̯ˑ</code></td>
+<td align="center" rowspan="3"></td>
+</tr>
+<tr>
+<td><code>HeightCategory.ABOUT_MID</code></td>
+<td><code>about mid</code></td>
+<td><code>ə</code>, <code>ɘ̯</code>, <code>ø̃</code></td>
+</tr>
+<tr>
+<td><code>HeightCategory.ABOUT_OPEN</code></td>
+<td><code>about open</code></td>
+<td><code>a</code>, <code>ɑ̆</code>, <code>æːˀ</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="2"><code>Intonation</code><br><code>'intonation'</code></td>
+<td><code>Intonation.GLOBAL_RISE</code></td>
+<td><code>global rise</code></td>
+<td><code>↗</code></td>
+<td align="center" rowspan="2"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals">[1]</a></td>
+</tr>
+<tr>
+<td><code>Intonation.GLOBAL_FALL</code></td>
+<td><code>global fall</code></td>
+<td><code>↘</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="4"><code>Length</code><br><code>'length'</code></td>
+<td><code>Length.EXTRA_SHORT</code></td>
+<td><code>extra-short</code></td>
+<td><code>n̆</code>, <code>ø̆</code>, <code>ŏ</code></td>
+<td align="center" rowspan="4"><a href="https://en.wikipedia.org/wiki/Length_(phonetics)">[1]</a></td>
+</tr>
+<tr>
+<td><code>Length.HALF_LONG</code></td>
+<td><code>half-long</code></td>
+<td><code>äˑ</code>, <code>e̞ˑ</code>, <code>øˑ</code></td>
+</tr>
+<tr>
+<td><code>Length.LONG</code></td>
+<td><code>long</code></td>
+<td><code>aː</code>, <code>l̺ː</code>, <code>ɞː</code></td>
+</tr>
+<tr>
+<td><code>Length.EXTRA_LONG</code></td>
+<td><code>extra-long</code></td>
+<td><code>øːˑ</code>, <code>ɛːː</code>, <code>ɨˤːː</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="12"><code>Manner</code><br><code>'manner'</code></td>
+<td><code>Manner.AFFRICATE</code></td>
+<td><code>affricate</code></td>
+<td><code>t͡s</code>, <code>d͡zː</code>, <code>q͡χʷ</code></td>
+<td align="center" rowspan="12"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Consonants">[1]</a></td>
+</tr>
+<tr>
+<td><code>Manner.APPROXIMANT</code></td>
+<td><code>approximant</code></td>
+<td><code>l</code>, <code>w̥ʰ</code>, <code>ɻ̊</code></td>
+</tr>
+<tr>
+<td><code>Manner.FRICATIVE</code></td>
+<td><code>fricative</code></td>
+<td><code>s</code>, <code>ʂ͜ʲ</code>, <code>xʼ</code></td>
+</tr>
+<tr>
+<td><code>Manner.LATERAL</code></td>
+<td><code>lateral</code></td>
+<td><code>l</code>, <code>t͡ɬʼ</code>, <code>ŋ͜ǁ</code></td>
+</tr>
+<tr>
+<td><code>Manner.NASAL</code></td>
+<td><code>nasal</code></td>
+<td><code>n</code>, <code>mʷ</code>, <code>ɳ̩</code></td>
+</tr>
+<tr>
+<td><code>Manner.SIBILANT</code></td>
+<td><code>sibilant</code></td>
+<td><code>s</code>, <code>ʑː</code>, <code>t͡ʃʲ</code></td>
+</tr>
+<tr>
+<td><code>Manner.STOP</code></td>
+<td><code>stop</code></td>
+<td><code>k</code>, <code>tʲʰː</code>, <code>qˤ</code></td>
+</tr>
+<tr>
+<td><code>Manner.TAP_FLAP</code></td>
+<td><code>tap/flap</code></td>
+<td><code>ɾ</code>, <code>ɽ̃</code>, <code>ɺ</code></td>
+</tr>
+<tr>
+<td><code>Manner.TRILL</code></td>
+<td><code>trill</code></td>
+<td><code>r</code>, <code>ʀ̟</code>, <code>ʙ</code></td>
+</tr>
+<tr>
+<td><code>Manner.CLICK</code></td>
+<td><code>click</code></td>
+<td><code>ǃ</code>, <code>ᵑǀʱ</code>, <code>ǁ</code></td>
+</tr>
+<tr>
+<td><code>Manner.EJECTIVE</code></td>
+<td><code>ejective</code></td>
+<td><code>tʼ</code>, <code>ɬˤʼ</code>, <code>kʼʷ</code></td>
+</tr>
+<tr>
+<td><code>Manner.IMPLOSIVE</code></td>
+<td><code>implosive</code></td>
+<td><code>ɓ</code>, <code>ʄ</code>, <code>ɗʲ</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><code>Phonation</code><br><code>'phonation'</code></td>
+<td><code>Phonation.BREATHY</code></td>
+<td><code>breathy</code></td>
+<td><code>bʱ</code>, <code>ṳ̌</code>, <code>ᵑǀʱ</code></td>
+<td align="center" rowspan="3"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation">[1]</a>, <a href="https://en.wikipedia.org/wiki/Extensions_to_the_International_Phonetic_Alphabet#Diacritics">[2]</a></td>
+</tr>
+<tr>
+<td><code>Phonation.CREAKY</code></td>
+<td><code>creaky</code></td>
+<td><code>æ̰ˀ</code>, <code>ɑ̰́ː</code>, <code>j̰</code></td>
+</tr>
+<tr>
+<td><code>Phonation.WHISPERY</code></td>
+<td><code>whispery</code></td>
+<td><code>ạ</code>, <code>ạ̀</code>, <code>x̣</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="12"><code>Place</code><br><code>'place'</code></td>
+<td><code>Place.BILABIAL</code></td>
+<td><code>bilabial</code></td>
+<td><code>m</code>, <code>b̥ˀ</code>, <code>p͡f</code></td>
+<td align="center" rowspan="12"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Consonants">[1]</a></td>
+</tr>
+<tr>
+<td><code>Place.LABIODENTAL</code></td>
+<td><code>labiodental</code></td>
+<td><code>f</code>, <code>ᶬv</code>, <code>ʋ̥</code></td>
+</tr>
+<tr>
+<td><code>Place.LINGUOLABIAL</code></td>
+<td><code>linguolabial</code></td>
+<td><code>n̼</code>, <code>θ̼</code></td>
+</tr>
+<tr>
+<td><code>Place.DENTAL</code></td>
+<td><code>dental</code></td>
+<td><code>t̪</code>, <code>ðˠ</code>, <code>ɡ̊ǀ</code></td>
+</tr>
+<tr>
+<td><code>Place.ALVEOLAR</code></td>
+<td><code>alveolar</code></td>
+<td><code>n</code>, <code>t͜ɬ</code>, <code>lʱ</code></td>
+</tr>
+<tr>
+<td><code>Place.POSTALVEOLAR</code></td>
+<td><code>postalveolar</code></td>
+<td><code>ʃ</code>, <code>d͡ʒʲ</code>, <code>t̠̚</code></td>
+</tr>
+<tr>
+<td><code>Place.RETROFLEX</code></td>
+<td><code>retroflex</code></td>
+<td><code>ʂ</code>, <code>ʈⁿ</code>, <code>ɽʷ</code></td>
+</tr>
+<tr>
+<td><code>Place.PALATAL</code></td>
+<td><code>palatal</code></td>
+<td><code>j</code>, <code>ɟʱ</code>, <code>kǂʰ</code></td>
+</tr>
+<tr>
+<td><code>Place.VELAR</code></td>
+<td><code>velar</code></td>
+<td><code>k</code>, <code>ɡ̞</code>, <code>xʼ</code></td>
+</tr>
+<tr>
+<td><code>Place.UVULAR</code></td>
+<td><code>uvular</code></td>
+<td><code>ʁ</code>, <code>q͡χʷ</code>, <code>ʀ̥</code></td>
+</tr>
+<tr>
+<td><code>Place.PHARYNGEAL_EPIGLOTTAL</code></td>
+<td><code>pharyngeal/epiglottal</code></td>
+<td><code>ħ</code>, <code>ʕː</code>, <code>ħʷ</code></td>
+</tr>
+<tr>
+<td><code>Place.GLOTTAL</code></td>
+<td><code>glottal</code></td>
+<td><code>ʔ</code>, <code>ɦʲ</code>, <code>hː</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="4"><code>PlaceCategory</code><br><code>'place category'</code></td>
+<td><code>PlaceCategory.LABIAL</code></td>
+<td><code>labial</code></td>
+<td><code>m</code>, <code>b̥ˀ</code>, <code>ᶬv</code></td>
+<td align="center" rowspan="4"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Consonants">[1]</a></td>
+</tr>
+<tr>
+<td><code>PlaceCategory.CORONAL</code></td>
+<td><code>coronal</code></td>
+<td><code>n</code>, <code>t͡ʃʲ</code>, <code>d̥̚</code></td>
+</tr>
+<tr>
+<td><code>PlaceCategory.DORSAL</code></td>
+<td><code>dorsal</code></td>
+<td><code>k</code>, <code>q͡χʷ</code>, <code>ʎ̥˔</code></td>
+</tr>
+<tr>
+<td><code>PlaceCategory.LARYNGEAL</code></td>
+<td><code>laryngeal</code></td>
+<td><code>ʔ</code>, <code>h̃</code>, <code>ɦʲ</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="6"><code>Release</code><br><code>'release'</code></td>
+<td><code>Release.NO_AUDIBLE_RELEASE</code></td>
+<td><code>no audible release</code></td>
+<td><code>t̚</code>, <code>ʔ̚</code>, <code>d̪̚</code></td>
+<td align="center" rowspan="6"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation">[1]</a></td>
+</tr>
+<tr>
+<td><code>Release.NASAL_RELEASE</code></td>
+<td><code>nasal release</code></td>
+<td><code>tⁿ</code>, <code>t̪ⁿ</code>, <code>ʈⁿ</code></td>
+</tr>
+<tr>
+<td><code>Release.LATERAL_RELEASE</code></td>
+<td><code>lateral release</code></td>
+<td><code>tˡ</code>, <code>bˡ</code>, <code>ᵐbˡ</code></td>
+</tr>
+<tr>
+<td><code>Release.VOICELESS_DENTAL_FRICATIVE_RELEASE</code></td>
+<td><code>voiceless dental fricative release</code></td>
+<td><code>tᶿ</code></td>
+</tr>
+<tr>
+<td><code>Release.VOICELESS_ALVEOLAR_SIBILANT_FRICATIVE_RELEASE</code></td>
+<td><code>voiceless alveolar sibilant fricative release</code></td>
+<td><code>tˢ</code>, <code>kˢ</code>, <code>tˢʰ</code></td>
+</tr>
+<tr>
+<td><code>Release.VOICELESS_VELAR_FRICATIVE_RELEASE</code></td>
+<td><code>voiceless velar fricative release</code></td>
+<td><code>kˣ</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="1"><code>Roundedness</code><br><code>'roundedness'</code></td>
+<td><code>Roundedness.ROUNDED</code></td>
+<td><code>rounded</code></td>
+<td><code>o</code>, <code>ṳ̌ː</code>, <code>ʉ̀</code></td>
+<td align="center" rowspan="1"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Vowels">[1]</a></td>
+</tr>
+<tr>
+<td align="center" rowspan="4"><code>RoundednessModifier</code><br><code>'roundedness modifier'</code></td>
+<td><code>RoundednessModifier.MORE_ROUNDED</code></td>
+<td><code>more rounded</code></td>
+<td><code>ʌ̹</code>, <code>ə̹</code>, <code>ɔ̹</code></td>
+<td align="center" rowspan="4"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation">[1]</a>, <a href="https://en.wikipedia.org/wiki/Extensions_to_the_International_Phonetic_Alphabet#Diacritics">[2]</a></td>
+</tr>
+<tr>
+<td><code>RoundednessModifier.LESS_ROUNDED</code></td>
+<td><code>less rounded</code></td>
+<td><code>w̜</code>, <code>ɒ̜˔ː</code>, <code>ɔ̜ˑ</code></td>
+</tr>
+<tr>
+<td><code>RoundednessModifier.COMPRESSED</code></td>
+<td><code>compressed</code></td>
+<td><code>ɯ̟ᵝ</code>, <code>ɨ̃ᵝ</code>, <code>ɰᵝ</code></td>
+</tr>
+<tr>
+<td><code>RoundednessModifier.LABIAL_SPREADING</code></td>
+<td><code>labial spreading</code></td>
+<td><code>u͍</code>, <code>u͍ː</code>, <code>w͍</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="8"><code>SecondaryModifier</code><br><code>'secondary modifier'</code></td>
+<td><code>SecondaryModifier.ADVANCED_TONGUE_ROOT</code></td>
+<td><code>advanced tongue root</code></td>
+<td><code>ɨ̘</code>, <code>ɤ̘</code>, <code>í̘ː</code></td>
+<td align="center" rowspan="8"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation">[1]</a>, <a href="https://en.wikipedia.org/wiki/Prenasalized_consonant">[2]</a>, <a href="https://en.wikipedia.org/wiki/Pre-stopped_consonant">[3]</a>, <a href="https://linguistics.ucla.edu/people/keating/Keating_JIPA_diacritics_accepted_complete_Feb2019.pdf">[4]</a>, <a href="https://en.wikipedia.org/wiki/Glottalized_click#Preglottalized_nasal_clicks">[5]</a></td>
+</tr>
+<tr>
+<td><code>SecondaryModifier.RETRACTED_TONGUE_ROOT</code></td>
+<td><code>retracted tongue root</code></td>
+<td><code>ɪ̙̞</code>, <code>ɒ̙̀</code>, <code>ʊ̙́</code></td>
+</tr>
+<tr>
+<td><code>SecondaryModifier.R_COLORED</code></td>
+<td><code>r-colored</code></td>
+<td><code>ɚ</code>, <code>ɝˑ</code>, <code>ɑ˞</code></td>
+</tr>
+<tr>
+<td><code>SecondaryModifier.NASALIZED</code></td>
+<td><code>nasalized</code></td>
+<td><code>ĩ</code>, <code>õ̤</code>, <code>ɯ̟̃ᵝ</code></td>
+</tr>
+<tr>
+<td><code>SecondaryModifier.PRENASALIZED</code></td>
+<td><code>prenasalized</code></td>
+<td><code>ⁿdˠ</code>, <code>n͡t</code>, <code>ᶬv</code></td>
+</tr>
+<tr>
+<td><code>SecondaryModifier.VOICELESSLY_PRENASALIZED</code></td>
+<td><code>voicelessly prenasalized</code></td>
+<td><code>m̥͡bʷ</code></td>
+</tr>
+<tr>
+<td><code>SecondaryModifier.PRESTOPPED</code></td>
+<td><code>prestopped</code></td>
+<td><code>ᵈn</code>, <code>ᵇm</code>, <code>ᵈl</code></td>
+</tr>
+<tr>
+<td><code>SecondaryModifier.PREGLOTTALIZED</code></td>
+<td><code>preglottalized</code></td>
+<td><code>ˀt</code>, <code>ˀd</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="5"><code>SecondaryPlace</code><br><code>'secondary place'</code></td>
+<td><code>SecondaryPlace.LABIALIZED</code></td>
+<td><code>labialized</code></td>
+<td><code>w</code>, <code>sʷː</code>, <code>ʍ</code></td>
+<td align="center" rowspan="5"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation">[1]</a></td>
+</tr>
+<tr>
+<td><code>SecondaryPlace.PALATALIZED</code></td>
+<td><code>palatalized</code></td>
+<td><code>tʲ</code>, <code>ʃᶣ</code>, <code>k̚ʲ</code></td>
+</tr>
+<tr>
+<td><code>SecondaryPlace.VELARIZED</code></td>
+<td><code>velarized</code></td>
+<td><code>ɫ</code>, <code>l̩ˠ</code>, <code>mˠ</code></td>
+</tr>
+<tr>
+<td><code>SecondaryPlace.PHARYNGEALIZED</code></td>
+<td><code>pharyngealized</code></td>
+<td><code>t̪ˤ</code>, <code>bˤ</code>, <code>ɑˤː</code></td>
+</tr>
+<tr>
+<td><code>SecondaryPlace.GLOTTALIZED</code></td>
+<td><code>glottalized</code></td>
+<td><code>æ̰ˀ</code>, <code>ɔˀ</code>, <code>yˀ</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="6"><code>SoundSubtype</code><br><code>'sound subtype'</code></td>
+<td><code>SoundSubtype.SIMPLE_CONSONANT</code></td>
+<td><code>simple consonant</code></td>
+<td><code>n</code>, <code>ʑː</code>, <code>t͡ʃʲ</code></td>
+<td align="center" rowspan="6"><a href="https://en.wikipedia.org/wiki/Doubly_articulated_consonant">[1]</a>, <a href="https://en.wikipedia.org/wiki/Pulmonic-contour_click">[2]</a>, <a href="https://en.wikipedia.org/wiki/Ejective-contour_click">[3]</a>, <a href="https://en.wikipedia.org/wiki/Diphthong">[4]</a>, <a href="https://en.wikipedia.org/wiki/Triphthong">[5]</a></td>
+</tr>
+<tr>
+<td><code>SoundSubtype.DOUBLY_ARTICULATED_CONSONANT</code></td>
+<td><code>doubly articulated consonant</code></td>
+<td><code>ŋ͡m</code>, <code>k͡p̚</code>, <code>ɡ͡b</code></td>
+</tr>
+<tr>
+<td><code>SoundSubtype.CONTOUR_CLICK</code></td>
+<td><code>contour click</code></td>
+<td><code>ᵏǃ͡χʼ</code>, <code>ǃ͡qʰ</code></td>
+</tr>
+<tr>
+<td><code>SoundSubtype.SIMPLE_VOWEL</code></td>
+<td><code>simple vowel</code></td>
+<td><code>a</code>, <code>ə̹</code>, <code>ɯ̟̃ᵝ</code></td>
+</tr>
+<tr>
+<td><code>SoundSubtype.DIPHTHONG</code></td>
+<td><code>diphthong</code></td>
+<td><code>ʉ͜i</code>, <code>u͡ɛ</code>, <code>e͡ɪ</code></td>
+</tr>
+<tr>
+<td><code>SoundSubtype.TRIPHTHONG</code></td>
+<td><code>triphthong</code></td>
+<td><code>œ̞͡ɐ̯͡u̯</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="2"><code>SoundType</code><br><code>'sound type'</code></td>
+<td><code>SoundType.CONSONANT</code></td>
+<td><code>consonant</code></td>
+<td><code>n</code>, <code>vː</code>, <code>t͡ʃʲ</code></td>
+<td align="center" rowspan="2"></td>
+</tr>
+<tr>
+<td><code>SoundType.VOWEL</code></td>
+<td><code>vowel</code></td>
+<td><code>a</code>, <code>ø̯</code>, <code>ʏ̟</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="2"><code>Strength</code><br><code>'strength'</code></td>
+<td><code>Strength.STRONG</code></td>
+<td><code>strong</code></td>
+<td><code>t͡s͈</code>, <code>n͈</code>, <code>l͈</code></td>
+<td align="center" rowspan="2"><a href="https://en.wikipedia.org/wiki/Extensions_to_the_International_Phonetic_Alphabet#Diacritics">[1]</a></td>
+</tr>
+<tr>
+<td><code>Strength.WEAK</code></td>
+<td><code>weak</code></td>
+<td><code>v͉</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="4"><code>StressSubtype</code><br><code>'stress subtype'</code></td>
+<td><code>StressSubtype.REGULAR_PRIMARY_STRESS</code></td>
+<td><code>regular primary stress</code></td>
+<td><code>ˈ</code></td>
+<td align="center" rowspan="4"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals">[1]</a>, <a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Stress">[2]</a></td>
+</tr>
+<tr>
+<td><code>StressSubtype.EXTRA_STRONG_PRIMARY_STRESS</code></td>
+<td><code>extra-strong primary stress</code></td>
+<td><code>ˈˈ</code></td>
+</tr>
+<tr>
+<td><code>StressSubtype.REGULAR_SECONDARY_STRESS</code></td>
+<td><code>regular secondary stress</code></td>
+<td><code>ˌ</code></td>
+</tr>
+<tr>
+<td><code>StressSubtype.EXTRA_WEAK_SECONDARY_STRESS</code></td>
+<td><code>extra-weak secondary stress</code></td>
+<td><code>ˌˌ</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="2"><code>StressType</code><br><code>'stress type'</code></td>
+<td><code>StressType.PRIMARY_STRESS</code></td>
+<td><code>primary stress</code></td>
+<td><code>ˈ</code>, <code>ˈˈ</code></td>
+<td align="center" rowspan="2"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals">[1]</a>, <a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Stress">[2]</a></td>
+</tr>
+<tr>
+<td><code>StressType.SECONDARY_STRESS</code></td>
+<td><code>secondary stress</code></td>
+<td><code>ˌ</code>, <code>ˌˌ</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="4"><code>SuprasegmentalType</code><br><code>'suprasegmental type'</code></td>
+<td><code>SuprasegmentalType.STRESS</code></td>
+<td><code>stress</code></td>
+<td><code>ˈ</code>, <code>ˌ</code>, <code>ˈˈ</code></td>
+<td align="center" rowspan="4"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals">[1]</a>, <a href="https://en.wikipedia.org/wiki/Extensions_to_the_International_Phonetic_Alphabet#Diacritics">[2]</a></td>
+</tr>
+<tr>
+<td><code>SuprasegmentalType.TONE</code></td>
+<td><code>tone</code></td>
+<td><code>˥</code>, <code>⁴</code>, <code>¹</code></td>
+</tr>
+<tr>
+<td><code>SuprasegmentalType.INTONATION</code></td>
+<td><code>intonation</code></td>
+<td><code>↘</code>, <code>↗</code></td>
+</tr>
+<tr>
+<td><code>SuprasegmentalType.AIRFLOW</code></td>
+<td><code>airflow</code></td>
+<td><code>↓</code>, <code>↑</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><code>Syllabicity</code><br><code>'syllabicity'</code></td>
+<td><code>Syllabicity.SYLLABIC</code></td>
+<td><code>syllabic</code></td>
+<td><code>n̩</code>, <code>ŋ̍</code>, <code>r̩̂</code></td>
+<td align="center" rowspan="3"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Diacritics_and_prosodic_notation">[1]</a>, <a href="https://en.wiktionary.org/wiki/%E1%B5%8A">[2]</a></td>
+</tr>
+<tr>
+<td><code>Syllabicity.NONSYLLABIC</code></td>
+<td><code>nonsyllabic</code></td>
+<td><code>i̯</code>, <code>ʏ̯ː</code>, <code>ɪ̯ˑ</code></td>
+</tr>
+<tr>
+<td><code>Syllabicity.ANAPTYCTIC</code></td>
+<td><code>anaptyctic</code></td>
+<td><code>ᵊ</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><code>SymbolType</code><br><code>'symbol type'</code></td>
+<td><code>SymbolType.SOUND</code></td>
+<td><code>sound</code></td>
+<td><code>a</code>, <code>ɡʲʷ</code>, <code>ʰk</code></td>
+<td align="center" rowspan="3"></td>
+</tr>
+<tr>
+<td><code>SymbolType.BREAK</code></td>
+<td><code>break</code></td>
+<td><code>.</code>, <code>-</code>, <code>‿</code></td>
+</tr>
+<tr>
+<td><code>SymbolType.SUPRASEGMENTAL</code></td>
+<td><code>suprasegmental</code></td>
+<td><code>ˈ</code>, <code>ꜜ</code>, <code>⁻</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="13"><code>Tone</code><br><code>'tone'</code></td>
+<td><code>Tone.EXTRA_HIGH_TONE</code></td>
+<td><code>extra-high tone</code></td>
+<td><code>ɹ̩̋</code>, <code>ő</code>, <code>a̋</code></td>
+<td align="center" rowspan="13"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals">[1]</a>, <a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Pitch_and_tone">[2]</a></td>
+</tr>
+<tr>
+<td><code>Tone.HIGH_TONE</code></td>
+<td><code>high tone</code></td>
+<td><code>í</code>, <code>ɑ̃́</code>, <code>ɯ́ᵝː</code></td>
+</tr>
+<tr>
+<td><code>Tone.MID_TONE</code></td>
+<td><code>mid tone</code></td>
+<td><code>ā</code>, <code>ɵ̄</code>, <code>īː</code></td>
+</tr>
+<tr>
+<td><code>Tone.LOW_TONE</code></td>
+<td><code>low tone</code></td>
+<td><code>à</code>, <code>ù̘</code>, <code>æ̀ː</code></td>
+</tr>
+<tr>
+<td><code>Tone.EXTRA_LOW_TONE</code></td>
+<td><code>extra-low tone</code></td>
+<td><code>ɨ̏ː</code>, <code>ȁ</code></td>
+</tr>
+<tr>
+<td><code>Tone.RISING_TONE</code></td>
+<td><code>rising tone</code></td>
+<td><code>ǎ</code>, <code>ěː</code>, <code>m̩̌</code></td>
+</tr>
+<tr>
+<td><code>Tone.FALLING_TONE</code></td>
+<td><code>falling tone</code></td>
+<td><code>êː</code>, <code>û</code>, <code>ɔ̂</code></td>
+</tr>
+<tr>
+<td><code>Tone.HIGH_MID_RISING_TONE</code></td>
+<td><code>high/mid rising tone</code></td>
+<td><code>a᷄ː</code>, <code>a᷄</code>, <code>u᷄</code></td>
+</tr>
+<tr>
+<td><code>Tone.LOW_RISING_TONE</code></td>
+<td><code>low rising tone</code></td>
+<td><code>i᷅ː</code>, <code>a᷅ː</code>, <code>ɛ᷅</code></td>
+</tr>
+<tr>
+<td><code>Tone.HIGH_FALLING_TONE</code></td>
+<td><code>high falling tone</code></td>
+<td><code>a᷇</code>, <code>u᷇ː</code>, <code>u᷇</code></td>
+</tr>
+<tr>
+<td><code>Tone.LOW_MID_FALLING_TONE</code></td>
+<td><code>low/mid falling tone</code></td>
+<td><code>ɪ᷆</code>, <code>e᷆ː</code>, <code>ə᷆</code></td>
+</tr>
+<tr>
+<td><code>Tone.PEAKING_TONE</code></td>
+<td><code>peaking tone</code></td>
+<td><code>a̤᷈ː</code>, <code>e̤᷈ː</code>, <code>ṳ᷈ː</code></td>
+</tr>
+<tr>
+<td><code>Tone.DIPPING_TONE</code></td>
+<td><code>dipping tone</code></td>
+<td><code>a᷉</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="5"><code>ToneLetter</code><br><code>'tone letter'</code></td>
+<td><code>ToneLetter.HIGH_TONE_LETTER</code></td>
+<td><code>high tone letter</code></td>
+<td><code>˥</code></td>
+<td align="center" rowspan="5"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals">[1]</a></td>
+</tr>
+<tr>
+<td><code>ToneLetter.HALF_HIGH_TONE_LETTER</code></td>
+<td><code>half-high tone letter</code></td>
+<td><code>˦</code>, <code>˦ˀ</code></td>
+</tr>
+<tr>
+<td><code>ToneLetter.MID_TONE_LETTER</code></td>
+<td><code>mid tone letter</code></td>
+<td><code>˧</code>, <code>꜔</code>, <code>˧ˀ</code></td>
+</tr>
+<tr>
+<td><code>ToneLetter.HALF_LOW_TONE_LETTER</code></td>
+<td><code>half-low tone letter</code></td>
+<td><code>˨</code>, <code>˨ˀ</code></td>
+</tr>
+<tr>
+<td><code>ToneLetter.LOW_TONE_LETTER</code></td>
+<td><code>low tone letter</code></td>
+<td><code>˩</code>, <code>˩̰ˀ</code>, <code>˩̤</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="9"><code>ToneNumber</code><br><code>'tone number'</code></td>
+<td><code>ToneNumber.TONE_0</code></td>
+<td><code>tone 0</code></td>
+<td><code>⁰</code></td>
+<td align="center" rowspan="9"><a href="https://en.wikipedia.org/wiki/Tone_number">[1]</a>, <a href="https://en.wiktionary.org/wiki/Template:IPA">[2]</a></td>
+</tr>
+<tr>
+<td><code>ToneNumber.TONE_1</code></td>
+<td><code>tone 1</code></td>
+<td><code>¹</code></td>
+</tr>
+<tr>
+<td><code>ToneNumber.TONE_2</code></td>
+<td><code>tone 2</code></td>
+<td><code>²</code></td>
+</tr>
+<tr>
+<td><code>ToneNumber.TONE_3</code></td>
+<td><code>tone 3</code></td>
+<td><code>³</code></td>
+</tr>
+<tr>
+<td><code>ToneNumber.TONE_4</code></td>
+<td><code>tone 4</code></td>
+<td><code>⁴</code></td>
+</tr>
+<tr>
+<td><code>ToneNumber.TONE_5</code></td>
+<td><code>tone 5</code></td>
+<td><code>⁵</code></td>
+</tr>
+<tr>
+<td><code>ToneNumber.TONE_6</code></td>
+<td><code>tone 6</code></td>
+<td><code>⁶</code></td>
+</tr>
+<tr>
+<td><code>ToneNumber.TONE_7</code></td>
+<td><code>tone 7</code></td>
+<td><code>⁷</code></td>
+</tr>
+<tr>
+<td><code>ToneNumber.TONE_NUMBER_SEPARATOR</code></td>
+<td><code>tone number separator</code></td>
+<td><code>⁻</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="2"><code>ToneStep</code><br><code>'tone step'</code></td>
+<td><code>ToneStep.UPSTEP</code></td>
+<td><code>upstep</code></td>
+<td><code>ꜛ</code></td>
+<td align="center" rowspan="2"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals">[1]</a></td>
+</tr>
+<tr>
+<td><code>ToneStep.DOWNSTEP</code></td>
+<td><code>downstep</code></td>
+<td><code>ꜜ</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="3"><code>ToneType</code><br><code>'tone type'</code></td>
+<td><code>ToneType.TONE_LETTER</code></td>
+<td><code>tone letter</code></td>
+<td><code>˥</code>, <code>˦</code>, <code>˨</code></td>
+<td align="center" rowspan="3"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Suprasegmentals">[1]</a>, <a href="https://en.wikipedia.org/wiki/Tone_number">[2]</a>, <a href="https://en.wiktionary.org/wiki/Template:IPA">[3]</a></td>
+</tr>
+<tr>
+<td><code>ToneType.TONE_NUMBER</code></td>
+<td><code>tone number</code></td>
+<td><code>⁵</code>, <code>¹</code>, <code>²</code></td>
+</tr>
+<tr>
+<td><code>ToneType.TONE_STEP</code></td>
+<td><code>tone step</code></td>
+<td><code>ꜜ</code>, <code>ꜛ</code></td>
+</tr>
+<tr>
+<td align="center" rowspan="2"><code>Voicing</code><br><code>'voicing'</code></td>
+<td><code>Voicing.VOICED</code></td>
+<td><code>voiced</code></td>
+<td><code>n</code>, <code>bˤ</code>, <code>ɡʰ</code></td>
+<td align="center" rowspan="2"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Consonants">[1]</a>, <a href="https://en.wikipedia.org/wiki/Voicelessness#Voiceless_vowels_and_other_sonorants">[2]</a></td>
+</tr>
+<tr>
+<td><code>Voicing.DEVOICED</code></td>
+<td><code>devoiced</code></td>
+<td><code>u̥</code>, <code>ɯ̟̊</code>, <code>ĭ̥</code></td>
+</tr>
+</tbody>
+</table>
 
 ### Feature typing and helper methods
 

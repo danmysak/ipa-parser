@@ -1,24 +1,24 @@
 from collections import Counter, defaultdict
-import math
+from math import floor
 from pathlib import Path
-from string import Template
 from typing import Iterable
 
 from ...ipaparser import IPA, IPASymbol
-from ...ipaparser.features import Feature, FEATURE_KINDS
+from ...ipaparser.features import Feature, FEATURE_KINDS, FeatureKind
 
-CORPUS = Path(__file__).parent / 'corpus'
-
-HEADING_TEMPLATE = "#### `$kind`/`'$string'` $sources"
-SOURCE_TEMPLATE = '[$number]'
-SOURCE_DELIMITER = ', '
-URL_REQUIRED_PREFIX = 'http'
-
-VALUE_HEADING = 'Value'
+KIND_HEADING = 'Kind'
+FEATURE_HEADING = 'Feature'
 STRING_HEADING = 'String representation'
 EXAMPLES_HEADING = 'Examples'
+SOURCES_HEADING = 'Sources'
+
+CORPUS = Path(__file__).parent / 'corpus'
 EXAMPLE_COUNT = 3
 EXAMPLE_DELIMITER = ', '
+
+SOURCE_BRACKETS = '[', ']'
+SOURCE_DELIMITER = ', '
+SOURCE_URL_REQUIRED_PREFIX = 'http'
 
 SELECT_THRESHOLD = 0.5
 
@@ -41,8 +41,11 @@ def build_feature_index(symbols: Counter[IPASymbol]) -> defaultdict[Feature, lis
     return feature_index
 
 
+FEATURE_INDEX = build_feature_index(extract_symbols())
+
+
 def select(values: list[str], count: int) -> list[str]:
-    threshold = math.floor((len(values) - 1) * SELECT_THRESHOLD)
+    threshold = floor((len(values) - 1) * SELECT_THRESHOLD)
     if count >= threshold:
         return values[:count]
     else:
@@ -51,12 +54,13 @@ def select(values: list[str], count: int) -> list[str]:
         while len(taken) < count:
             taken_characters = set(''.join(taken))
             _, best = min(
-                enumerate(allowed),
-                key=lambda value: (len(set(value[1]).intersection(taken_characters)), -value[0]),
-                # First component gives more uniqueness, second is so that values are more exotic
+                enumerate(allowed), key=lambda value: (
+                    len(set(value[1]).intersection(taken_characters)),  # maximizing uniqueness
+                    1 if value[1] in taken else 0,  # avoiding duplicates
+                    -value[0],  # maximizing information value
+                ),
             )
-            if best in taken:
-                break
+            assert best not in taken
             taken.append(best)
         return taken
 
@@ -64,61 +68,72 @@ def select(values: list[str], count: int) -> list[str]:
 def parse_urls(docstring: str) -> list[str]:
     return [line
             for unstripped in docstring.strip().split('\n')
-            if (line := unstripped.strip()).startswith(URL_REQUIRED_PREFIX)]
+            if (line := unstripped.strip()).startswith(SOURCE_URL_REQUIRED_PREFIX)]
+
+
+def wrap_code(code: str) -> str:
+    return f'<code>{code}</code>'
 
 
 def format_source(url: str, number: int) -> str:
-    text = Template(SOURCE_TEMPLATE).substitute({
-        "number": number,
-    })
-    return f'[{text}]({url})'
+    return f'<a href="{url}">{SOURCE_BRACKETS[0]}{number}{SOURCE_BRACKETS[1]}</a>'
 
 
-def format_symbol(symbol: str) -> str:
-    return f'`{symbol}`'
-
-
-def format_table(values: list[list[str]]) -> str:
-    column_count = len(values[0])
-    column_lengths = [max(*(len(row[i]) for row in values)) for i in range(column_count)]
-    lines: list[str] = []
-
-    def add_line(line: Iterable[str]) -> None:
-        lines.append(f'| {" | ".join(line)} |')
-
-    for row_index, row in enumerate(values):
-        add_line(row[i].ljust(column_lengths[i]) for i in range(column_count))
-        if row_index == 0:
-            add_line('-' * column_lengths[i] for i in range(column_count))
-
+def merge_lines(lines: Iterable[str]) -> str:
     return '\n'.join(lines)
 
 
-def run() -> None:
-    feature_index = build_feature_index(extract_symbols())
-
-    for kind in FEATURE_KINDS:
-        string_representations = [value for value in kind.kind_values() if value != kind.__name__]
-        assert len(string_representations) == 1
-        print(Template(HEADING_TEMPLATE).substitute({
-            'kind': kind.__name__,
-            'string': string_representations[0],
-            'sources': SOURCE_DELIMITER.join(format_source(url, index + 1)
-                                             for index, url in enumerate(parse_urls(kind.__doc__))),
-        }).strip())
-
-        table: list[list[str]] = [[VALUE_HEADING, STRING_HEADING, EXAMPLES_HEADING]]
-        feature: Feature
-        for feature in kind:
-            table.append([
-                f'`{kind.__name__}.{feature.name}`',
-                f'`{feature.value}`',
-                EXAMPLE_DELIMITER.join(
-                    map(format_symbol, select(list(map(str, feature_index[feature])), EXAMPLE_COUNT))
-                ),
-            ])
-        print(format_table(table))
-        print('')
+def build_feature_cells(feature: Feature, kind: FeatureKind) -> str:
+    examples = EXAMPLE_DELIMITER.join(map(wrap_code, select(list(map(str, FEATURE_INDEX[feature])), EXAMPLE_COUNT)))
+    return f"""
+    <td>{wrap_code(kind.__name__ + '.' + feature.name)}</td>
+    <td>{wrap_code(feature.value)}</td>
+    <td>{examples}</td>
+    """
 
 
-run()
+def build_kind_rows(kind: FeatureKind) -> str:
+    string_representations = [value for value in kind.kind_values() if value != kind.__name__]
+    assert len(string_representations) == 1
+    string, = string_representations
+    sources = SOURCE_DELIMITER.join(format_source(url, index + 1)
+                                    for index, url in enumerate(parse_urls(kind.__doc__)))
+    features = list(kind)
+    first_feature, rest_of_features = features[0], features[1:]
+    return merge_lines([f"""
+    <tr>
+    <td align="center" rowspan="{len(kind)}">{wrap_code(kind.__name__)}<br>{wrap_code(f"'{string}'")}</td>
+    {build_feature_cells(first_feature, kind)}
+    <td align="center" rowspan="{len(kind)}">{sources}</td>
+    </tr>
+    """] + [f"""
+    <tr>
+    {build_feature_cells(feature, kind)}
+    </tr>
+    """ for feature in rest_of_features])
+
+
+def build_table() -> str:
+    return f"""
+    <table>
+    <thead>
+    <tr>
+    <th>{KIND_HEADING}</th>
+    <th>{FEATURE_HEADING}</th>
+    <th>{STRING_HEADING}</th>
+    <th>{EXAMPLES_HEADING}</th>
+    <th>{SOURCES_HEADING}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {merge_lines(build_kind_rows(kind) for kind in FEATURE_KINDS)}
+    </tbody>
+    </table>
+    """
+
+
+def clean_up_table(table: str) -> str:
+    return '\n'.join([stripped for line in table.split('\n') if (stripped := line.strip())])
+
+
+print(clean_up_table(build_table()))
