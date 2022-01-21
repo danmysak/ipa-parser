@@ -24,7 +24,7 @@ The `IPA` class can be used to parse IPA transcriptions. It behaves as a wrapper
 ```python
 from ipaparser import IPA
 
-print(
+print([
     len(IPA('[aɪ pʰiː eɪ]')),
     # 8
     
@@ -46,7 +46,7 @@ print(
     
     IPA('[aɪ pʰiː eɪ]')[3:5],
     # IPA('[pʰiː]')
-)
+])
 ```
 
 You can control some aspects of how parsing is performed by additionally passing a [configuration](#IPAConfig):
@@ -54,7 +54,7 @@ You can control some aspects of how parsing is performed by additionally passing
 ```python
 from ipaparser import IPA, IPAConfig
 
-print(
+print([
     list(IPA('[aɪ pʰiː eɪ]', IPAConfig(combined=[('a', 'ɪ'), ('e', 'ɪ')]))),
     # [IPASymbol('a͡ɪ'),
     #  IPASymbol(' '),
@@ -62,7 +62,7 @@ print(
     #  IPASymbol('iː'),
     #  IPASymbol(' '),
     #  IPASymbol('e͡ɪ')]
-)
+])
 ```
 
 <a name="IPA-transcription-type"></a>Objects of the `IPA` class provide basic information about their [transcription type](#TranscriptionType): 
@@ -71,7 +71,7 @@ print(
 from ipaparser import IPA
 from ipaparser.definitions import TranscriptionType
 
-print(
+print([
     IPA('[aɪ pʰiː eɪ]').type,
     # <TranscriptionType.PHONETIC: 'phonetic'>
     
@@ -83,7 +83,7 @@ print(
     
     IPA('[aɪ pʰiː eɪ]').right_bracket,
     # ']'
-)
+])
 ```
 
 `IPA` objects can be compared with other `IPA` objects as well as with strings:
@@ -91,7 +91,7 @@ print(
 ```python
 from ipaparser import IPA
 
-print(
+print([
     IPA('[aɪ pʰiː eɪ]') == IPA('[aɪ pʰiː eɪ]'),
     # True
     
@@ -112,7 +112,7 @@ print(
     
     str(IPA('[aɪ pʰiː eɪ]')),
     # '[aɪ pʰiː eɪ]'
-)
+])
 ```
 
 You can concatenate multiple `IPA` objects as well as append or prepend symbols to them:
@@ -120,13 +120,13 @@ You can concatenate multiple `IPA` objects as well as append or prepend symbols 
 ```python
 from ipaparser import IPA, IPASymbol
 
-print(
+print([
     IPA('[aɪ pʰiː]') + IPASymbol(' ') + IPA('[eɪ]'),
     # IPA('[aɪ pʰiː eɪ]')
     
     IPA('[aɪ]') * 3,
     # IPA('[aɪaɪaɪ]')
-)
+])
 ```
 
 ### `IPASymbol`
@@ -136,7 +136,7 @@ print(
 ```python
 from ipaparser import IPA, IPASymbol
 
-print(
+print([
     IPA('[aɪ pʰiː]')[0].is_sound(),
     # True
     
@@ -154,7 +154,7 @@ print(
     
     IPASymbol('*').is_known(),
     # False
-)
+])
 ```
 
 Just as with the `IPA` constructor, you can additionally pass to `IPASymbol` a [configuration](#IPAConfig):
@@ -162,7 +162,7 @@ Just as with the `IPA` constructor, you can additionally pass to `IPASymbol` a [
 ```python
 from ipaparser import IPAConfig, IPASymbol
 
-print(
+print([
     IPASymbol('g:').is_known(),
     # False
     
@@ -171,7 +171,7 @@ print(
     
     IPASymbol('g:', IPAConfig(substitutions=True)).is_known(),
     # True
-)
+])
 ```
 
 Symbols can be queried for their [features](#Features):
@@ -180,7 +180,7 @@ Symbols can be queried for their [features](#Features):
 from ipaparser import IPASymbol
 from ipaparser.features import Aspiration, Backness, Height, Manner, SoundType
 
-print(
+print([
     IPASymbol('pʰ').features(),
     # frozenset({<Aspiration.ASPIRATED: 'aspirated'>,
     #            <Place.BILABIAL: 'bilabial'>,
@@ -219,7 +219,7 @@ print(
     
     IPASymbol('*').has_feature(SoundType.VOWEL),
     # False
-)
+])
 ```
 
 Some sounds may be requested for alternative interpretations:
@@ -231,7 +231,7 @@ Some sounds may be requested for alternative interpretations:
 from ipaparser import IPASymbol
 from ipaparser.features import Place, SoundType
 
-print(
+print([
     IPASymbol('i̯').features(SoundType),
     # frozenset({<SoundType.VOWEL: 'vowel'>})
     
@@ -276,7 +276,7 @@ print(
     #            <Articulation.RETRACTED: 'retracted'>,
     #            <SoundSubtype.SIMPLE_CONSONANT: 'simple consonant'>,
     #            <SymbolType.SOUND: 'sound'>})
-)
+])
 ```
 
 Symbols preserve information about their constituents:
@@ -285,7 +285,7 @@ Symbols preserve information about their constituents:
 from ipaparser import IPASymbol
 from ipaparser.features import Manner
 
-print(
+print([
     IPASymbol('ts').features(Manner),
     # frozenset({<Manner.AFFRICATE: 'affricate'>,
     #            <Manner.SIBILANT: 'sibilant'>})
@@ -317,7 +317,7 @@ print(
     
     IPASymbol('d͢').components[0].is_known(),
     # True
-)
+])
 ```
 
 `IPASymbol` can be compared with other `IPASymbol` objects as well as with strings:
@@ -325,7 +325,7 @@ print(
 ```python
 from ipaparser import IPASymbol
 
-print(
+print([
     IPASymbol('ts') == IPASymbol('ts'),
     # True
     
@@ -346,7 +346,7 @@ print(
     
     str(IPASymbol('ts')),
     # 'ts'
-)
+])
 ```
 
 ### `IPAConfig`
@@ -363,13 +363,13 @@ print(
 from ipaparser import IPA, IPAConfig, IPASymbol
 from ipaparser.definitions import BracketStrategy
 
-print(
+print([
     IPA('/ɹɪˈdʒɔɪndʒə(ɹ)/', IPAConfig(brackets=BracketStrategy.STRIP, combined=[('d', 'ʒ'), ('ɔ', 'ɪ')])),
     # IPA('/ɹɪˈd͡ʒɔ͡ɪnd͡ʒə/')
     
     IPASymbol('o(:)', IPAConfig(substitutions=True, brackets='expand'))
     # IPASymbol('oː')
-)
+])
 ```
 
 ### `load`
@@ -381,13 +381,13 @@ from timeit import timeit
 
 from ipaparser import IPA
 
-print(
+print([
     timeit(lambda: IPA('[aɪ pʰiː eɪ]'), number=1),
     # 0.007
 
     timeit(lambda: IPA('[ˈpʰɹɛʔt͡sɫ̩]'), number=1),
     # 0.0004
-)
+])
 ```
 
 ```python
@@ -397,13 +397,13 @@ from ipaparser import IPA, load
 
 load()
 
-print(
+print([
     timeit(lambda: IPA('[aɪ pʰiː eɪ]'), number=1),
     # 0.0002
 
     timeit(lambda: IPA('[ˈpʰɹɛʔt͡sɫ̩]'), number=1),
     # 0.0004
-)
+])
 ```
 
 
