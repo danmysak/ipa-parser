@@ -1,3 +1,4 @@
+include README-pypi.md
 graft src/ipaparser/_data
 prune src/scripts
 prune src/tests
