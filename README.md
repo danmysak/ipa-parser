@@ -598,7 +598,7 @@ except IncompatibleTypesError as e:
 </tr>
 <tr>
 <td><code>ABOUT_BACK</code><br><code>'about back'</code></td>
-<td><code>o</code>, <code>ü</code>, <code>ɯ̟̃ᵝ</code></td>
+<td><code>o</code>, <code>ʊ̥</code>, <code>ü</code></td>
 </tr>
 <tr>
 <td align="center" rowspan="8"><code>BreakType</code><br><code>'break type'</code></td>
@@ -672,11 +672,11 @@ except IncompatibleTypesError as e:
 </tr>
 <tr>
 <td><code>ABOUT_MID</code><br><code>'about mid'</code></td>
-<td><code>ə</code>, <code>ɘ̯</code>, <code>ø̃</code></td>
+<td><code>ə</code>, <code>ɘ̯</code>, <code>ɜˑ</code></td>
 </tr>
 <tr>
 <td><code>ABOUT_OPEN</code><br><code>'about open'</code></td>
-<td><code>a</code>, <code>ɑ̆</code>, <code>æːˀ</code></td>
+<td><code>a</code>, <code>æːˀ</code>, <code>ɑ̆</code></td>
 </tr>
 <tr>
 <td align="center" rowspan="2"><code>Intonation</code><br><code>'intonation'</code></td>
@@ -823,12 +823,12 @@ except IncompatibleTypesError as e:
 <tr>
 <td align="center" rowspan="4"><code>PlaceCategory</code><br><code>'place category'</code></td>
 <td><code>LABIAL</code><br><code>'labial'</code></td>
-<td><code>m</code>, <code>b̥ˀ</code>, <code>ᶬv</code></td>
+<td><code>m</code>, <code>ᶬv</code>, <code>b̥ˀ</code></td>
 <td align="center" rowspan="4"><a href="https://en.wikipedia.org/wiki/International_Phonetic_Alphabet#Consonants">[1]</a></td>
 </tr>
 <tr>
 <td><code>CORONAL</code><br><code>'coronal'</code></td>
-<td><code>n</code>, <code>t͡ʃʲ</code>, <code>d̥̚</code></td>
+<td><code>n</code>, <code>t͡ʃʲ</code>, <code>ɻ̊</code></td>
 </tr>
 <tr>
 <td><code>DORSAL</code><br><code>'dorsal'</code></td>
@@ -836,7 +836,7 @@ except IncompatibleTypesError as e:
 </tr>
 <tr>
 <td><code>LARYNGEAL</code><br><code>'laryngeal'</code></td>
-<td><code>ʔ</code>, <code>h̃</code>, <code>ɦʲ</code></td>
+<td><code>ʔ</code>, <code>ʕː</code>, <code>h̃</code></td>
 </tr>
 <tr>
 <td align="center" rowspan="6"><code>Release</code><br><code>'release'</code></td>
@@ -973,12 +973,12 @@ except IncompatibleTypesError as e:
 <tr>
 <td align="center" rowspan="2"><code>SoundType</code><br><code>'sound type'</code></td>
 <td><code>CONSONANT</code><br><code>'consonant'</code></td>
-<td><code>n</code>, <code>vː</code>, <code>t͡ʃʲ</code></td>
+<td><code>n</code>, <code>k͡p̚</code>, <code>ᵏǃ͡χʼ</code></td>
 <td align="center" rowspan="2"></td>
 </tr>
 <tr>
 <td><code>VOWEL</code><br><code>'vowel'</code></td>
-<td><code>a</code>, <code>ø̯</code>, <code>ʏ̟</code></td>
+<td><code>a</code>, <code>ɔ͜y</code>, <code>ø̯</code></td>
 </tr>
 <tr>
 <td align="center" rowspan="2"><code>Strength</code><br><code>'strength'</code></td>

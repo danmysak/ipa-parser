@@ -43,24 +43,38 @@ def build_feature_index(symbols: Counter[IPASymbol]) -> defaultdict[Feature, lis
 FEATURE_INDEX = build_feature_index(extract_symbols())
 
 
-def select(values: list[str], count: int) -> list[str]:
+def select(values: list[IPASymbol], count: int, feature_of_interest: Feature) -> list[IPASymbol]:
     threshold = floor((len(values) - 1) * SELECT_THRESHOLD)
     if count >= threshold:
         return values[:count]
     else:
         allowed = values[:threshold]
-        taken: list[str] = [values[0]]
-        while len(taken) < count:
-            taken_characters = set(''.join(taken))
-            _, best = min(
-                enumerate(allowed), key=lambda value: (
-                    len(set(value[1]).intersection(taken_characters)),  # maximizing uniqueness
-                    1 if value[1] in taken else 0,  # avoiding duplicates
-                    -value[0],  # maximizing information value
-                ),
+        taken: list[IPASymbol] = []
+        taken_characters: set[str] = set()
+        taken_features: set[Feature] = set()
+
+        def add(symbol: IPASymbol) -> None:
+            taken.append(symbol)
+            taken_characters.update(character for character in str(symbol))
+            taken_features.update(feature for feature in (symbol.features() or {}))
+
+        def sorting_key(enumerated: tuple[int, IPASymbol]) -> tuple[int, ...]:
+            index, symbol = enumerated
+            return (
+                len([feature for feature in (symbol.features() or {})
+                     if feature in taken_features and feature.derived() == feature_of_interest]),
+                # disambiguating features such as height and backness categories
+
+                len(set(str(symbol)).intersection(taken_characters)),  # maximizing uniqueness
+                1 if symbol in taken else 0,  # avoiding duplicates
+                -index,  # maximizing information value
             )
+
+        add(values[0])
+        while len(taken) < count:
+            _, best = min(enumerate(allowed), key=sorting_key)
             assert best not in taken
-            taken.append(best)
+            add(best)
         return taken
 
 
@@ -89,7 +103,7 @@ def merge_lines(lines: Iterable[str]) -> str:
 def build_feature_cells(feature: Feature) -> str:
     return f"""
     <td>{wrap_code(feature.name)}<br>{wrap_string(feature.value)}</td>
-    <td>{EXAMPLE_DELIMITER.join(map(wrap_code, select(list(map(str, FEATURE_INDEX[feature])), EXAMPLE_COUNT)))}</td>
+    <td>{EXAMPLE_DELIMITER.join(map(wrap_code, map(str, select(FEATURE_INDEX[feature], EXAMPLE_COUNT, feature))))}</td>
     """
 
 
