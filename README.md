@@ -320,7 +320,7 @@ print([
 ])
 ```
 
-`IPASymbol` can be compared with other `IPASymbol` objects as well as with strings:
+`IPASymbol` objects can be compared with other symbols as well as with strings:
 
 ```python
 from ipaparser import IPASymbol
@@ -353,11 +353,11 @@ print([
 
 `IPAConfig` can be used to control some aspects of how transcriptions and individual symbols are parsed. The following parameters are available for configuration:
 
-| Parameter       | Type(s)                                        | Default                            | Description                                                                                                                                                                                                                                           |
-|-----------------|------------------------------------------------|------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `substitutions` | `bool`                                         | `False`                            | Whether to perform normalizing substitutions that allow to properly handle commonly observed simplifications such as Latin `g` being used instead of the IPA’s dedicated character `ɡ` or a colon being used instead of the length mark `ː`.          |
-| `brackets`      | [`BracketStrategy`](#BracketStrategy)<br>`str` | `BracketStrategy.KEEP`<br>`'keep'` | What to do with content in brackets denoting optional pronunciation, such as in `[bə(j)ɪz⁽ʲ⁾ˈlʲivɨj]`:<ul><li>`keep` (and treat brackets as invalid IPA characters);</li><li>`expand`: `[bəjɪzʲˈlʲivɨj]`;</li><li>`strip`: `[bəɪzˈlʲivɨj]`.</li></ul> |
-| `combined`      | `Iterable[tuple[str, ...]]`                    | `()`                               | Sound sequences to be treated as though they were connected by a tie, e.g., `[('t', 's'), ('d̠', 'ɹ̠˔'), ('a', 'ɪ'), ('u̯', 'e', 'i̯')]`.<br>Note that, say, `('a', 'ɪ')` will not match `'aɪ̯'`, and likewise `('a', 'ɪ̯')` will not match `'aɪ'`.   |
+| Parameter       | Type(s)                                        | Default                            | Description                                                                                                                                                                                                                                                    |
+|-----------------|------------------------------------------------|------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `substitutions` | `bool`                                         | `False`                            | Whether to perform normalizing substitutions that allow to properly handle commonly observed simplifications in IPA notations such as the Latin letter `g` being used instead of the IPA’s dedicated character `ɡ` or a colon in place of the length mark `ː`. |
+| `brackets`      | [`BracketStrategy`](#BracketStrategy)<br>`str` | `BracketStrategy.KEEP`<br>`'keep'` | What to do with content in brackets denoting optional pronunciation, such as in `[bə(j)ɪz⁽ʲ⁾ˈlʲivɨj]`:<ul><li>`keep` (and treat brackets as invalid IPA characters);</li><li>`expand`: `[bəjɪzʲˈlʲivɨj]`;</li><li>`strip`: `[bəɪzˈlʲivɨj]`.</li></ul>          |
+| `combined`      | `Iterable[tuple[str, ...]]`                    | `()`                               | Sound sequences to be treated as though they were connected by a tie, e.g., `[('t', 's'), ('d̠', 'ɹ̠˔'), ('a', 'ɪ'), ('u̯', 'e', 'i̯')]`.<br>Note that, say, `('a', 'ɪ')` will not match `'aɪ̯'`, and likewise `('a', 'ɪ̯')` will not match `'aɪ'`.            |
 
 ```python
 from ipaparser import IPA, IPAConfig, IPASymbol
@@ -1217,7 +1217,7 @@ except IncompatibleTypesError as e:
 
 ### Feature typing and helper methods
 
-You can iterate through all the supported features using the tuple `FEATURE_KINDS`. Feature kinds (such as `Height`, `Manner`, or `Voicing`) are all enums subclassed off of the base class `Feature`. Feature kinds themselves have the type `Type[Feature]`, aliased `FeatureKind`. The `.kind_values()` method can be called to retrieve supported string representations of the feature kind. 
+You can iterate through the supported features using the tuple `FEATURE_KINDS`. Feature kinds (such as `Height`, `Manner`, or `Voicing`) are all string-based enums subclassed off of the base class `Feature`. Feature kinds themselves have the type `Type[Feature]`, aliased `FeatureKind`. The `.kind_values()` method can be called to retrieve supported string representations of the feature kind. 
 
 ```python
 from ipaparser.features import Feature, FEATURE_KINDS, FeatureKind
@@ -1237,23 +1237,7 @@ for kind in FEATURE_KINDS:
         # 'egressive airflow', 'ingressive airflow', 'apical', ..., 'devoiced'
 ```
 
-`FeatureSet` is an alias for `frozenset[Feature]` (the return type of `IPASymbol.features()`).
-
-```python
-from ipaparser import IPASymbol
-from ipaparser.features import FeatureSet, SoundType, Syllabicity
-
-
-def is_syllabic(features: FeatureSet) -> bool:
-    if SoundType.CONSONANT in features:
-        return Syllabicity.SYLLABIC in features
-    if SoundType.VOWEL in features:
-        return Syllabicity.NONSYLLABIC not in features
-    return False
-
-
-print(is_syllabic(IPASymbol('a').features()))
-```
+`FeatureSet` (which can be imported from `ipaparser.features`) is an alias for `frozenset[Feature]`. The return type of `IPASymbol.features()` is hence `Optional[FeatureSet]`.
 
 Finally, the `.derived()` and `.extend()` methods of individual features may be called to obtain basic hierarchical relationships between features:
 
@@ -1264,8 +1248,8 @@ print(Place.ALVEOLAR.derived())  # get the most specific derived feature
 # PlaceCategory.CORONAL
 
 print(ToneLetter.HIGH_TONE_LETTER.extend())  # all the derived features, including the caller
-# frozenset({<SuprasegmentalType.TONE: 'tone'>,
-#            <ToneLetter.HIGH_TONE_LETTER: 'high tone letter'>,
+# frozenset({<ToneLetter.HIGH_TONE_LETTER: 'high tone letter'>,
 #            <ToneType.TONE_LETTER: 'tone letter'>,
+#            <SuprasegmentalType.TONE: 'tone'>,
 #            <SymbolType.SUPRASEGMENTAL: 'suprasegmental'>})
 ```
