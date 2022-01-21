@@ -8,7 +8,6 @@ from ...ipaparser.features import Feature, FEATURE_KINDS, FeatureKind
 
 KIND_HEADING = 'Kind'
 FEATURE_HEADING = 'Feature'
-STRING_HEADING = 'String representation'
 EXAMPLES_HEADING = 'Examples'
 SOURCES_HEADING = 'Sources'
 
@@ -75,6 +74,10 @@ def wrap_code(code: str) -> str:
     return f'<code>{code}</code>'
 
 
+def wrap_string(string: str) -> str:
+    return wrap_code(f"'{string}'")
+
+
 def format_source(url: str, number: int) -> str:
     return f'<a href="{url}">{SOURCE_BRACKETS[0]}{number}{SOURCE_BRACKETS[1]}</a>'
 
@@ -83,12 +86,10 @@ def merge_lines(lines: Iterable[str]) -> str:
     return '\n'.join(lines)
 
 
-def build_feature_cells(feature: Feature, kind: FeatureKind) -> str:
-    examples = EXAMPLE_DELIMITER.join(map(wrap_code, select(list(map(str, FEATURE_INDEX[feature])), EXAMPLE_COUNT)))
+def build_feature_cells(feature: Feature) -> str:
     return f"""
-    <td>{wrap_code(kind.__name__ + '.' + feature.name)}</td>
-    <td>{wrap_code(feature.value)}</td>
-    <td>{examples}</td>
+    <td>{wrap_code(feature.name)}<br>{wrap_string(feature.value)}</td>
+    <td>{EXAMPLE_DELIMITER.join(map(wrap_code, select(list(map(str, FEATURE_INDEX[feature])), EXAMPLE_COUNT)))}</td>
     """
 
 
@@ -102,13 +103,13 @@ def build_kind_rows(kind: FeatureKind) -> str:
     first_feature, rest_of_features = features[0], features[1:]
     return merge_lines([f"""
     <tr>
-    <td align="center" rowspan="{len(kind)}">{wrap_code(kind.__name__)}<br>{wrap_code(f"'{string}'")}</td>
-    {build_feature_cells(first_feature, kind)}
+    <td align="center" rowspan="{len(kind)}">{wrap_code(kind.__name__)}<br>{wrap_string(string)}</td>
+    {build_feature_cells(first_feature)}
     <td align="center" rowspan="{len(kind)}">{sources}</td>
     </tr>
     """] + [f"""
     <tr>
-    {build_feature_cells(feature, kind)}
+    {build_feature_cells(feature)}
     </tr>
     """ for feature in rest_of_features])
 
@@ -120,7 +121,6 @@ def build_table() -> str:
     <tr>
     <th>{KIND_HEADING}</th>
     <th>{FEATURE_HEADING}</th>
-    <th>{STRING_HEADING}</th>
     <th>{EXAMPLES_HEADING}</th>
     <th>{SOURCES_HEADING}</th>
     </tr>
